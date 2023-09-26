@@ -49,25 +49,3 @@
 .header__institucional .active:hover {
   color: #78cdfc;
 }
-
-.header__institucional button {
-  padding: 10px 16px;
-  background-color: var(--color-azul);
-  border-radius: 6px;
-  border: none;
-  color: var(--color-branco);
-  font-weight: 500;
-  transition: 0.3s;
-}
-
-.header__institucional button:hover {
-  transition: 0.3s;
-  transform: scale(1.01);
-  background-color: #26B0FA;
-}
-
-.header__institucional button:active {
-  transition: 0.3s;
-  transform: scale(0.98);
-  background-color: #26B0FA;
-}

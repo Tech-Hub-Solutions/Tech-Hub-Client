@@ -1,6 +1,8 @@
 import "./HeaderInstitucional.css";
 import LogoTechHub from "../../../assets/images/LogoTechHub.png";
 
+import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
+
 const HeaderInstitucional = () => {
   return (
     <header className="header__section">
@@ -31,7 +33,9 @@ const HeaderInstitucional = () => {
             <a href="#">
               <li>Login</li>
             </a>
-            <button>Cadastre-se</button>
+            <BlueBackgroundButton>
+              Cadastre-se
+            </BlueBackgroundButton>
           </ul>
         </div>
       </div>
