@@ -11,7 +11,8 @@
 }
 
 .header__institucional {
-  width: 1280px;
+  max-width: 1280px;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -66,7 +67,7 @@
 }
 
 .header__institucional button:active {
-    transition: 0.3s;
-    transform: scale(0.98);
-    background-color: #26B0FA;
-  }
+  transition: 0.3s;
+  transform: scale(0.98);
+  background-color: #26B0FA;
+}

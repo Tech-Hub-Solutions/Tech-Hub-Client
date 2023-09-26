@@ -7,7 +7,90 @@
 }
 
 .container__section {
-    width: 1280px;
+    max-width: 1280px;
+    width: 100%;
     display: flex;
     justify-content: space-between;
+}
+
+.container__section .container__left-part {
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    max-width: 520px;
+    width: 100%;
+}
+
+.container__section .container__left-part h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 60px;
+    text-align: left;
+    color: var(--color-cinza);
+    padding-bottom: 16px;
+}
+
+.container__section .container__left-part span {
+    color: var(--color-azul);
+}
+
+.container__section .container__left-part p {
+    color: var(--color-cinza);
+    font-family: Montserrat;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    text-align: left;
+    padding-bottom: 56px;
+}
+
+.container__section .container__left-part .container__buttons {
+    display: flex;
+    gap: 32px;
+}
+
+.container__buttons .button__left {
+    padding: 10px 16px;
+    background-color: var(--color-azul);
+    border-radius: 6px;
+    border: none;
+    color: var(--color-branco);
+    font-weight: 500;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.container__buttons .button__left:hover {
+    transition: 0.3s;
+    transform: scale(1.01);
+    background-color: #26B0FA;
+}
+
+.container__buttons .button__left:active {
+    transition: 0.3s;
+    transform: scale(0.98);
+    background-color: #26B0FA;
+}
+
+.container__buttons .button__right {
+    padding: 10px 16px;
+    background-color: var(--color-branco);
+    border: 2px solid var(--color-azul);
+    border-radius: 6px;
+    color: var(--color-azul);
+    font-weight: 600;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.container__buttons .button__right:hover {
+    transition: 0.3s;
+    transform: scale(1.01);
+}
+
+.container__buttons .button__right:active {
+    transition: 0.3s;
+    transform: scale(0.98);
 }
