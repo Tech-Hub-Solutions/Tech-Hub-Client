@@ -1,9 +1,10 @@
+import HeaderInstitucional from '../../componentes/headerInstitucional/HeaderInstitucional';
 import './institucional.css'
 
 const Institucional = () => {
     return (
         <>
-            Site institucional
+            <HeaderInstitucional />
         </>
     )
 }
