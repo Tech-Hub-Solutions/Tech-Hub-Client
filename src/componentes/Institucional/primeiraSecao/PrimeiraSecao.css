@@ -1,0 +1,13 @@
+.first__section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: var(--color-branco);
+    padding-top: 180px;
+}
+
+.container__section {
+    width: 1280px;
+    display: flex;
+    justify-content: space-between;
+}
