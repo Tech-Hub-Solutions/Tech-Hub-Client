@@ -6,9 +6,9 @@ import "./institucional.css";
 const Institucional = () => {
   return (
     <div>
-      <HeaderInstitucional />
-      <Primeirasecao />
-      <ApoioEmpresas />
+        <HeaderInstitucional />
+        <Primeirasecao />
+        <ApoioEmpresas />
     </div>
   );
 };
