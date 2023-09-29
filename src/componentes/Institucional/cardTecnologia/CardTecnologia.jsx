@@ -1,11 +1,10 @@
-import LogoBradesco from '../../../assets/images/Logo Bradesco.svg'
 import './CardTecnologia.css'
 
-const CardTecnologia = () => {
+const CardTecnologia = (props) => {
     return (
         <div className="card__tecnologia">
             <div className="img__card">
-                <img src={LogoBradesco} alt="" />
+                <img src={props.imagem} alt={props.alt} />
             </div>
         </div>
     )
