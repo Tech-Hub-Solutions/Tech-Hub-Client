@@ -1,0 +1,7 @@
+.card__tecnologia {
+    width: 100%;
+    max-width: 110px;
+    min-height: 110px;
+    height: 100%;
+    background-color: blue;
+}
