@@ -1,0 +1,65 @@
+.lista-de-conversa {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+    width: 40%;
+    overflow-y: auto;
+    padding: 0 10px;
+    border-right: 3px solid #ccc;
+}
+
+.lista-de-conversa__conversas {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.lista-de-conversa__conversa {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    gap: 0.4vw;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.lista-de-conversa__conversa:hover {
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+.lista-de-conversa__conversa--selecionada {
+    background-color: #ccc;
+}
+
+.lista-de-conversa__conversa__foto {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.lista-de-conversa__conversa__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.lista-de-conversa__conversa__info__nome {
+    font-weight: bold;
+}
+
+.lista-de-conversa__conversa__info__mensagem {
+    font-size: 0.8em;
+}
+
+.lista-de-conversa__conversa__info__data {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 0.8em;
+}

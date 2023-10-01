@@ -1,0 +1,18 @@
+.content {
+    width: 100vw;
+    height: 100vh;
+}
+
+.header {
+    height: 12%;
+    background-color: #e7e7e7;
+}
+
+.conversas {
+    display: flex;
+    height: 88%;
+    width: 85%;
+    margin: 0 auto;
+    background-color: #fff;
+    overflow: hidden;
+}

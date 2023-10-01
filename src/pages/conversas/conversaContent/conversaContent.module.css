@@ -1,0 +1,117 @@
+.conversa-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 2vw;
+    border-right: 3px solid #ccc;
+}
+
+.conversa-content__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid #ccc;
+    padding: 2vh 0;
+}
+
+.conversa-content__header__info {
+    display: flex;
+    align-items: center;
+}
+
+.conversa-content__header__info__foto {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.conversa-content__header__info__nome {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.conversa-content__mensagens {
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    width: 100%;
+    overflow-y: auto;
+    align-items: flex-start;
+    scroll-behavior: smooth;
+}
+
+.conversa-content__mensagem {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    max-width: 40%;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.conversa-content__mensagem--propria {
+    align-self: flex-end;
+    justify-self: flex-start;
+    background-color: var(--color-azul);
+}
+
+.conversa-content__mensagem__info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.conversa-content__mensagem__info__texto {
+    font-size: 14px;
+    color: var(--color-branco);
+}
+
+.conversa-content__mensagem__info__data {
+    font-size: 12px;
+    color: #404040;
+}
+
+.conversa-content__enviar-mensagem {
+    display: flex;
+    justify-self: end;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    position: relative;
+}
+
+.conversa-content__enviar-mensagem input {
+    width: 100%;
+    height: 40px;
+    padding: 0 30px 0;
+    font-size: 16px;
+    outline: none;
+}
+
+.conversa-content__enviar-mensagem__botao {
+    border: none;
+    background-color: #00d5ff;
+    color: #fff;
+    font-size: 20px;
+    outline: none;
+    cursor: pointer;
+}
+
+.emoji-icon {
+    position: absolute;
+    height: 25px;
+    width:  25px;
+    right: 10%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.emoticons {
+    position: absolute;
+    right: 10%;
+    transform: translateY(-105%);
+}

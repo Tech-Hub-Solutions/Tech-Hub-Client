@@ -5,7 +5,7 @@ const ipBackEnd = {
 }
 
 const axiosInstance = axios.create({
-    baseURL: `https://${ipBackEnd.localhost}:8080`,
+    baseURL: `http://${ipBackEnd.localhost}:8080`,
     timeout: 3000,
     headers: {
         "Content-Type": "application/json",
