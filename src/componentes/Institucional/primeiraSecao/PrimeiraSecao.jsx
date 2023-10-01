@@ -9,6 +9,7 @@ import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
 const StackButtons = styled(Stack)({
   display: "flex",
   gap: "32px",
+  paddingBottom: "32px",
 });
 
 const ButtonExplorarTalentos = styled(Button)({
