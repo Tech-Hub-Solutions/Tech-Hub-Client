@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import axiosInstance from '../../config/axiosInstance';
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
+import chatDefaultImg from '../../assets/images/chat-default.png';
 
 let socketConectado = false;
 
@@ -97,7 +98,11 @@ const Conversas = () => {
                             setConversaSelecionada={setConversaSelecionada}
                             stompClient={stompClient}
                         />
-                        : null
+                        :
+                        <div className={styles['conversa-default']}>
+                            <img src={chatDefaultImg} alt="Chat default" />
+                            <p>Selecione uma <span>conversa</span> para começar!</p>
+                        </div>
                 }
 
             </div>

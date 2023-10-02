@@ -12,7 +12,7 @@ const BlueStyledButton = styled(Button)({
   fontWeight: "600",
   backgroundColor: "#0F9EEA",
   color: "#fdfdfd",
-  lineHeight: "1.3",
+  lineHeight: "1.3",    
 });
 
 BlueBackgroundButton.propTypes = {
