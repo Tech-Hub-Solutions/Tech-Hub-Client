@@ -1,6 +1,6 @@
 import styles from './conversas.module.css'
-import ListaDeConversas from './ListaDeConversa/ListaDeConversa'
-import ConversaContent from './conversaContent/ConversaContent'
+import ListaDeConversas from '../../componentes/Conversas/ListaDeConversa/ListaDeConversa'
+import ConversaContent from '../../componentes/Conversas/conversaContent/ConversaContent'
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axiosInstance from '../../config/axiosInstance';

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from './conversaContent.module.css'
 import axiosInstance from '../../../config/axiosInstance';
-import moment from 'moment-timezone';
 import { Avatar } from '@mui/material'
 import ConversaInput from './ConversaInput/ConversaInput';
 import { exibirHorario } from '../../../utils/horarios';

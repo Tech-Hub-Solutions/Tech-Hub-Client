@@ -1,6 +1,6 @@
 import Picker from "@emoji-mart/react";
 import i18n from '@emoji-mart/data/i18n/pt.json'
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axiosInstance from "../../../../config/axiosInstance";
 import styles from './conversaInput.module.css'
 import Send from '../../../../assets/images/icons/send.svg'
