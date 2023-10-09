@@ -109,8 +109,14 @@ const ConversaInput = (props) => {
         <form onSubmit={enviarMensagem} className={styles['conversa-content__enviar-mensagem']}>
             <div className={styles['conversa-content__enviar-emoticons']}>
                 <img
-                    className={styles['emoji-icon']}
-                    src={showPicker ? EmojiAmarelo : EmojiCinza}
+                    className={`${styles['emoji-icon']} ${showPicker ? styles['emoji-icon--hidden'] : styles['emoji-icon--visible']}`}
+                    src={EmojiCinza}
+                    onClick={() => setShowPicker((val) => !val)}
+                />
+
+                <img
+                    className={`${styles['emoji-icon']} ${showPicker ? styles['emoji-icon--visible'] : styles['emoji-icon--hidden']}`}
+                    src={EmojiAmarelo}
                     onClick={() => setShowPicker((val) => !val)}
                 />
 
@@ -129,7 +135,7 @@ const ConversaInput = (props) => {
                 rows="1"
             />
 
-            <button  className={styles['conversa-content__enviar-mensagem__botao']} >
+            <button className={styles['conversa-content__enviar-mensagem__botao']} >
                 <img src={Send} />
             </button>
         </form>
