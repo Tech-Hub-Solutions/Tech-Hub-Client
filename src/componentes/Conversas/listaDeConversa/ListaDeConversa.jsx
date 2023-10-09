@@ -8,16 +8,24 @@ import SeachIcon from '../../../assets/images/icons/Search.svg'
 const ListaDeConversa = (props) => {
     const { conversas, setConversaSelecionada, conversaSelecionada } = props;
     const [conversasFiltradas, setConversasFiltradas] = useState(conversas);
+    const [nomePesquisado, setNomePesquisado] = useState('');
 
     useEffect(() => {
         setConversasFiltradas(conversas);
     }, [conversas]);
 
     const pesquisarConversas = (nome) => {
+        setNomePesquisado(nome);
         if (nome == '') return setConversasFiltradas(conversas);
-
         let conversasFiltradas = conversas.filter(conversa => conversa.usuario?.nome.toLowerCase().includes(nome.toLowerCase()));
         setConversasFiltradas(conversasFiltradas);
+    }
+
+    const letrasPesquisada = (nome, nomePesquisado) => {
+        const regex = new RegExp(`(${nomePesquisado})`, 'gi');
+        return nome.split(regex).map((part, index) => (
+            regex.test(part) ? <span key={index} style={{ color: 'orange' }}>{part}</span> : part
+        ));
     }
 
     return (
@@ -113,7 +121,15 @@ const ListaDeConversa = (props) => {
                                             </div>
                                             <div className={styles['lista-de-conversa__conversa__info']}>
                                                 <div className={styles['lista-de-conversa__conversa__info__nome']}>
-                                                    <p>{conversa.usuario?.nome}</p>
+                                                    <p>
+                                                        {
+                                                            nomePesquisado != '' ?
+                                                                letrasPesquisada(conversa.usuario?.nome, nomePesquisado)
+                                                                :
+                                                                conversa.usuario?.nome
+                                                        }
+                                                    </p>
+
                                                 </div>
                                                 <div className={styles['lista-de-conversa__conversa__info__mensagem']}>
                                                     <p>{conversa.mensagem?.texto}</p>
