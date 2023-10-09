@@ -50,7 +50,8 @@ const ConversaInput = (props) => {
     }
 
 
-    const enviarMensagem = () => {
+    const enviarMensagem = (e) => {
+        e.preventDefault();
         inputRef.current.style.height = 'auto';
         setShowPicker(false);
         if (!texto || texto.trim() === '') {
@@ -74,6 +75,7 @@ const ConversaInput = (props) => {
         axiosInstance.post(`/conversas/sala/${sala}`, {
             texto
         }).then((response) => {
+            console.log("Mensagem enviada com sucesso");
             setTexto('');
         }).catch((error) => {
             console.log(error);
@@ -127,7 +129,7 @@ const ConversaInput = (props) => {
                 rows="1"
             />
 
-            <button className={styles['conversa-content__enviar-mensagem__botao']} >
+            <button  className={styles['conversa-content__enviar-mensagem__botao']} >
                 <img src={Send} />
             </button>
         </form>
