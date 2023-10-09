@@ -3,7 +3,7 @@ import styles from './conversaContent.module.css'
 import axiosInstance from '../../../config/axiosInstance';
 import { Avatar } from '@mui/material'
 import ConversaInput from './ConversaInput/ConversaInput';
-import { exibirHorario } from '../../../utils/horarios';
+import moment from 'moment-timezone';
 
 const ConversaContent = (props) => {
 
@@ -43,7 +43,24 @@ const ConversaContent = (props) => {
         axiosInstance.get(`/conversas/sala/${conversaSelecionada?.roomCode}`)
             .then((response) => {
                 if (response.data.length > 0) {
-                    setMensagens(response.data);
+                    // Adicionar mensagem de data, caso seja a primeira mensagem do dia
+                    let mensagens = [];
+                    let dataMensagemAnterior = null;
+                    response.data.forEach((mensagem) => {
+                        const dataMensagemAtual = moment(mensagem.dtHora).tz("America/Sao_Paulo");
+                        const dataAtual = moment().tz("America/Sao_Paulo");
+
+                        if (dataMensagemAnterior == null || !dataMensagemAnterior.isSame(dataMensagemAtual, 'day')) {
+                            mensagens.push({
+                                id: -1,
+                                texto: dataMensagemAtual.isSame(dataAtual, 'day') ? "Hoje" : dataMensagemAtual.format("DD/MM/YYYY")
+                            });
+                        }
+
+                        mensagens.push(mensagem);
+                        dataMensagemAnterior = dataMensagemAtual;
+                    });
+                    setMensagens(mensagens);
 
                 }
             }).catch((error) => {
@@ -74,23 +91,28 @@ const ConversaContent = (props) => {
                 <div className={styles['conversa-content__mensagens']} ref={contentMessagesRef}>
                     {mensagens.map((mensagem, index) => {
                         return (
-                            <div
-                                key={"mensagem" + index}
-                                className={
-                                    `${styles['conversa-content__mensagem']} 
-                                    ${(mensagem.usuarioId == usuarioId ? styles['conversa-content__mensagem--propria'] : "")}
-                                    `
-                                }
-                            >
-                                <div className={styles['conversa-content__mensagem__info__texto']}>
+                            mensagem.id == -1 ?
+                                <div key={"mensagem" + index} className={styles['conversa-content__mensagem--data']}>
                                     <p>{mensagem.texto}</p>
                                 </div>
-                                <div className={styles['conversa-content__mensagem__info__white-space']}>
+                                :
+                                <div
+                                    key={"mensagem" + index}
+                                    className={
+                                        `${styles['conversa-content__mensagem']} 
+                                    ${(mensagem.usuarioId == usuarioId ? styles['conversa-content__mensagem--propria'] : "")}
+                                    `
+                                    }
+                                >
+                                    <div className={styles['conversa-content__mensagem__info__texto']}>
+                                        <p>{mensagem.texto}</p>
+                                    </div>
+                                    <div className={styles['conversa-content__mensagem__info__white-space']}>
+                                    </div>
+                                    <div className={styles['conversa-content__mensagem__info__data']}>
+                                        <p>{moment(mensagem.dtHora).tz("America/Sao_Paulo").format("HH:mm")}</p>
+                                    </div>
                                 </div>
-                                <div className={styles['conversa-content__mensagem__info__data']}>
-                                    <p>{exibirHorario(mensagem.dtHora)}</p>
-                                </div>
-                            </div>
                         )
                     })}
                 </div>

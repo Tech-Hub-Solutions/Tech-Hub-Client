@@ -55,6 +55,24 @@
     background: var(--color-azul);
 }
 
+.conversa-content__mensagem--data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.conversa-content__mensagem--data p {
+    font-size: 0.625rem;
+    font-style: normal;
+    font-weight: 400;
+    color: #505050;
+    background-color: #EBEBEB;
+    padding: 0.5rem;
+    border-radius: 7px;
+}
+
 .conversa-content__mensagem {
     position: relative;
     text-align: right;
@@ -120,7 +138,8 @@
 
 .conversa-content__mensagem__info__white-space {
     float: right;
-    min-width: 12px;
+    width: 12px;
+    height: 12px;
     margin-left: 1.1rem;
     font-size: 0.625rem;
     font-style: normal;
