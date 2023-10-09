@@ -1,10 +1,10 @@
-import LogoTech from "../../assets/images/tech-hub-logo.svg"
-import TelefoneVetor from "../../assets/images/telefoneVetor.svg"
-import EmailVetor from "../../assets/images/emailVetor.svg"
-import InstagramVetor from "../../assets/images/instagramVetor.svg"
-import GitHubVetor from "../../assets/images/githubVetor.svg"
-import LinkedinVetor from "../../assets/images/linkedinVetor.svg"
-import XVetor from "../../assets/images/xVetor.svg"
+import LogoTech from "../../../assets/images/tech-hub-logo.svg"
+import TelefoneVetor from "../../../assets/images/telefoneVetor.svg"
+import EmailVetor from "../../../assets/images/emailVetor.svg"
+import InstagramVetor from "../../../assets/images/instagramVetor.svg"
+import GitHubVetor from "../../../assets/images/githubVetor.svg"
+import LinkedinVetor from "../../../assets/images/linkedinVetor.svg"
+import XVetor from "../../../assets/images/xVetor.svg"
 import "./Footer.css"
 
 const Footer = () => {
