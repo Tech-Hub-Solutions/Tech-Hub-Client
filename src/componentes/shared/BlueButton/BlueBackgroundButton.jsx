@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 import PropTypes from "prop-types";
 
 const BlueStyledButton = styled(Button)({
-  fontFamily: "Plus Jakarta Sans, sans serif",
+  fontFamily: "Montserrat, sans-serif",
   textTransform: "none",
   fontStyle: "normal",
   fontSize: "16px",
