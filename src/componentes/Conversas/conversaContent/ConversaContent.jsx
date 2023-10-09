@@ -9,6 +9,7 @@ const ConversaContent = (props) => {
 
     const { conversaSelecionada, setConversaSelecionada, stompClient } = props;
     const usuarioId = sessionStorage.getItem('usuarioId');
+    const stompConversa = useRef(null);
 
     const [mensagens, setMensagens] = useState([]);
     const inputRef = useRef("");
@@ -19,18 +20,23 @@ const ConversaContent = (props) => {
         carregarMensagens();
 
         if (!conversaSelecionada?.idPrimeiraConversa) {
-            stompClient?.subscribe(`/topic/sala/${conversaSelecionada?.roomCode}`, (response) => {
+            const conversa = stompClient?.subscribe(`/topic/sala/${conversaSelecionada?.roomCode}`, (response) => {
                 const mensagem = JSON.parse(response.body);
+                console.log("mensagem recebida");
                 setMensagens((mensagens) => [...mensagens, mensagem]);
             });
+
+            stompConversa.current = conversa;
         }
 
         inputRef.current.focus();
 
         return () => {
-            stompClient?.unsubscribe(`/topic/sala/${conversaSelecionada?.roomCode}`);
+            stompConversa.current?.unsubscribe();
         }
     }, [conversaSelecionada])
+
+
 
 
     const carregarMensagens = () => {
