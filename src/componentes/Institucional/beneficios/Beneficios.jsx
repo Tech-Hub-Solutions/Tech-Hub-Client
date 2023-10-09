@@ -7,21 +7,25 @@ const Beneficios = () => {
     const styleCard1 = {
         backgroundColor: '#BBE6FC',
         color: '#0686C8',
+        p: '#105C83',
     }
 
     const styleCard2 = {
         backgroundColor: '#D8FFC6',
         color: '#4BC015',
+        p: '#42951B',
     }
 
     const styleCard3 = {
         backgroundColor: '#FFD6D3',
         color: '#F3685F',
+        p: '#AB453F',
     }
 
     const styleCard4 = {
         backgroundColor: '#E1D3FF',
         color: '#915DFF',
+        p: '#6527E8',
     }
 
     return (
