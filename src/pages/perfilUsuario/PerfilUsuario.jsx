@@ -1,12 +1,13 @@
+import Header from "../../componentes/shared/header/Header";
+import styles from "./perfilUsuario.module.css"
 import React from "react";
-import "./PerfilUsuario.css"
 
 const PerfilUsuario = () => {
-    return ( 
-        <div>
-            <h1>vai tomar no cu</h1>
-        </div>
-        );
+    return (
+        <header>
+            <Header />
+        </header>
+    );
 }
- 
+
 export default PerfilUsuario;
