@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styles from './conversaContent.module.css'
 import axiosInstance from '../../../config/axiosInstance';
 import { Avatar } from '@mui/material'
 import ConversaInput from './ConversaInput/ConversaInput';
 import moment from 'moment-timezone';
+import ConversaMensagem from './conversaMensagem/ConversaMensagem';
 
 const ConversaContent = (props) => {
 
@@ -23,6 +24,7 @@ const ConversaContent = (props) => {
             const conversa = stompClient?.subscribe(`/topic/sala/${conversaSelecionada?.roomCode}`, (response) => {
                 const mensagem = JSON.parse(response.body);
                 console.log("mensagem recebida");
+                console.log(response.body);
                 setMensagens((mensagens) => [...mensagens, mensagem]);
             });
 
@@ -68,10 +70,15 @@ const ConversaContent = (props) => {
             })
     }
 
-
-    useEffect(() => {
+    useLayoutEffect(() => {
         contentMessagesRef.current.scrollTop = contentMessagesRef.current.scrollHeight;
-    }, [mensagens])
+    }, [mensagens]);
+
+    const imagemCarregada = (index, totalMessages) => {
+        if (index === totalMessages - 1) {  // Or some other condition indicating it's the last image
+            contentMessagesRef.current.scrollTop = contentMessagesRef.current.scrollHeight;
+        }
+    };
 
     return (
         <>
@@ -91,28 +98,12 @@ const ConversaContent = (props) => {
                 <div className={styles['conversa-content__mensagens']} ref={contentMessagesRef}>
                     {mensagens.map((mensagem, index) => {
                         return (
-                            mensagem.id == -1 ?
-                                <div key={"mensagem" + index} className={styles['conversa-content__mensagem--data']}>
-                                    <p>{mensagem.texto}</p>
-                                </div>
-                                :
-                                <div
-                                    key={"mensagem" + index}
-                                    className={
-                                        `${styles['conversa-content__mensagem']} 
-                                    ${(mensagem.usuarioId == usuarioId ? styles['conversa-content__mensagem--propria'] : "")}
-                                    `
-                                    }
-                                >
-                                    <div className={styles['conversa-content__mensagem__info__texto']}>
-                                        <p>{mensagem.texto}</p>
-                                    </div>
-                                    <div className={styles['conversa-content__mensagem__info__white-space']}>
-                                    </div>
-                                    <div className={styles['conversa-content__mensagem__info__data']}>
-                                        <p>{moment(mensagem.dtHora).tz("America/Sao_Paulo").format("HH:mm")}</p>
-                                    </div>
-                                </div>
+                            <ConversaMensagem 
+                            mensagem={mensagem} key={`Mensagem${index}`} 
+                            index={index} mensagens={mensagens}
+                            usuarioId={usuarioId}
+                            imagemCarregada={imagemCarregada}
+                            />
                         )
                     })}
                 </div>

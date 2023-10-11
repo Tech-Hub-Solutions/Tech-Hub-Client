@@ -72,14 +72,18 @@ const ConversaInput = (props) => {
             sala = conversaSelecionada?.roomCode;
         }
 
-        axiosInstance.post(`/conversas/sala/${sala}`, {
-            texto
-        }).then((response) => {
-            console.log("Mensagem enviada com sucesso");
-            setTexto('');
-        }).catch((error) => {
-            console.log(error);
-        })
+        const formData = new FormData();
+        formData.append('mensagem', texto);
+
+        axiosInstance.post(`/conversas/sala/${sala}`, formData,
+            { headers: { 'Content-Type': 'multipart/form-data' } })
+            .then((response) => {
+                console.log("Mensagem enviada com sucesso");
+                setTexto('');
+            }).catch((error) => {
+                console.log(error);
+            })
+
     }
 
 
