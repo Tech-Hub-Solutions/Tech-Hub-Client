@@ -5,6 +5,7 @@
     box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.06);
     display: flex;
     justify-content: center;
+    position: fixed;
 }
 
 .content {
@@ -44,13 +45,15 @@
 }
 
 .icone__header {
-    width: 26px;
-    height: auto;
-    transition: 0.3s;
+    color: #505050;
+    vertical-align: bottom;
 }
 
 .icone__header:hover {
-    transition: 0.3s;
+    color: var(--color-azul);
+}
+
+.icone__header:hover {
     transform: scale(1.03);
 }
 
@@ -64,5 +67,5 @@
     height: 40px;
     border-radius: 50px;
     cursor: pointer;
-    background-color: red;
+    background-color: var(--color-azul);
 }
