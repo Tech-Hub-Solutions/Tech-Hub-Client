@@ -8,6 +8,8 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 
 const Header = () => {
 
+    const isEmpresa = true;
+
     return (
         <header className={styles['header']}>
             <div className={styles['content']}>
@@ -18,21 +20,25 @@ const Header = () => {
                 </div>
                 <div className={styles['right__content']}>
                     <ul>
-                        <a href="#">
+                        <Link to={'/explorar-talentos'}>
                             <li>
                                 Explorar Talentos
                             </li>
-                        </a>
-                        <a href="">
+                        </Link>
+                        <Link to={'/contratos'}>
                             <li>
                                 Contratos
                             </li>
-                        </a>
+                        </Link>
                     </ul>
-                    <Link to={'/'}>
-                        <FavoriteBorderOutlinedIcon className={styles['icone__header']} sx={{ fontSize: 26 }} />
-                    </Link>
-                    <Link to={'/'}>
+                    {isEmpresa ?
+                        <Link to={'/favoritos'}>
+                            {/* Ícone Favoritos */}
+                            <FavoriteBorderOutlinedIcon aria-label='Ícone favoritos' role='button' className={styles['icone__header']} sx={{ fontSize: 26 }} />
+                        </Link>
+                        : ''}
+                    <Link to={'/chat'}>
+                        {/* Ícone Mensagens */}
                         <MessageOutlinedIcon className={styles['icone__header']} sx={{ fontSize: 26 }} />
                     </Link>
                     <AccountMenu />
