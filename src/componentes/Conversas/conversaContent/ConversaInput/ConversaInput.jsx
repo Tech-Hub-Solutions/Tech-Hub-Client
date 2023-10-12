@@ -1,15 +1,20 @@
 import Picker from "@emoji-mart/react";
 import i18n from '@emoji-mart/data/i18n/pt.json'
-import { useState } from "react";
+import React, { useState } from "react";
 import axiosInstance from "../../../../config/axiosInstance";
 import styles from './conversaInput.module.css'
 import Send from '../../../../assets/images/icons/send.svg'
 import EmojiCinza from '../../../../assets/images/icons/emoji-cinza.svg'
 import EmojiAmarelo from '../../../../assets/images/icons/emoji-amarelo.svg'
+import MenuArquivo from "./MenuArquivo";
+import { Button } from "@mui/material";
+import DocumentImg from '../../../../assets/images/icons/documento.png';
+import { formatarBytes } from '../../../../utils/geral';
 
 const ConversaInput = (props) => {
     const [texto, setTexto] = useState('');
     const [showPicker, setShowPicker] = useState(false);
+    const [arquivo, setArquivo] = useState({});
 
     const { conversaSelecionada, setConversaSelecionada, inputRef } = props;
 
@@ -54,8 +59,10 @@ const ConversaInput = (props) => {
         e.preventDefault();
         inputRef.current.style.height = 'auto';
         setShowPicker(false);
-        if (!texto || texto.trim() === '') {
-            return;
+        if (arquivo?.tipo == null) {
+            if (!texto || texto.trim() === '') {
+                return;
+            }
         }
         if (conversaSelecionada?.idPrimeiraConversa) {
             iniciarConversa();
@@ -75,11 +82,17 @@ const ConversaInput = (props) => {
         const formData = new FormData();
         formData.append('mensagem', texto);
 
+        if (arquivo.tipo != null) {
+            formData.append('arquivo', arquivo.file);
+            formData.append('tipoArquivo', arquivo.tipo.toUpperCase());
+        }
+
         axiosInstance.post(`/conversas/sala/${sala}`, formData,
             { headers: { 'Content-Type': 'multipart/form-data' } })
             .then((response) => {
                 console.log("Mensagem enviada com sucesso");
                 setTexto('');
+                setArquivo({});
             }).catch((error) => {
                 console.log(error);
             })
@@ -110,39 +123,94 @@ const ConversaInput = (props) => {
 
 
     return (
-        <form onSubmit={enviarMensagem} className={styles['conversa-content__enviar-mensagem']}>
-            <div className={styles['conversa-content__enviar-emoticons']}>
-                <img
-                    className={`${styles['emoji-icon']} ${showPicker ? styles['emoji-icon--hidden'] : styles['emoji-icon--visible']}`}
-                    src={EmojiCinza}
-                    onClick={() => setShowPicker((val) => !val)}
+        <>
+            <form onSubmit={enviarMensagem} className={styles['conversa-content__enviar-mensagem']}>
+                <Button sx={{
+                    color: '#ffcc4d',
+                    minWidth: '0px',
+                    borderRadius: '50%',
+                    width: '40px',
+                    height: '40px',
+                }}>
+                    <img
+                        className={`${styles['emoji-icon']} ${showPicker ? styles['emoji-icon--hidden'] : styles['emoji-icon--visible']}`}
+                        src={EmojiCinza}
+                        onClick={() => setShowPicker((val) => !val)}
+                    />
+
+                    <img
+                        className={`${styles['emoji-icon']} ${showPicker ? styles['emoji-icon--visible'] : styles['emoji-icon--hidden']}`}
+                        src={EmojiAmarelo}
+                        onClick={() => setShowPicker((val) => !val)}
+                    />
+
+                    {showPicker && (
+                        <div className={styles['emoticons']}>
+                            <Picker i18n={i18n} onEmojiSelect={onEmojiClick} />
+                        </div>
+                    )}
+                </Button>
+                <textarea
+                    ref={inputRef}
+                    value={texto}
+                    onChange={(e) => setTexto(e.target.value)}
+                    onKeyDown={verificarTexto}
+                    placeholder="Digite sua mensagem..."
+                    rows="1"
                 />
 
-                <img
-                    className={`${styles['emoji-icon']} ${showPicker ? styles['emoji-icon--visible'] : styles['emoji-icon--hidden']}`}
-                    src={EmojiAmarelo}
-                    onClick={() => setShowPicker((val) => !val)}
-                />
+                <div className={styles['conversa-content__enviar-mensagem__arquivo']}
+                    style={{
+                        visibility: arquivo.tipo != null ? 'visible' : 'hidden',
+                        height: arquivo.tipo == null ? '0px' : (arquivo.tipo == "imagem" ? '60vh' : '20vh'),
+                    }}
+                >
+                    <Button onClick={() => setArquivo({})}
+                        sx={
+                            {
+                                minWidth: '0px',
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '50%',
+                                padding: '0px',
+                                position: 'absolute',
+                                top: '10px',
+                                right: '10px',
+                                fontSize: '20px',
+                                color: 'red'
+                            }
+                        }>X</Button>
+                    {
+                        arquivo.tipo == "imagem" &&
+                        <div className={styles['conversa-content__enviar-mensagem__arquivo-imagem']}>
+                            <img src={arquivo?.url} alt="" />
+                        </div>
+                    }
 
-                {showPicker && (
-                    <div className={styles['emoticons']}>
-                        <Picker i18n={i18n} onEmojiSelect={onEmojiClick} />
-                    </div>
-                )}
-            </div>
-            <textarea
-                ref={inputRef}
-                value={texto}
-                onChange={(e) => setTexto(e.target.value)}
-                onKeyDown={verificarTexto}
-                placeholder="Digite sua mensagem..."
-                rows="1"
-            />
+                    {
+                        arquivo.tipo == "documento" &&
+                        <div className={styles['conversa-content__enviar-mensagem__arquivo-documento']}>
+                            <img src={DocumentImg} />
+                            <div className={styles['conversa-content__enviar-mensagem__arquivo-documento__informacoes']}>
+                                <div className={styles['conversa-content__enviar-mensagem__arquivo-documento__informacoes__nome']}>
+                                    <p>{arquivo.file.name}</p>
+                                </div>
+                                <div className={styles['conversa-content__enviar-mensagem__arquivo-documento__informacoes__metadado']}>
+                                    <p>{formatarBytes(arquivo.file.size)}</p>
+                                    <p>{arquivo.file.type}</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
 
-            <button className={styles['conversa-content__enviar-mensagem__botao']} >
-                <img src={Send} />
-            </button>
-        </form>
+                <MenuArquivo setArquivo={setArquivo} />
+
+                <Button type="submit"  >
+                    <div><img src={Send} /></div>
+                </Button>
+            </form >
+        </>
     )
 }
 

@@ -3,6 +3,7 @@ import styles from "./conversaMensagem.module.css";
 import moment from "moment-timezone";
 import DownloadImg from '../../../../assets/images/icons/download.svg';
 import axiosInstance from "../../../../config/axiosInstance";
+import { formatarBytes } from '../../../../utils/geral';
 
 
 const ConversaMensagem = (props) => {
@@ -104,7 +105,7 @@ const ConversaMensagem = (props) => {
                                 <p>{infoArquivo.nomeArquivo}</p>
                             </div>
                             <div className={styles['conversa-content__mensagem__info__arquivo__informacoes__metadado']}>
-                                <p>{infoArquivo.tamanhoArquivo}</p>
+                                <p>{formatarBytes(infoArquivo.tamanhoArquivo)}</p>
                                 <p>{infoArquivo.tipoArquivo}</p>
                             </div>
                         </div>

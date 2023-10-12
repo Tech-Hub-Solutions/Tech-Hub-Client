@@ -76,10 +76,19 @@
     align-items: center;
     justify-content: flex-start;
     border-radius: 10px;
-    background-color: #0b77b1;
+    background-color: #d2d2d2;
     padding: 0.8rem;
     gap: 1vw;
     margin-bottom: 1vh;
+    transition: filter 0.2s;
+}
+
+.conversa-content__mensagem--propria .conversa-content__mensagem__info__arquivo {
+    background-color: #0b77b1;
+}
+
+.conversa-content__mensagem__info__arquivo:hover {
+    filter: brightness(0.9);
 }
 
 .conversa-content__mensagem__info__arquivo img {
@@ -96,10 +105,14 @@
 }
 
 .conversa-content__mensagem__info__arquivo__informacoes__nome {
-    overflow-wrap: break-word;
     font-size: 14px;
+    max-width: 80%;
+}
+
+.conversa-content__mensagem__info__arquivo__informacoes__nome p {
+    white-space: nowrap;
     max-width: 100%;
-    /* Tres pontos */
+    overflow: hidden;
     text-overflow: ellipsis;
 }
 
