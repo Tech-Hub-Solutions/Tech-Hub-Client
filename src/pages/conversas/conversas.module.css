@@ -1,21 +1,18 @@
 .content {
     width: 100vw;
     height: 100vh;
-}
-
-.header {
-    height: 12%;
-    background-color: var(--color-azul);
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    overflow: hidden;
 }
 
 .conversas {
+    margin-top: 70px;
     display: flex;
-    height: 88%;
-    padding: 1.5vh 0;
+    height: 90%;
     width: 85%;
-    margin: 0 auto;
     background-color: #fff;
-    overflow: hidden;
 }
 
 .conversa-default {

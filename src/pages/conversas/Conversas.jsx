@@ -7,6 +7,7 @@ import axiosInstance from '../../config/axiosInstance';
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
 import chatDefaultImg from '../../assets/images/chat-default.png';
+import Header from '../../componentes/shared/header/Header';
 
 let socketConectado = false;
 
@@ -84,7 +85,7 @@ const Conversas = () => {
 
     return (
         <div className={styles['content']}>
-            <div className={styles['header']}></div>
+            <Header />
             <div className={styles['conversas']}>
                 <ListaDeConversas
                     conversas={conversas}
