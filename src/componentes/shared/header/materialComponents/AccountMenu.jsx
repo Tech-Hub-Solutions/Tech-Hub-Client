@@ -24,7 +24,7 @@ export default function AccountMenu(props) {
   };
 
   return (
-    <React.Fragment>
+    <React.Fragment className={styles['accountMenu']}>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
         <Tooltip title="Configurações">
           <IconButton
@@ -85,7 +85,7 @@ export default function AccountMenu(props) {
 
         <MenuItem onClick={handleClose}>
           <LogoutRoundedIcon style={{ color: '858585', marginRight: '6px', width: '24px' }} />
-            <p>Sair</p>
+          <p>Sair</p>
         </MenuItem>
       </Menu>
     </React.Fragment >
