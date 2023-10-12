@@ -2,17 +2,18 @@ import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { Stack } from "@mui/material";
 
-import "./PrimeiraSecao.css";
+import styles from "./PrimeiraSecao.css";
 import RhWoman from "../../../assets/images/RhWoman.png";
 import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
 
 const StackButtons = styled(Stack)({
   display: "flex",
   gap: "32px",
+  paddingBottom: "32px",
 });
 
 const ButtonExplorarTalentos = styled(Button)({
-  fontFamily: "Plus Jakarta Sans, sans serif",
+  fontFamily: "Montserrat, sans-serif",
   padding: "10px 16px",
   borderRadius: "6px",
   fontWeight: "600",
