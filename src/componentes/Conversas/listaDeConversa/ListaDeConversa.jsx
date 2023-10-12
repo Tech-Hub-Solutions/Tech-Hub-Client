@@ -101,9 +101,7 @@ const ListaDeConversa = (props) => {
                                                     textOverflow: 'ellipsis',
                                                     boxShadow: '0px 2px 10px 0px rgba(0, 0, 0, 0.10)',
                                                     boxSizing: 'border-box',
-                                                    '&:hover': {
-                                                        backgroundColor: '#def3ff',
-                                                    },
+                                                    color: 'var(--color-azul)',
                                                     '&.Mui-selected': {
                                                         backgroundColor: '#c8ecff',
                                                     },
@@ -121,7 +119,7 @@ const ListaDeConversa = (props) => {
                                             </div>
                                             <div className={styles['lista-de-conversa__conversa__info']}>
                                                 <div className={styles['lista-de-conversa__conversa__info__nome']}>
-                                                    <p>
+                                                    <p style={{color: 'black'}}>
                                                         {
                                                             nomePesquisado != '' ?
                                                                 letrasPesquisada(conversa.usuario?.nome, nomePesquisado)
