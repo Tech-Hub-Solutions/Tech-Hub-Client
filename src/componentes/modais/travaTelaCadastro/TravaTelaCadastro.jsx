@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import SerFreelancerTravaTela from "/src/assets/images/SerFreelancerTravaTela.svg";
 import SerEmpresaTravaTela from "/src/assets/images/SerEmpresaTravaTela.svg";
@@ -13,9 +13,11 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea } from "@mui/material";
+import CadastroModal from "../cadastro/CadastroModal";
 
 function TravaTelaCadastro({ isOpen, setIsOpen }) {
-  const [user, setUser] = React.useState("");
+  let [user, setUser] = useState();
+  let [isCadastroModalOpen, setIsCadastroModalOpen] = useState(false);
 
   const stylesCSS = {
     dialogContainer: {
@@ -70,15 +72,14 @@ function TravaTelaCadastro({ isOpen, setIsOpen }) {
     setIsOpen(!isOpen);
   };
 
-  function redictToCadastroEspecifico() {
-    if (user === "freelancer") {
-      // TODO - lógica para renderizar modal de cadastro de freelancer
-    } else if (user === "empresa") {
-      // TODO - lógica para renderizar modal de cadastro de empresa
-    }
+  const redictToCadastroEspecifico = () => {
+    setIsOpen(false);
+    setIsCadastroModalOpen(true);
+  };
 
-    setIsOpen(!isOpen);
-  }
+  const clickCard = (user) => {
+    setUser(user);
+  };
 
   if (isOpen) {
     return (
@@ -99,7 +100,7 @@ function TravaTelaCadastro({ isOpen, setIsOpen }) {
             <Card variant="outlined" sx={stylesCSS.cardContainer}>
               <CardActionArea
                 sx={stylesCSS.cardActionArea}
-                onClick={() => setUser("freelancer")}
+                onClick={() => clickCard("freelancer")}
               >
                 <CardMedia
                   component="img"
@@ -119,7 +120,7 @@ function TravaTelaCadastro({ isOpen, setIsOpen }) {
             <Card variant="outlined" sx={stylesCSS.cardContainer}>
               <CardActionArea
                 sx={stylesCSS.cardActionArea}
-                onClick={() => setUser("empresa")}
+                onClick={() => clickCard("empresa")}
               >
                 <CardMedia
                   component="img"
@@ -145,6 +146,14 @@ function TravaTelaCadastro({ isOpen, setIsOpen }) {
           </BlueBackgroundButton>
         </Dialog>
       </>
+    );
+  } else if (isCadastroModalOpen) {
+    return (
+      <CadastroModal
+        isCadastroModalOpen={isCadastroModalOpen}
+        setIsCadastroModalOpen={setIsCadastroModalOpen}
+        user={user}
+      />
     );
   }
   return null;

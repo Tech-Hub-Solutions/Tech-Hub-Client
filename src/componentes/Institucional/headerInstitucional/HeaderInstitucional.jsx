@@ -3,7 +3,7 @@ import "./HeaderInstitucional.css";
 import LogoTechHub from "../../../assets/images/LogoTechHub.png";
 
 import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
-import TravaTelaCadastro from "../../modais/TravaTelaCadastro/TravaTelaCadastro";
+import TravaTelaCadastro from "../../modais/travaTelaCadastro/TravaTelaCadastro";
 
 const HeaderInstitucional = () => {
   const [isOpen, setIsOpen] = React.useState(false);
