@@ -69,7 +69,6 @@ const ListaDeConversa = (props) => {
 
                 <div className={styles['lista-de-conversa__conversas']}>
                     <List component="nav" aria-label="lista de conversas"
-                        divider={true}
                         sx={
                             {
                                 display: 'flex',

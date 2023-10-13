@@ -39,7 +39,6 @@
     width: 100%;
     overflow-y: auto;
     align-items: flex-start;
-    scroll-behavior: smooth;
     padding: 4vh 2vw 2vh 2vw;
 }
 

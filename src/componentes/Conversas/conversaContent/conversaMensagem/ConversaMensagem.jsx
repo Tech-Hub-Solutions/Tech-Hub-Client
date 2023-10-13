@@ -8,10 +8,8 @@ import { formatarBytes } from '../../../../utils/geral';
 
 const ConversaMensagem = (props) => {
     const mensagem = props.mensagem;
-    const index = props.index;
-    const mensagens = props.mensagens;
     const usuarioId = props.usuarioId;
-    const imagemCarregada = props.imagemCarregada;
+    const contentMessagesRef = props.contentMessagesRef;
 
     const imageRef = useRef(null);
     const docRef = useRef(null);
@@ -35,6 +33,9 @@ const ConversaMensagem = (props) => {
                 const file = new Blob([response.data]);
                 const fileURL = URL.createObjectURL(file);
                 imageRef.current.src = fileURL;
+                setTimeout(() => {
+                    contentMessagesRef.current.scrollTop = contentMessagesRef.current.scrollHeight;
+                }, 10);
             })
             .catch((error) => {
                 console.log(error);
@@ -56,17 +57,11 @@ const ConversaMensagem = (props) => {
 
                 docRef.current.download = nomeArquivo;
 
-                console.log(response.headers);
                 setInfoArquivo({
                     nomeArquivo: nomeArquivo,
                     tamanhoArquivo: response.headers['content-length'],
                     tipoArquivo: response.headers['content-type']
                 })
-
-
-                // Extracting and using size from headers
-                const size = response.headers['file-size'];
-                console.log('File size:', size);
             })
             .catch((error) => {
                 console.log(error);
@@ -90,8 +85,10 @@ const ConversaMensagem = (props) => {
                     mensagem.urlArquivo && mensagem.tipoArquivo == "IMAGEM" &&
                     <div className={styles['conversa-content__mensagem__info__imagem']}>
                         <img
+                            style={{
+                                width: "100%",
+                            }}
                             ref={imageRef}
-                            onLoad={() => imagemCarregada(index, mensagens.length)}
                         />
                     </div>
                 }

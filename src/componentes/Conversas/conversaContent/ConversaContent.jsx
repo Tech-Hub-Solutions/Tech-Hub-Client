@@ -23,8 +23,6 @@ const ConversaContent = (props) => {
         if (!conversaSelecionada?.idPrimeiraConversa) {
             const conversa = stompClient?.subscribe(`/topic/sala/${conversaSelecionada?.roomCode}`, (response) => {
                 const mensagem = JSON.parse(response.body);
-                console.log("mensagem recebida");
-                console.log(response.body);
                 setMensagens((mensagens) => [...mensagens, mensagem]);
             });
 
@@ -70,19 +68,13 @@ const ConversaContent = (props) => {
             })
     }
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         contentMessagesRef.current.scrollTop = contentMessagesRef.current.scrollHeight;
     }, [mensagens]);
 
-    const imagemCarregada = (index, totalMessages) => {
-        if (index === totalMessages - 1) {  // Or some other condition indicating it's the last image
-            contentMessagesRef.current.scrollTop = contentMessagesRef.current.scrollHeight;
-        }
-    };
-
     return (
         <>
-            <div className={styles['conversa-content']}>
+            <div className={styles['conversa-content']} >
                 <div className={styles['conversa-content__header']}>
                     <div className={styles['conversa-content__header__info']}>
                         <div className={styles['conversa-content__header__info__foto']}>
@@ -95,14 +87,20 @@ const ConversaContent = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className={styles['conversa-content__mensagens']} ref={contentMessagesRef}>
+                <div className={styles['conversa-content__mensagens']} 
+                style={{
+                    opacity: mensagens.length > 0 ? 1 : 0,
+                    scrollBehavior: mensagens.length > 0 ? "smooth" : "none",
+                    transition: "0.5s"
+                }}
+                ref={contentMessagesRef}>
                     {mensagens.map((mensagem, index) => {
                         return (
-                            <ConversaMensagem 
-                            mensagem={mensagem} key={`Mensagem${index}`} 
-                            index={index} mensagens={mensagens}
-                            usuarioId={usuarioId}
-                            imagemCarregada={imagemCarregada}
+                            <ConversaMensagem
+                                mensagem={mensagem} key={`Mensagem${index}`}
+                                usuarioId={usuarioId}
+                                contentMessagesRef={contentMessagesRef}
+                                setConversaSelecionada={setConversaSelecionada}
                             />
                         )
                     })}
