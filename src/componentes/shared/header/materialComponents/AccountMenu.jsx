@@ -24,7 +24,7 @@ export default function AccountMenu(props) {
   };
 
   return (
-    <React.Fragment className={styles['accountMenu']}>
+    <div className={styles['accountMenu']}>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
         <Tooltip title="Configurações">
           <IconButton
@@ -88,6 +88,6 @@ export default function AccountMenu(props) {
           <p>Sair</p>
         </MenuItem>
       </Menu>
-    </React.Fragment >
+    </div >
   );
 }

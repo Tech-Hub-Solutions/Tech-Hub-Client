@@ -90,7 +90,6 @@ const ConversaInput = (props) => {
         axiosInstance.post(`/conversas/sala/${sala}`, formData,
             { headers: { 'Content-Type': 'multipart/form-data' } })
             .then((response) => {
-                console.log("Mensagem enviada com sucesso");
                 setTexto('');
                 setArquivo({});
             }).catch((error) => {

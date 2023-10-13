@@ -4,6 +4,8 @@ import moment from 'moment-timezone';
 import { Avatar } from '@mui/material'
 import { TextField, Box, List, ListItemButton } from '@mui/material';
 import SeachIcon from '../../../assets/images/icons/Search.svg'
+import ImageIcon from '@mui/icons-material/Image';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 const ListaDeConversa = (props) => {
     const { conversas, setConversaSelecionada, conversaSelecionada } = props;
@@ -69,7 +71,6 @@ const ListaDeConversa = (props) => {
 
                 <div className={styles['lista-de-conversa__conversas']}>
                     <List component="nav" aria-label="lista de conversas"
-                        divider={true}
                         sx={
                             {
                                 display: 'flex',
@@ -130,7 +131,15 @@ const ListaDeConversa = (props) => {
 
                                                 </div>
                                                 <div className={styles['lista-de-conversa__conversa__info__mensagem']}>
-                                                    <p>{conversa.mensagem?.texto}</p>
+                                                    <div>{conversa.mensagem?.texto || (
+                                                        conversa.mensagem?.tipoArquivo == 'IMAGEM' ?
+                                                        <div style={{display:"flex", alignItems: "center", gap:"3px"}}>
+                                                            <ImageIcon fontSize="small" /> Imagem
+                                                        </div> :
+                                                        <div style={{display:"flex", alignItems: "center", gap:"3px"}}>
+                                                            <DescriptionIcon fontSize="small" /> Documento
+                                                        </div>
+                                                    )}</div>
                                                 </div>
                                             </div>
                                             <div className={styles['lista-de-conversa__conversa__info__data']}>
