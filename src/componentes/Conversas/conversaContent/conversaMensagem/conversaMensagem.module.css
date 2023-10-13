@@ -26,10 +26,6 @@
     background-color: #EBEBEB;
 }
 
-.conversa-content__mensagem--arquivo {
-    width: 100%;
-}
-
 .conversa-content__mensagem::before {
     content: '';
     position: absolute;
@@ -71,6 +67,16 @@
     color: var(--color-branco);
 }
 
+.conversa-content__mensagem--arquivo {
+    width: 100%;
+}
+
+.conversa-content__mensagem__info__arquivo,
+.conversa-content__mensagem__info__imagem {
+    margin-bottom: 1vh;
+}
+
+
 .conversa-content__mensagem__info__arquivo {
     display: flex;
     align-items: center;
@@ -79,7 +85,6 @@
     background-color: #d2d2d2;
     padding: 0.8rem;
     gap: 1vw;
-    margin-bottom: 1vh;
     transition: filter 0.2s;
 }
 
