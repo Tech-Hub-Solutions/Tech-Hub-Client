@@ -4,7 +4,8 @@ import moment from "moment-timezone";
 import DownloadImg from '../../../../assets/images/icons/download.svg';
 import axiosInstance from "../../../../config/axiosInstance";
 import { formatarBytes } from '../../../../utils/geral';
-
+import { Button } from "@mui/material";
+import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 
 const ConversaMensagem = (props) => {
     const mensagem = props.mensagem;
@@ -96,16 +97,33 @@ const ConversaMensagem = (props) => {
                 {
                     mensagem.urlArquivo && mensagem.tipoArquivo == "DOCUMENTO" &&
                     <a target="_blank" ref={docRef} className={styles['conversa-content__mensagem__info__arquivo']}>
-                        <img src={DownloadImg} />
-                        <div className={styles['conversa-content__mensagem__info__arquivo__informacoes']}>
-                            <div className={styles['conversa-content__mensagem__info__arquivo__informacoes__nome']}>
-                                <p>{infoArquivo.nomeArquivo}</p>
+                        <Button
+                            sx={{
+                                width: "100%",
+                                justifyContent: "flex-start",
+                                borderRadius: " 10px",
+                                gap: " 1vw",
+                                padding: "0.8rem",
+                                backgroundColor: mensagem.usuarioId == usuarioId ? "#0b77b1" : "#d2d2d2",
+                                color: mensagem.usuarioId == usuarioId ? "#fff" : "#404040",
+                                // hover
+                                "&:hover": {
+                                    backgroundColor: mensagem.usuarioId == usuarioId ? "#0d84c4" : "#bebebe",
+                                },
+                            }}>
+                            <DownloadRoundedIcon 
+                            fontSize="large"
+                            />
+                            <div className={styles['conversa-content__mensagem__info__arquivo__informacoes']}>
+                                <div className={styles['conversa-content__mensagem__info__arquivo__informacoes__nome']}>
+                                    <p>{infoArquivo.nomeArquivo}</p>
+                                </div>
+                                <div className={styles['conversa-content__mensagem__info__arquivo__informacoes__metadado']}>
+                                    <p>{formatarBytes(infoArquivo.tamanhoArquivo)}</p>
+                                    <p>{infoArquivo.tipoArquivo}</p>
+                                </div>
                             </div>
-                            <div className={styles['conversa-content__mensagem__info__arquivo__informacoes__metadado']}>
-                                <p>{formatarBytes(infoArquivo.tamanhoArquivo)}</p>
-                                <p>{infoArquivo.tipoArquivo}</p>
-                            </div>
-                        </div>
+                        </Button>
                     </a>
                 }
 
@@ -117,7 +135,7 @@ const ConversaMensagem = (props) => {
                 <div className={styles['conversa-content__mensagem__info__data']}>
                     <p>{moment(mensagem.dtHora).tz("America/Sao_Paulo").format("HH:mm")}</p>
                 </div>
-            </div>
+            </div >
     )
 }
 
