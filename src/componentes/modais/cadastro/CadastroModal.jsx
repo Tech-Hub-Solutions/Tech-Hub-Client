@@ -1,4 +1,3 @@
-// import React from "react";
 import PropTypes from "prop-types";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
@@ -44,7 +43,7 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
       fontStyle: "normal",
       fontWeight: 600,
       lineHeight: "normal",
-      paddingBottom: "40px",
+      paddingBottom: "16px",
     },
     buttonGoogle: {
       border: "1px solid #333",
@@ -66,15 +65,12 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
     },
     blueButton: {
       padding: "18px 125px",
-      marginTop: "48px",
+      marginTop: "16px",
     },
   };
 
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
-
-  const [senha, setSenha] = useState("");
-  const [senhaError, setSenhaError] = useState(false);
 
   const [nome, setNome] = useState("");
   const [nomeError, setNomeError] = useState(false);
@@ -94,12 +90,21 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
     if (nome == "") {
       setNomeError(true);
     }
+
+    if (email == "") {
+      setEmailError(true);
+    }
+
     if (password == "") {
       setPasswordError(true);
     }
 
-    if (nome && password) {
-      console.log(nome, password);
+    if (documento == "") {
+      setDocumentoError(true);
+    }
+
+    if (nome && password && email && documento) {
+      console.log(nome, password, email, documento);
     }
   };
 
@@ -133,7 +138,7 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
         >
           <div>
             <img
-              style={{ width: "438px" }}
+              style={{ width: "100%" }}
               src={imageCadastroUser}
               alt={altImageCadastroUser}
             />
@@ -154,7 +159,7 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
               <Divider sx={stylesCSS.customDivider}>OU</Divider>
 
               <Grid container rowSpacing={1}>
-                <form autoComplete="off" onSubmit={handleSubmit} >
+                <form autoComplete="off" onSubmit={handleSubmit}>
                   <Grid item>
                     <TextField
                       label="Nome completo"
@@ -172,7 +177,7 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
 
                   <Grid item>
                     <TextField
-                      label="CPF"
+                      label={user === "freelancer" ? "CPF" : "CNPJ"}
                       onChange={(e) => setDocumento(e.target.value)}
                       required
                       variant="outlined"
