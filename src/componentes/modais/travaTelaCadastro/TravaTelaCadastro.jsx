@@ -97,7 +97,7 @@ function TravaTelaCadastro({ isOpen, setIsOpen }) {
             {"Vamos nos conhecer melhor?"}
           </DialogTitle>
           <DialogContent sx={stylesCSS.dialogContent}>
-            <Card variant="outlined" sx={stylesCSS.cardContainer}>
+            <Card variant="outlined" sx={[stylesCSS.cardContainer, {backgroundColor: user == "freelancer" ? "#0f9dea54" : ""}]}>
               <CardActionArea
                 sx={stylesCSS.cardActionArea}
                 onClick={() => clickCard("freelancer")}
@@ -117,7 +117,7 @@ function TravaTelaCadastro({ isOpen, setIsOpen }) {
               </CardActionArea>
             </Card>
 
-            <Card variant="outlined" sx={stylesCSS.cardContainer}>
+            <Card variant="outlined" sx={[stylesCSS.cardContainer,  {backgroundColor: user == "empresa" ? "#0f9dea54" : ""}]}>
               <CardActionArea
                 sx={stylesCSS.cardActionArea}
                 onClick={() => clickCard("empresa")}
