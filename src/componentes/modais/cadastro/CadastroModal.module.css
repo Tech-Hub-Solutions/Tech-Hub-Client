@@ -3,8 +3,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 18px 60px 24px 60px;
+  padding: 0px 60px 24px 60px;
   width: fit-content;
+  height: fit-content;
 }
 
 .container {
@@ -14,6 +15,7 @@
 
 .border {
   border-bottom: 3px solid black;
+  background: #0f9dea70;
   width: 100%;
 }
 
@@ -41,10 +43,3 @@
     color: #0f9eea;
   }
 }
-
-/* .form__container2 {
-  width: 100%;
-  height: auto;
-  margin: 0;
-  padding: 0;
-} */
