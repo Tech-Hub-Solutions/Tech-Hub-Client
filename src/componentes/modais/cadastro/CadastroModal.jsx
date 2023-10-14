@@ -20,7 +20,35 @@ import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
 function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
+  const inpValidator = {
+    campoObrigatorio: "Campo obrigatório.",
+    apenasNumeros: "Apenas números.",
+    minimoCaracteres: "Mínimo de 6 caracteres.",
+    maximoCaracteres: "Máximo de 15 caracteres.",
+    emailInvalido: "E-mail inválido.",
+  };
+
+  const schema = yup.object().shape({
+    nome: yup.string().required(inpValidator.campoObrigatorio),
+    documento: yup
+      .string(inpValidator.apenasNumeros)
+      .required(inpValidator.campoObrigatorio),
+    email: yup
+      .string()
+      .email(inpValidator.emailInvalido)
+      .required(inpValidator.campoObrigatorio),
+    senha: yup
+      .string()
+      .min(6, inpValidator.minimoCaracteres)
+      .max(15, inpValidator.maximoCaracteres)
+      .required(inpValidator.campoObrigatorio),
+  });
+
   const stylesCSS = {
     dialogContainer: {
       display: "flex",
@@ -30,6 +58,8 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
       maxWidth: "fit-content",
       borderRadius: "16px",
       overflow: "hidden",
+      height: "100%",
+      width: "100%",
     },
     dialogContent: {
       display: "flex",
@@ -87,53 +117,17 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
     },
   };
 
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState(false);
+  const [showSenha, setShowSenha] = React.useState(false);
 
-  const [nome, setNome] = useState("");
-  const [nomeError, setNomeError] = useState(false);
-
-  const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState(false);
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const [documento, setDocumento] = useState("");
-  const [documentoError, setDocumentoError] = useState(false);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    setNomeError(false);
-    setPasswordError(false);
-
-    if (nome == "") {
-      setNomeError(true);
-    }
-
-    if (email == "") {
-      setEmailError(true);
-    }
-
-    if (password == "") {
-      setPasswordError(true);
-    }
-
-    if (documento == "") {
-      setDocumentoError(true);
-    }
-
-    if (nome && password && email && documento) {
-      console.log(nome, password, email, documento);
-    }
-  };
+  const onSubmit = (data) => console.log(data);
 
   const handleClose = () => {
     setIsCadastroModalOpen(false);
   };
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowSenha = () => setShowSenha((show) => !show);
 
-  const handleMouseDownPassword = (event) => {
+  const handleMouseDownSenha = (event) => {
     event.preventDefault();
   };
 
@@ -144,11 +138,19 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
 
   const imageCadastroUser =
     user === "freelancer" ? CadastroFreelancerImage : CadastroEmpresaImage;
+
   const altImageCadastroUser =
     user === "freelancer"
       ? "Imagem de um homem freelancer"
       : "Imagem de homem empresário";
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
   if (isCadastroModalOpen) {
     return (
       <>
@@ -161,9 +163,9 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
             sx: stylesCSS.dialogContainer,
           }}
         >
-          <div>
+          <div style={{ height: "100%" }}>
             <img
-              style={{ width: "100%" }}
+              style={{ height: "100%" }}
               src={imageCadastroUser}
               alt={altImageCadastroUser}
             />
@@ -184,82 +186,77 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
               <Divider sx={stylesCSS.customDivider}>OU</Divider>
 
               <Grid container rowSpacing={1}>
-                <form autoComplete="off" onSubmit={handleSubmit}>
+                <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
                   <Grid item>
                     <TextField
+                      name="nome"
                       label="Nome completo"
-                      onChange={(e) => setNome(e.target.value)}
-                      required
                       variant="outlined"
                       color="primary"
                       type="text"
-                      sx={{ mb: 3 }}
-                      value={nome}
-                      error={nomeError}
+                      sx={{ mb: 2 }}
+                      error={errors.nome?.message.length > 0}
+                      helperText={errors.nome?.message}
                       fullWidth
                       placeholder="Insira seu nome completo"
+                      {...register("nome")}
                     />
                   </Grid>
 
                   <Grid item>
                     <TextField
+                      name="documento"
                       label={user === "freelancer" ? "CPF" : "CNPJ"}
-                      onChange={(e) => setDocumento(e.target.value)}
-                      required
                       variant="outlined"
                       color="primary"
                       type="number"
-                      sx={{ mb: 3, ...stylesCSS.input }}
-                      value={documento}
-                      error={documentoError}
+                      sx={{ mb: 2, ...stylesCSS.input }}
+                      error={errors.documento?.message.length > 0}
+                      helperText={errors.documento?.message}
                       fullWidth
                       placeholder="Insira sem os pontos e traços"
+                      {...register("documento")}
                     />
                   </Grid>
 
                   <Grid item>
                     <TextField
+                      name="email"
                       label="E-mail"
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
                       variant="outlined"
                       color="primary"
                       type="email"
-                      sx={{ mb: 3 }}
-                      value={email}
-                      error={emailError}
+                      sx={{ mb: 2 }}
+                      error={errors.email?.message.length > 0}
+                      helperText={errors.email?.message}
                       fullWidth
                       placeholder="email@email.com"
+                      {...register("email")}
                     />
                   </Grid>
 
                   <Grid item>
                     <TextField
+                      name="senha"
                       label="Senha"
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
                       variant="outlined"
                       color="primary"
-                      id="outlined-adornment-password"
-                      type={showPassword ? "text" : "password"}
-                      value={password}
-                      error={passwordError}
-                      sx={{ mb: 3 }}
+                      type={showSenha ? "text" : "password"}
+                      error={errors.senha?.message.length > 0}
+                      helperText={errors.senha?.message}
+                      sx={{ mb: 2 }}
                       fullWidth
                       placeholder="Mínimo 8 caracteres"
+                      {...register("senha")}
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">
                             <IconButton
-                              aria-label="toggle password visibility"
-                              onClick={handleClickShowPassword}
-                              onMouseDown={handleMouseDownPassword}
+                              aria-label="toggle senha visibility"
+                              onClick={handleClickShowSenha}
+                              onMouseDown={handleMouseDownSenha}
                             >
-                              {showPassword ? (
-                                <Visibility />
-                              ) : (
-                                <VisibilityOff />
-                              )}
+                              {showSenha ? <Visibility /> : <VisibilityOff />}
                             </IconButton>
                           </InputAdornment>
                         ),
