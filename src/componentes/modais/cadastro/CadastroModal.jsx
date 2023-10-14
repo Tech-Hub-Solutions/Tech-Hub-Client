@@ -15,6 +15,11 @@ import React, { useState } from "react";
 import { TextField } from "@mui/material";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+
 function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
   const stylesCSS = {
     dialogContainer: {
@@ -67,6 +72,19 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
       padding: "18px 125px",
       marginTop: "16px",
     },
+    input: {
+      "& input[type=number]": {
+        MozAppearance: "textfield",
+      },
+      "& input[type=number]::-webkit-outer-spin-button": {
+        WebkitAppearance: "none",
+        margin: 0,
+      },
+      "& input[type=number]::-webkit-inner-spin-button": {
+        WebkitAppearance: "none",
+        margin: 0,
+      },
+    },
   };
 
   const [email, setEmail] = useState("");
@@ -77,6 +95,7 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
 
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const [documento, setDocumento] = useState("");
   const [documentoError, setDocumentoError] = useState(false);
@@ -110,6 +129,12 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
 
   const handleClose = () => {
     setIsCadastroModalOpen(false);
+  };
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
   const redictToBuscar = () => {
@@ -172,6 +197,7 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
                       value={nome}
                       error={nomeError}
                       fullWidth
+                      placeholder="Insira seu nome completo"
                     />
                   </Grid>
 
@@ -183,10 +209,11 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
                       variant="outlined"
                       color="primary"
                       type="number"
-                      sx={{ mb: 3 }}
+                      sx={{ mb: 3, ...stylesCSS.input }}
                       value={documento}
                       error={documentoError}
                       fullWidth
+                      placeholder="Insira sem os pontos e traços"
                     />
                   </Grid>
 
@@ -202,6 +229,7 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
                       value={email}
                       error={emailError}
                       fullWidth
+                      placeholder="email@email.com"
                     />
                   </Grid>
 
@@ -212,11 +240,30 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
                       required
                       variant="outlined"
                       color="primary"
-                      type="password"
+                      id="outlined-adornment-password"
+                      type={showPassword ? "text" : "password"}
                       value={password}
                       error={passwordError}
                       sx={{ mb: 3 }}
                       fullWidth
+                      placeholder="Mínimo 8 caracteres"
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                            >
+                              {showPassword ? (
+                                <Visibility />
+                              ) : (
+                                <VisibilityOff />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
                     />
                   </Grid>
 
