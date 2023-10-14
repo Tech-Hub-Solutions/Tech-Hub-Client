@@ -1,9 +1,10 @@
-.form-container {
+.form__container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 18px 60px 24px 60px;
+  width: fit-content;
 }
 
 .container {
@@ -40,3 +41,10 @@
     color: #0f9eea;
   }
 }
+
+/* .form__container2 {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+} */
