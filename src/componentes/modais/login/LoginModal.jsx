@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -10,7 +10,6 @@ import Divider from "@mui/material/Divider";
 
 import PropTypes from "prop-types";
 import { TextField } from "@mui/material";
-import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
@@ -23,11 +22,12 @@ import * as yup from "yup";
 
 import imageLogin from "../../../assets/images/LoginModal.svg";
 import GoogleVetor from "../../../assets/images/GoogleVetor.svg";
-import TravaTelaCadastro from "../travaTelaCadastro/TravaTelaCadastro";
 
-function LoginModal({ isLoginModalOpen, setIsLoginModalOpen }) {
-  let [isCadastroModalOpen, setIsCadastroModalOpen] = useState(false);
-
+function LoginModal({
+  isLoginModalOpen,
+  setIsLoginModalOpen,
+  setTravaTelaOpen,
+}) {
   const inpValidator = {
     campoObrigatorio: "Campo obrigatório.",
     apenasNumeros: "Apenas números.",
@@ -117,9 +117,9 @@ function LoginModal({ isLoginModalOpen, setIsLoginModalOpen }) {
     event.preventDefault();
   };
 
-  const redictToTravaTelaCadastro = () => {
+  const redirectToTravaTelaCadastro = () => {
     setIsLoginModalOpen(false);
-    setIsCadastroModalOpen(true);
+    setTravaTelaOpen(true);
   };
 
   const {
@@ -130,132 +130,118 @@ function LoginModal({ isLoginModalOpen, setIsLoginModalOpen }) {
     resolver: yupResolver(schema),
   });
 
-  if (isLoginModalOpen) {
-    return (
-      <>
-        <Dialog
-          fullWidth
-          open={true}
-          onClose={handleClose}
-          keepMounted
-          PaperProps={{
-            sx: stylesCSS.dialogContainer,
-          }}
-        >
-          <div className={styles["form__container"]}>
-            <DialogTitle sx={stylesCSS.dialogTitle}>{"Login"}</DialogTitle>
-            <DialogContent sx={stylesCSS.dialogContent}>
-              <Button variant="outlined" sx={stylesCSS.buttonGoogle}>
-                <img
-                  style={{ width: "23px" }}
-                  src={GoogleVetor}
-                  alt="Logo da Google"
-                />
-                Continuar com Google
-              </Button>
+  return (
+    <>
+      <Dialog
+        fullWidth
+        open={isLoginModalOpen}
+        onClose={handleClose}
+        keepMounted
+        PaperProps={{
+          sx: stylesCSS.dialogContainer,
+        }}
+      >
+        <div className={styles["form__container"]}>
+          <DialogTitle sx={stylesCSS.dialogTitle}>{"Login"}</DialogTitle>
+          <DialogContent sx={stylesCSS.dialogContent}>
+            <Button variant="outlined" sx={stylesCSS.buttonGoogle}>
+              <img
+                style={{ width: "23px" }}
+                src={GoogleVetor}
+                alt="Logo da Google"
+              />
+              Continuar com Google
+            </Button>
 
-              <Divider sx={stylesCSS.customDivider}>OU</Divider>
+            <Divider sx={stylesCSS.customDivider}>OU</Divider>
 
-              <Grid container rowSpacing={1}>
-                <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-                  <Grid item>
-                    <TextField
-                      name="email"
-                      label="E-mail"
-                      variant="outlined"
-                      color="primary"
-                      type="email"
-                      sx={{ mb: 2 }}
-                      error={errors.email?.message.length > 0}
-                      helperText={errors.email?.message}
-                      fullWidth
-                      placeholder="email@email.com"
-                      {...register("email")}
-                    />
-                  </Grid>
+            <Grid container rowSpacing={1}>
+              <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+                <Grid item>
+                  <TextField
+                    name="email"
+                    label="E-mail"
+                    variant="outlined"
+                    color="primary"
+                    type="email"
+                    sx={{ mb: 2 }}
+                    error={errors.email?.message.length > 0}
+                    helperText={errors.email?.message}
+                    fullWidth
+                    placeholder="email@email.com"
+                    {...register("email")}
+                  />
+                </Grid>
 
-                  <Grid item>
-                    <TextField
-                      name="senha"
-                      label="Senha"
-                      variant="outlined"
-                      color="primary"
-                      type={showSenha ? "text" : "password"}
-                      error={errors.senha?.message.length > 0}
-                      helperText={errors.senha?.message}
-                      sx={{ mb: 2 }}
-                      fullWidth
-                      placeholder="Mínimo 8 caracteres"
-                      {...register("senha")}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="toggle senha visibility"
-                              onClick={handleClickShowSenha}
-                              onMouseDown={handleMouseDownSenha}
-                            >
-                              {showSenha ? <Visibility /> : <VisibilityOff />}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Grid>
-
-                  <BlueBackgroundButton
-                    // TODO - Add função para realizar login
-                    onClick={() => {
-                      console.log("fez login");
+                <Grid item>
+                  <TextField
+                    name="senha"
+                    label="Senha"
+                    variant="outlined"
+                    color="primary"
+                    type={showSenha ? "text" : "password"}
+                    error={errors.senha?.message.length > 0}
+                    helperText={errors.senha?.message}
+                    sx={{ mb: 2 }}
+                    fullWidth
+                    placeholder="Mínimo 8 caracteres"
+                    {...register("senha")}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle senha visibility"
+                            onClick={handleClickShowSenha}
+                            onMouseDown={handleMouseDownSenha}
+                          >
+                            {showSenha ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
                     }}
-                    style={stylesCSS.blueButton}
-                    type="submit"
-                  >
-                    Entrar
-                  </BlueBackgroundButton>
-                </form>
-              </Grid>
-            </DialogContent>
+                  />
+                </Grid>
 
-            <div
-              className={styles["possui-conta"]}
-              style={{ paddingTop: "32px" }}
-            >
-              <p>
-                Não tem conta?
-                <span
-                  onClick={redictToTravaTelaCadastro}
-                  className={styles["link-login"]}
+                <BlueBackgroundButton
+                  // TODO - Add função para realizar login
+                  onClick={() => {
+                    console.log("fez login");
+                  }}
+                  style={stylesCSS.blueButton}
+                  type="submit"
                 >
-                  Cadastre-se.
-                </span>
-              </p>
-            </div>
-          </div>
+                  Entrar
+                </BlueBackgroundButton>
+              </form>
+            </Grid>
+          </DialogContent>
 
-          <div style={{ height: "100%" }}>
-            <img
-              style={{ height: "100%" }}
-              src={imageLogin}
-              alt="Homem tomando café e usando notebook"
-            />
+          <div
+            className={styles["possui-conta"]}
+            style={{ paddingTop: "32px" }}
+          >
+            <p>
+              Não tem conta?
+              <span
+                onClick={redirectToTravaTelaCadastro}
+                className={styles["link-login"]}
+              >
+                Cadastre-se.
+              </span>
+            </p>
           </div>
-        </Dialog>
-      </>
-    );
-  } else if (isCadastroModalOpen) {
-    return (
-      <TravaTelaCadastro
-        isOpen={isCadastroModalOpen}
-        setIsOpen={setIsCadastroModalOpen}
-      />
-    );
-  }
+        </div>
+
+        <div style={{ height: "100%" }}>
+          <img
+            style={{ height: "100%" }}
+            src={imageLogin}
+            alt="Homem tomando café e usando notebook"
+          />
+        </div>
+      </Dialog>
+    </>
+  );
 }
-
-LoginModal.propTypes = {
-  isLoginModalOpen: PropTypes.bool.isRequired,
-  setIsLoginModalOpen: PropTypes.func.isRequired,
-};
 
 export default LoginModal;

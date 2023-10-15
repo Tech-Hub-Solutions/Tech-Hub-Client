@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import PropTypes from "prop-types";
 import SerFreelancerTravaTela from "/src/assets/images/SerFreelancerTravaTela.svg";
 import SerEmpresaTravaTela from "/src/assets/images/SerEmpresaTravaTela.svg";
@@ -13,12 +12,14 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea } from "@mui/material";
-import CadastroModal from "../cadastro/CadastroModal";
 
-function TravaTelaCadastro({ isOpen, setIsOpen }) {
-  let [user, setUser] = useState();
-  let [isCadastroModalOpen, setIsCadastroModalOpen] = useState(false);
-
+function TravaTelaCadastro({
+  isTravaTelaOpen,
+  setTravaTelaOpen,
+  setCadastroIsOpen,
+  setUser,
+  user,
+}) {
   const stylesCSS = {
     dialogContainer: {
       display: "flex",
@@ -69,99 +70,91 @@ function TravaTelaCadastro({ isOpen, setIsOpen }) {
   };
 
   const handleClose = () => {
-    setIsOpen(!isOpen);
+    setTravaTelaOpen(!isTravaTelaOpen);
   };
 
   const redictToCadastroEspecifico = () => {
-    setIsOpen(false);
-    setIsCadastroModalOpen(true);
+    setTravaTelaOpen(false);
+    setCadastroIsOpen(true);
   };
 
   const clickCard = (user) => {
     setUser(user);
   };
 
-  if (isOpen) {
-    return (
-      <>
-        <Dialog
-          fullWidth
-          open={isOpen}
-          onClose={handleClose}
-          keepMounted
-          PaperProps={{
-            sx: stylesCSS.dialogContainer,
-          }}
-        >
-          <DialogTitle sx={stylesCSS.dialogTitle}>
-            {"Vamos nos conhecer melhor?"}
-          </DialogTitle>
-          <DialogContent sx={stylesCSS.dialogContent}>
-            <Card variant="outlined" sx={[stylesCSS.cardContainer, {backgroundColor: user == "freelancer" ? "#0f9dea54" : ""}]}>
-              <CardActionArea
-                sx={stylesCSS.cardActionArea}
-                onClick={() => clickCard("freelancer")}
-              >
-                <CardMedia
-                  component="img"
-                  style={{ width: "160px" }}
-                  image={SerFreelancerTravaTela}
-                  alt="Pessoa carregando uma lâmpada"
-                />
-
-                <CardContent className={styles["card__content"]}>
-                  <p className={styles["card__text"]}>
-                    Quero ser um freelancer
-                  </p>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-
-            <Card variant="outlined" sx={[stylesCSS.cardContainer,  {backgroundColor: user == "empresa" ? "#0f9dea54" : ""}]}>
-              <CardActionArea
-                sx={stylesCSS.cardActionArea}
-                onClick={() => clickCard("empresa")}
-              >
-                <CardMedia
-                  component="img"
-                  style={{ width: "160px" }}
-                  image={SerEmpresaTravaTela}
-                  alt="Tocando as mãos em cumprimento"
-                />
-
-                <CardContent className={styles["card__content"]}>
-                  <p className={styles["card__text"]}>
-                    Quero explorar talentos
-                  </p>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </DialogContent>
-
-          <BlueBackgroundButton
-            onClick={redictToCadastroEspecifico}
-            style={stylesCSS.blueButton}
+  return (
+    <>
+      <Dialog
+        fullWidth
+        open={isTravaTelaOpen}
+        onClose={handleClose}
+        keepMounted
+        PaperProps={{
+          sx: stylesCSS.dialogContainer,
+        }}
+      >
+        <DialogTitle sx={stylesCSS.dialogTitle}>
+          {"Vamos nos conhecer melhor?"}
+        </DialogTitle>
+        <DialogContent sx={stylesCSS.dialogContent}>
+          <Card
+            variant="outlined"
+            sx={[
+              stylesCSS.cardContainer,
+              { backgroundColor: user == "freelancer" ? "#0f9dea54" : "" },
+            ]}
           >
-            Avançar
-          </BlueBackgroundButton>
-        </Dialog>
-      </>
-    );
-  } else if (isCadastroModalOpen) {
-    return (
-      <CadastroModal
-        isCadastroModalOpen={isCadastroModalOpen}
-        setIsCadastroModalOpen={setIsCadastroModalOpen}
-        user={user}
-      />
-    );
-  }
-  return null;
-}
+            <CardActionArea
+              sx={stylesCSS.cardActionArea}
+              onClick={() => clickCard("freelancer")}
+            >
+              <CardMedia
+                component="img"
+                style={{ width: "160px" }}
+                image={SerFreelancerTravaTela}
+                alt="Pessoa carregando uma lâmpada"
+              />
 
-TravaTelaCadastro.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  setIsOpen: PropTypes.func.isRequired,
-};
+              <CardContent className={styles["card__content"]}>
+                <p className={styles["card__text"]}>Quero ser um freelancer</p>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+
+          <Card
+            variant="outlined"
+            sx={[
+              stylesCSS.cardContainer,
+              { backgroundColor: user == "empresa" ? "#0f9dea54" : "" },
+            ]}
+          >
+            <CardActionArea
+              sx={stylesCSS.cardActionArea}
+              onClick={() => clickCard("empresa")}
+            >
+              <CardMedia
+                component="img"
+                style={{ width: "160px" }}
+                image={SerEmpresaTravaTela}
+                alt="Tocando as mãos em cumprimento"
+              />
+
+              <CardContent className={styles["card__content"]}>
+                <p className={styles["card__text"]}>Quero explorar talentos</p>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </DialogContent>
+
+        <BlueBackgroundButton
+          onClick={redictToCadastroEspecifico}
+          style={stylesCSS.blueButton}
+        >
+          Avançar
+        </BlueBackgroundButton>
+      </Dialog>
+    </>
+  );
+}
 
 export default TravaTelaCadastro;

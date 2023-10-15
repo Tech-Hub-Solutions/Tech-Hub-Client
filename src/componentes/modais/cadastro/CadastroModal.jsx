@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -11,9 +10,8 @@ import CadastroFreelancerImage from "../../../assets/images/CadastroFreelancer.s
 import GoogleVetor from "../../../assets/images/GoogleVetor.svg";
 import Divider from "@mui/material/Divider";
 
-import React, { useState } from "react";
+import React from "react";
 import { TextField } from "@mui/material";
-import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
@@ -24,11 +22,17 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
+
+function CadastroModal({
+  user,
+  isCadastroOpen,
+  setCadastroIsOpen,
+  setIsLoginModalOpen,
+}) {
   const inpValidator = {
     campoObrigatorio: "Campo obrigatório.",
     apenasNumeros: "Apenas números.",
-    minimoCaracteres: "Mínimo de 6 caracteres.",
+    minimoCaracteres: "Mínimo de 8 caracteres.",
     maximoCaracteres: "Máximo de 15 caracteres.",
     emailInvalido: "E-mail inválido.",
   };
@@ -44,7 +48,7 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
       .required(inpValidator.campoObrigatorio),
     senha: yup
       .string()
-      .min(6, inpValidator.minimoCaracteres)
+      .min(8, inpValidator.minimoCaracteres)
       .max(15, inpValidator.maximoCaracteres)
       .required(inpValidator.campoObrigatorio),
   });
@@ -122,7 +126,7 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
   const onSubmit = (data) => console.log(data);
 
   const handleClose = () => {
-    setIsCadastroModalOpen(false);
+    setCadastroIsOpen(false);
   };
 
   const handleClickShowSenha = () => setShowSenha((show) => !show);
@@ -144,6 +148,11 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
       ? "Imagem de um homem freelancer"
       : "Imagem de homem empresário";
 
+  const redictToLoginModal = () => {
+    setCadastroIsOpen(false);
+    setIsLoginModalOpen(true);
+  };
+
   const {
     register,
     handleSubmit,
@@ -151,151 +160,145 @@ function CadastroModal({ user, isCadastroModalOpen, setIsCadastroModalOpen }) {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  if (isCadastroModalOpen) {
-    return (
-      <>
-        <Dialog
-          fullWidth
-          open={true}
-          onClose={handleClose}
-          keepMounted
-          PaperProps={{
-            sx: stylesCSS.dialogContainer,
-          }}
-        >
-          <div style={{ height: "100%" }}>
-            <img
-              style={{ height: "100%" }}
-              src={imageCadastroUser}
-              alt={altImageCadastroUser}
-            />
+
+  return (
+    <>
+      <Dialog
+        fullWidth
+        open={isCadastroOpen}
+        onClose={handleClose}
+        keepMounted
+        PaperProps={{
+          sx: stylesCSS.dialogContainer,
+        }}
+      >
+        <div style={{ height: "100%" }}>
+          <img
+            style={{ height: "100%" }}
+            src={imageCadastroUser}
+            alt={altImageCadastroUser}
+          />
+        </div>
+
+        <div className={styles["form__container"]}>
+          <DialogTitle sx={stylesCSS.dialogTitle}>{"Cadastro"}</DialogTitle>
+          <DialogContent sx={stylesCSS.dialogContent}>
+            <Button variant="outlined" sx={stylesCSS.buttonGoogle}>
+              <img
+                style={{ width: "23px" }}
+                src={GoogleVetor}
+                alt="Logo da Google"
+              />
+              Cadastre-se com Google
+            </Button>
+
+            <Divider sx={stylesCSS.customDivider}>OU</Divider>
+
+            <Grid container rowSpacing={1}>
+              <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+                <Grid item>
+                  <TextField
+                    name="nome"
+                    label="Nome completo"
+                    variant="outlined"
+                    color="primary"
+                    type="text"
+                    sx={{ mb: 2 }}
+                    error={errors.nome?.message.length > 0}
+                    helperText={errors.nome?.message}
+                    fullWidth
+                    placeholder="Insira seu nome completo"
+                    {...register("nome")}
+                  />
+                </Grid>
+
+                <Grid item>
+                  <TextField
+                    name="documento"
+                    label={user === "freelancer" ? "CPF" : "CNPJ"}
+                    variant="outlined"
+                    color="primary"
+                    type="number"
+                    sx={{ mb: 2, ...stylesCSS.input }}
+                    error={errors.documento?.message.length > 0}
+                    helperText={errors.documento?.message}
+                    fullWidth
+                    placeholder="Insira sem os pontos e traços"
+                    {...register("documento")}
+                  />
+                </Grid>
+
+                <Grid item>
+                  <TextField
+                    name="email"
+                    label="E-mail"
+                    variant="outlined"
+                    color="primary"
+                    type="email"
+                    sx={{ mb: 2 }}
+                    error={errors.email?.message.length > 0}
+                    helperText={errors.email?.message}
+                    fullWidth
+                    placeholder="email@email.com"
+                    {...register("email")}
+                  />
+                </Grid>
+
+                <Grid item>
+                  <TextField
+                    name="senha"
+                    label="Senha"
+                    variant="outlined"
+                    color="primary"
+                    type={showSenha ? "text" : "password"}
+                    error={errors.senha?.message.length > 0}
+                    helperText={errors.senha?.message}
+                    sx={{ mb: 2 }}
+                    fullWidth
+                    placeholder="Mínimo 8 caracteres"
+                    {...register("senha")}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle senha visibility"
+                            onClick={handleClickShowSenha}
+                            onMouseDown={handleMouseDownSenha}
+                          >
+                            {showSenha ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+
+                <BlueBackgroundButton
+                  onClick={redictToBuscar}
+                  style={stylesCSS.blueButton}
+                  type="submit"
+                >
+                  Cadastre-se
+                </BlueBackgroundButton>
+              </form>
+            </Grid>
+          </DialogContent>
+
+          <div className={styles["possui-conta"]}>
+            <p>
+              Já tem conta?
+              <span
+                onClick={redictToLoginModal}
+                className={styles["link-login"]}
+              >
+                Acesse aqui.
+              </span>
+            </p>
           </div>
-
-          <div className={styles["form__container"]}>
-            <DialogTitle sx={stylesCSS.dialogTitle}>{"Cadastro"}</DialogTitle>
-            <DialogContent sx={stylesCSS.dialogContent}>
-              <Button variant="outlined" sx={stylesCSS.buttonGoogle}>
-                <img
-                  style={{ width: "23px" }}
-                  src={GoogleVetor}
-                  alt="Logo da Google"
-                />
-                Cadastre-se com Google
-              </Button>
-
-              <Divider sx={stylesCSS.customDivider}>OU</Divider>
-
-              <Grid container rowSpacing={1}>
-                <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-                  <Grid item>
-                    <TextField
-                      name="nome"
-                      label="Nome completo"
-                      variant="outlined"
-                      color="primary"
-                      type="text"
-                      sx={{ mb: 2 }}
-                      error={errors.nome?.message.length > 0}
-                      helperText={errors.nome?.message}
-                      fullWidth
-                      placeholder="Insira seu nome completo"
-                      {...register("nome")}
-                    />
-                  </Grid>
-
-                  <Grid item>
-                    <TextField
-                      name="documento"
-                      label={user === "freelancer" ? "CPF" : "CNPJ"}
-                      variant="outlined"
-                      color="primary"
-                      type="number"
-                      sx={{ mb: 2, ...stylesCSS.input }}
-                      error={errors.documento?.message.length > 0}
-                      helperText={errors.documento?.message}
-                      fullWidth
-                      placeholder="Insira sem os pontos e traços"
-                      {...register("documento")}
-                    />
-                  </Grid>
-
-                  <Grid item>
-                    <TextField
-                      name="email"
-                      label="E-mail"
-                      variant="outlined"
-                      color="primary"
-                      type="email"
-                      sx={{ mb: 2 }}
-                      error={errors.email?.message.length > 0}
-                      helperText={errors.email?.message}
-                      fullWidth
-                      placeholder="email@email.com"
-                      {...register("email")}
-                    />
-                  </Grid>
-
-                  <Grid item>
-                    <TextField
-                      name="senha"
-                      label="Senha"
-                      variant="outlined"
-                      color="primary"
-                      type={showSenha ? "text" : "password"}
-                      error={errors.senha?.message.length > 0}
-                      helperText={errors.senha?.message}
-                      sx={{ mb: 2 }}
-                      fullWidth
-                      placeholder="Mínimo 8 caracteres"
-                      {...register("senha")}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="toggle senha visibility"
-                              onClick={handleClickShowSenha}
-                              onMouseDown={handleMouseDownSenha}
-                            >
-                              {showSenha ? <Visibility /> : <VisibilityOff />}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Grid>
-
-                  <BlueBackgroundButton
-                    onClick={redictToBuscar}
-                    style={stylesCSS.blueButton}
-                    type="submit"
-                  >
-                    Cadastre-se
-                  </BlueBackgroundButton>
-                </form>
-              </Grid>
-            </DialogContent>
-
-            <div className={styles["possui-conta"]}>
-              <p>
-                Já tem conta?
-                <Link to="/busca-talentos" className={styles["link-login"]}>
-                  Acesse aqui.
-                </Link>
-                {/* TODO - pensar no path do <Link to > */}
-              </p>
-            </div>
-          </div>
-        </Dialog>
-      </>
-    );
-  }
-  return null;
+        </div>
+      </Dialog>
+    </>
+  );
 }
-
-CadastroModal.propTypes = {
-  isCadastroModalOpen: PropTypes.bool.isRequired,
-  setIsCadastroModalOpen: PropTypes.func.isRequired,
-  user: PropTypes.string.isRequired,
-};
 
 export default CadastroModal;

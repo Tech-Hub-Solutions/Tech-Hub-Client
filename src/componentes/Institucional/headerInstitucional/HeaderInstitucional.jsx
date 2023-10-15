@@ -5,53 +5,76 @@ import LogoTechHub from "../../../assets/images/LogoTechHub.png";
 import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
 import TravaTelaCadastro from "../../modais/travaTelaCadastro/TravaTelaCadastro";
 import LoginModal from "../../modais/login/LoginModal";
+import CadastroModal from "../../modais/cadastro/CadastroModal";
 
 const HeaderInstitucional = () => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isCadastroOpen, setCadastroIsOpen] = React.useState(false);
+  const [isTravaTelaOpen, setTravaTelaOpen] = React.useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = React.useState(false);
+  const [user, setUser] = React.useState({});
 
   return (
-    <header className="header__section">
-      <div className="header__institucional">
-        <div className="left__components">
-          <a href="#">
-            <img src={LogoTechHub} alt="" />
-          </a>
-        </div>
-        <div className="middle__components">
-          <ul>
+    <>
+      <header className="header__section">
+        <div className="header__institucional">
+          <div className="left__components">
             <a href="#">
-              <li className="active">Início</li>
+              <img src={LogoTechHub} alt="" />
             </a>
-            <a href="#">
-              <li>Explorar Talentos</li>
-            </a>
-            <a href="#">
-              <li>Sobre Nós</li>
-            </a>
-            <a href="#">
-              <li>Benefícios</li>
-            </a>
-          </ul>
-        </div>
-        <div className="right__components">
-          <ul>
-            <a href="#" onClick={() => setIsLoginModalOpen(!isLoginModalOpen)}>
-              <li>Login</li>
-            </a>
-            <LoginModal
-              isLoginModalOpen={isLoginModalOpen}
-              setIsLoginModalOpen={setIsLoginModalOpen}
-            />
+          </div>
+          <div className="middle__components">
+            <ul>
+              <a href="#">
+                <li className="active">Início</li>
+              </a>
+              <a href="#">
+                <li>Explorar Talentos</li>
+              </a>
+              <a href="#">
+                <li>Sobre Nós</li>
+              </a>
+              <a href="#">
+                <li>Benefícios</li>
+              </a>
+            </ul>
+          </div>
+          <div className="right__components">
+            <ul>
+              <a onClick={() => setIsLoginModalOpen(!isLoginModalOpen)}>
+                <li>Login</li>
+              </a>
 
-            <BlueBackgroundButton onClick={() => setIsOpen(!isOpen)}>
-              Cadastre-se
-            </BlueBackgroundButton>
-            <TravaTelaCadastro isOpen={isOpen} setIsOpen={setIsOpen} />
-          </ul>
+              <BlueBackgroundButton
+                onClick={() => setTravaTelaOpen(!isTravaTelaOpen)}
+              >
+                Cadastre-se
+              </BlueBackgroundButton>
+            </ul>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      <LoginModal
+        isLoginModalOpen={isLoginModalOpen}
+        setIsLoginModalOpen={setIsLoginModalOpen}
+        setTravaTelaOpen={setTravaTelaOpen}
+      />
+
+      <TravaTelaCadastro
+        isTravaTelaOpen={isTravaTelaOpen}
+        setTravaTelaOpen={setTravaTelaOpen}
+        setCadastroIsOpen={setCadastroIsOpen}
+        user={user}
+        setUser={setUser}
+      />
+
+      <CadastroModal
+        isCadastroOpen={isCadastroOpen}
+        setCadastroIsOpen={setCadastroIsOpen}
+        setIsLoginModalOpen={setIsLoginModalOpen}
+        user={user}
+      />
+    </>
   );
 };
 
