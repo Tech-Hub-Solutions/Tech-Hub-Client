@@ -4,9 +4,11 @@ import LogoTechHub from "../../../assets/images/LogoTechHub.png";
 
 import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
 import TravaTelaCadastro from "../../modais/travaTelaCadastro/TravaTelaCadastro";
+import LoginModal from "../../modais/login/LoginModal";
 
 const HeaderInstitucional = () => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = React.useState(false);
 
   return (
     <header className="header__section">
@@ -34,9 +36,14 @@ const HeaderInstitucional = () => {
         </div>
         <div className="right__components">
           <ul>
-            <a href="#">
+            <a href="#" onClick={() => setIsLoginModalOpen(!isLoginModalOpen)}>
               <li>Login</li>
             </a>
+            <LoginModal
+              isLoginModalOpen={isLoginModalOpen}
+              setIsLoginModalOpen={setIsLoginModalOpen}
+            />
+
             <BlueBackgroundButton onClick={() => setIsOpen(!isOpen)}>
               Cadastre-se
             </BlueBackgroundButton>
