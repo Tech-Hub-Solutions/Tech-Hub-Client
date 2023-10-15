@@ -1,16 +1,13 @@
+import React from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 
-import styles from "./CadastroModal.module.css";
+import styles from "../cadastro/CadastroModal.module.css";
 import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
-import CadastroEmpresaImage from "../../../assets/images/CadastroEmpresa.svg";
-import CadastroFreelancerImage from "../../../assets/images/CadastroFreelancer.svg";
-import GoogleVetor from "../../../assets/images/GoogleVetor.svg";
 import Divider from "@mui/material/Divider";
 
-import React from "react";
 import { TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -22,13 +19,14 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
+import imageLogin from "../../../assets/images/LoginModal.svg";
+import GoogleVetor from "../../../assets/images/GoogleVetor.svg";
 import axiosInstance from "../../../config/axiosInstance";
 
-function CadastroModal({
-  user,
-  isCadastroOpen,
-  setCadastroIsOpen,
+function LoginModal({
+  isLoginModalOpen,
   setIsLoginModalOpen,
+  setTravaTelaOpen,
 }) {
   const inpValidator = {
     campoObrigatorio: "Campo obrigatório.",
@@ -39,10 +37,6 @@ function CadastroModal({
   };
 
   const schema = yup.object().shape({
-    nome: yup.string().required(inpValidator.campoObrigatorio),
-    documento: yup
-      .string(inpValidator.apenasNumeros)
-      .required(inpValidator.campoObrigatorio),
     email: yup
       .string()
       .email(inpValidator.emailInvalido)
@@ -72,7 +66,6 @@ function CadastroModal({
       alignItems: "center",
       flexDirection: "column",
       overflow: "hidden",
-      gap: "16px",
       padding: 0,
     },
     dialogTitle: {
@@ -83,7 +76,7 @@ function CadastroModal({
       fontStyle: "normal",
       fontWeight: 600,
       lineHeight: "normal",
-      paddingBottom: "16px",
+      paddingBottom: "24px",
     },
     buttonGoogle: {
       border: "1px solid #333",
@@ -102,23 +95,11 @@ function CadastroModal({
       width: "100%",
       color: "#666666",
       fontWeight: 600,
+      padding: "24px 0 30px 0",
     },
     blueButton: {
       padding: "18px 125px",
       marginTop: "16px",
-    },
-    input: {
-      "& input[type=number]": {
-        MozAppearance: "textfield",
-      },
-      "& input[type=number]::-webkit-outer-spin-button": {
-        WebkitAppearance: "none",
-        margin: 0,
-      },
-      "& input[type=number]::-webkit-inner-spin-button": {
-        WebkitAppearance: "none",
-        margin: 0,
-      },
     },
   };
 
@@ -128,16 +109,14 @@ function CadastroModal({
     console.log(data);
 
     axiosInstance
-      .post("/usuarios", {
-        nome: data.nome,
+      .post("/usuarios/login", {
         email: data.email,
         senha: data.senha,
-        numeroCadastroPessoa: data.documento,
-        pais: "não tem",
-        funcao: user,
       })
       .then((res) => {
         console.info(res);
+        sessionStorage.setItem("token", res.data.token);
+        sessionStorage.setItem("usuarioId", res.data.id);
       })
       .catch((error) => {
         console.error(error);
@@ -145,7 +124,7 @@ function CadastroModal({
   };
 
   const handleClose = () => {
-    setCadastroIsOpen(false);
+    setIsLoginModalOpen(!isLoginModalOpen);
   };
 
   const handleClickShowSenha = () => setShowSenha((show) => !show);
@@ -154,22 +133,9 @@ function CadastroModal({
     event.preventDefault();
   };
 
-  const redictToBuscar = () => {
-    // TODO - Inserir roteamento p/ ir à página de buscar talentos ou de perfil
-    return null;
-  };
-
-  const imageCadastroUser =
-    user === "freelancer" ? CadastroFreelancerImage : CadastroEmpresaImage;
-
-  const altImageCadastroUser =
-    user === "freelancer"
-      ? "Imagem de um homem freelancer"
-      : "Imagem de homem empresário";
-
-  const redictToLoginModal = () => {
-    setCadastroIsOpen(false);
-    setIsLoginModalOpen(true);
+  const redirectToTravaTelaCadastro = () => {
+    setIsLoginModalOpen(false);
+    setTravaTelaOpen(true);
   };
 
   const {
@@ -184,23 +150,15 @@ function CadastroModal({
     <>
       <Dialog
         fullWidth
-        open={isCadastroOpen}
+        open={isLoginModalOpen}
         onClose={handleClose}
         keepMounted
         PaperProps={{
           sx: stylesCSS.dialogContainer,
         }}
       >
-        <div style={{ height: "100%" }}>
-          <img
-            style={{ height: "100%" }}
-            src={imageCadastroUser}
-            alt={altImageCadastroUser}
-          />
-        </div>
-
         <div className={styles["form__container"]}>
-          <DialogTitle sx={stylesCSS.dialogTitle}>{"Cadastro"}</DialogTitle>
+          <DialogTitle sx={stylesCSS.dialogTitle}>{"Login"}</DialogTitle>
           <DialogContent sx={stylesCSS.dialogContent}>
             <Button variant="outlined" sx={stylesCSS.buttonGoogle}>
               <img
@@ -208,45 +166,13 @@ function CadastroModal({
                 src={GoogleVetor}
                 alt="Logo da Google"
               />
-              Cadastre-se com Google
+              Continuar com Google
             </Button>
 
             <Divider sx={stylesCSS.customDivider}>OU</Divider>
 
             <Grid container rowSpacing={1}>
               <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-                <Grid item>
-                  <TextField
-                    name="nome"
-                    label="Nome completo"
-                    variant="outlined"
-                    color="primary"
-                    type="text"
-                    sx={{ mb: 2 }}
-                    error={errors.nome?.message.length > 0}
-                    helperText={errors.nome?.message}
-                    fullWidth
-                    placeholder="Insira seu nome completo"
-                    {...register("nome")}
-                  />
-                </Grid>
-
-                <Grid item>
-                  <TextField
-                    name="documento"
-                    label={user === "freelancer" ? "CPF" : "CNPJ"}
-                    variant="outlined"
-                    color="primary"
-                    type="number"
-                    sx={{ mb: 2, ...stylesCSS.input }}
-                    error={errors.documento?.message.length > 0}
-                    helperText={errors.documento?.message}
-                    fullWidth
-                    placeholder="Insira sem os pontos e traços"
-                    {...register("documento")}
-                  />
-                </Grid>
-
                 <Grid item>
                   <TextField
                     name="email"
@@ -293,31 +219,45 @@ function CadastroModal({
                 </Grid>
 
                 <BlueBackgroundButton
-                  onClick={redictToBuscar}
+                  // TODO - Add função para realizar login
+                  onClick={() => {
+                    console.log("fez login");
+                  }}
                   style={stylesCSS.blueButton}
                   type="submit"
                 >
-                  Cadastre-se
+                  Entrar
                 </BlueBackgroundButton>
               </form>
             </Grid>
           </DialogContent>
 
-          <div className={styles["possui-conta"]}>
+          <div
+            className={styles["possui-conta"]}
+            style={{ paddingTop: "32px" }}
+          >
             <p>
-              Já tem conta?
+              Não tem conta?
               <span
-                onClick={redictToLoginModal}
+                onClick={redirectToTravaTelaCadastro}
                 className={styles["link-login"]}
               >
-                Acesse aqui.
+                Cadastre-se.
               </span>
             </p>
           </div>
+        </div>
+
+        <div style={{ height: "100%" }}>
+          <img
+            style={{ height: "100%" }}
+            src={imageLogin}
+            alt="Homem tomando café e usando notebook"
+          />
         </div>
       </Dialog>
     </>
   );
 }
 
-export default CadastroModal;
+export default LoginModal;
