@@ -17,12 +17,12 @@ const HeaderInstitucional = () => {
     <>
       <header className="header__section">
         <div className="header__institucional">
-          <div className="left__components">
+          <div>
             <a href="#">
-              <img src={LogoTechHub} alt="" />
+              <img src={LogoTechHub} alt="Logotipo escrito Tech Hub" />
             </a>
           </div>
-          <div className="middle__components">
+          <div>
             <ul>
               <a href="#">
                 <li className="active">Início</li>
@@ -38,9 +38,12 @@ const HeaderInstitucional = () => {
               </a>
             </ul>
           </div>
-          <div className="right__components">
+          <div>
             <ul>
-              <a onClick={() => setIsLoginModalOpen(!isLoginModalOpen)}>
+              <a
+                className="login__button"
+                onClick={() => setIsLoginModalOpen(!isLoginModalOpen)}
+              >
                 <li>Login</li>
               </a>
 

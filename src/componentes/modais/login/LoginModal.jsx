@@ -109,12 +109,14 @@ function LoginModal({
     console.log(data);
 
     axiosInstance
-      .post("/login", {
+      .post("/usuarios/login", {
         email: data.email,
         senha: data.senha,
       })
       .then((res) => {
         console.info(res);
+        sessionStorage.setItem("token", res.data.token);
+        sessionStorage.setItem("usuarioId", res.data.id);
       })
       .catch((error) => {
         console.error(error);
