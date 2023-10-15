@@ -1,9 +1,13 @@
+import React from "react";
 import "./HeaderInstitucional.css";
 import LogoTechHub from "../../../assets/images/LogoTechHub.png";
 
 import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
+import TravaTelaCadastro from "../../modais/travaTelaCadastro/TravaTelaCadastro";
 
 const HeaderInstitucional = () => {
+  const [isOpen, setIsOpen] = React.useState(false);
+
   return (
     <header className="header__section">
       <div className="header__institucional">
@@ -33,9 +37,10 @@ const HeaderInstitucional = () => {
             <a href="#">
               <li>Login</li>
             </a>
-            <BlueBackgroundButton>
+            <BlueBackgroundButton onClick={() => setIsOpen(!isOpen)}>
               Cadastre-se
             </BlueBackgroundButton>
+            <TravaTelaCadastro isOpen={isOpen} setIsOpen={setIsOpen} />
           </ul>
         </div>
       </div>
