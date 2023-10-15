@@ -24,6 +24,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import axiosInstance from "../../../config/axiosInstance";
+import SnackbarCustom from "../../shared/snackbar/SnackbarCustom.jsx";
 
 function CadastroModal({
   user,
@@ -356,24 +357,17 @@ function CadastroModal({
             </p>
           </div>
         </div>
-        <Snackbar
-          open={snackbarSuccessOpen?.open}
-          autoHideDuration={6000}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+        <SnackbarCustom
+          snackbarOpen={snackbarSuccessOpen?.open}
+          message={snackbarSuccessOpen?.message}
+          severity={snackbarSuccessOpen.severity}
+          setSnackbarOpen={() => {
+            setSnackbarSuccess((prevState) => ({
+              ...prevState,
+              open: false,
+            }));
           }}
-        >
-          <Alert
-            onClose={() => setSnackbarSuccess({})}
-            sx={{ width: "100%" }}
-            severity={snackbarSuccessOpen.severity}
-          >
-            {snackbarSuccessOpen?.message}
-          </Alert>
-        </Snackbar>
+        ></SnackbarCustom>
       </Dialog>
     </>
   );
