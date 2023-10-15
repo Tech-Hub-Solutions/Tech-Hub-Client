@@ -3,15 +3,16 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 
+import styled from "@emotion/styled";
+import { LoadingButton } from "@mui/lab";
 import styles from "./CadastroModal.module.css";
-import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
 import CadastroEmpresaImage from "../../../assets/images/CadastroEmpresa.svg";
 import CadastroFreelancerImage from "../../../assets/images/CadastroFreelancer.svg";
 import GoogleVetor from "../../../assets/images/GoogleVetor.svg";
 import Divider from "@mui/material/Divider";
 
 import React from "react";
-import { TextField } from "@mui/material";
+import { Alert, Snackbar, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
@@ -30,12 +31,20 @@ function CadastroModal({
   setCadastroIsOpen,
   setIsLoginModalOpen,
 }) {
+  const [snackbarSuccessOpen, setSnackbarSuccess] = React.useState({});
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const inpValidator = {
     campoObrigatorio: "Campo obrigatório.",
     apenasNumeros: "Apenas números.",
     minimoCaracteres: "Mínimo de 8 caracteres.",
     maximoCaracteres: "Máximo de 15 caracteres.",
     emailInvalido: "E-mail inválido.",
+  };
+
+  const snackbarMessages = {
+    success: "Cadastro realizado com sucesso!",
+    error: "Erro ao realizar cadastro. Tente novamente.",
   };
 
   const schema = yup.object().shape({
@@ -125,6 +134,7 @@ function CadastroModal({
   const [showSenha, setShowSenha] = React.useState(false);
 
   const onSubmit = (data) => {
+    setIsLoading(true);
     console.log(data);
 
     axiosInstance
@@ -137,10 +147,26 @@ function CadastroModal({
         funcao: user,
       })
       .then((res) => {
+        setIsLoading(!isLoading);
         console.info(res);
+        setSnackbarSuccess({
+          open: true,
+          isError: false,
+          severity: "success",
+          message: snackbarMessages.success,
+        });
       })
       .catch((error) => {
         console.error(error);
+        setSnackbarSuccess({
+          open: true,
+          isError: true,
+          severity: "error",
+          message: snackbarMessages.error,
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -172,6 +198,19 @@ function CadastroModal({
     setIsLoginModalOpen(true);
   };
 
+  const BlueBackgroundButton = styled(LoadingButton)({
+    fontFamily: "Montserrat, sans-serif",
+    textTransform: "none",
+    fontStyle: "normal",
+    fontSize: "16px",
+    padding: "10px 16px",
+    borderRadius: "6px",
+    fontWeight: "600",
+    backgroundColor: "#0F9EEA",
+    color: "#fdfdfd",
+    lineHeight: "1.3",
+  });
+
   const {
     register,
     handleSubmit,
@@ -198,7 +237,6 @@ function CadastroModal({
             alt={altImageCadastroUser}
           />
         </div>
-
         <div className={styles["form__container"]}>
           <DialogTitle sx={stylesCSS.dialogTitle}>{"Cadastro"}</DialogTitle>
           <DialogContent sx={stylesCSS.dialogContent}>
@@ -293,11 +331,14 @@ function CadastroModal({
                 </Grid>
 
                 <BlueBackgroundButton
+                  loading={isLoading}
+                  variant="contained"
                   onClick={redictToBuscar}
                   style={stylesCSS.blueButton}
                   type="submit"
+                  color="primary"
                 >
-                  Cadastre-se
+                  <span>Cadastre-se</span>
                 </BlueBackgroundButton>
               </form>
             </Grid>
@@ -315,6 +356,24 @@ function CadastroModal({
             </p>
           </div>
         </div>
+        <Snackbar
+          open={snackbarSuccessOpen?.open}
+          autoHideDuration={6000}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Alert
+            onClose={() => setSnackbarSuccess({})}
+            sx={{ width: "100%" }}
+            severity={snackbarSuccessOpen.severity}
+          >
+            {snackbarSuccessOpen?.message}
+          </Alert>
+        </Snackbar>
       </Dialog>
     </>
   );
