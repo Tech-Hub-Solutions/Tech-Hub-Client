@@ -66,7 +66,6 @@ function LoginModal({ isLoginModalOpen, setIsLoginModalOpen }) {
       alignItems: "center",
       flexDirection: "column",
       overflow: "hidden",
-      gap: "16px",
       padding: 0,
     },
     dialogTitle: {
@@ -96,7 +95,7 @@ function LoginModal({ isLoginModalOpen, setIsLoginModalOpen }) {
       width: "100%",
       color: "#666666",
       fontWeight: 600,
-      padding: "24px 0",
+      padding: "24px 0 30px 0",
     },
     blueButton: {
       padding: "18px 125px",
@@ -205,6 +204,7 @@ function LoginModal({ isLoginModalOpen, setIsLoginModalOpen }) {
                   </Grid>
 
                   <BlueBackgroundButton
+                    // TODO - Add função para realizar login
                     onClick={() => {
                       console.log("fez login");
                     }}
