@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import SerFreelancerTravaTela from "/src/assets/images/SerFreelancerTravaTela.svg";
 import SerEmpresaTravaTela from "/src/assets/images/SerEmpresaTravaTela.svg";
 import styles from "../travaTelaCadastro/TravaTelaCadastro.module.css";

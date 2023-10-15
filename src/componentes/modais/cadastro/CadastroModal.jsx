@@ -22,6 +22,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
+import axiosInstance from "../../../config/axiosInstance";
 
 function CadastroModal({
   user,
@@ -123,7 +124,25 @@ function CadastroModal({
 
   const [showSenha, setShowSenha] = React.useState(false);
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    console.log(data);
+
+    axiosInstance
+      .post("/usuarios", {
+        nome: data.nome,
+        email: data.email,
+        senha: data.senha,
+        numeroCadastroPessoa: data.documento,
+        pais: "não tem",
+        funcao: user,
+      })
+      .then((res) => {
+        console.info(res);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const handleClose = () => {
     setCadastroIsOpen(false);

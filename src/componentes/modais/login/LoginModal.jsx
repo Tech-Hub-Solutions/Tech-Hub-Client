@@ -8,7 +8,6 @@ import styles from "../cadastro/CadastroModal.module.css";
 import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
 import Divider from "@mui/material/Divider";
 
-import PropTypes from "prop-types";
 import { TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -22,6 +21,7 @@ import * as yup from "yup";
 
 import imageLogin from "../../../assets/images/LoginModal.svg";
 import GoogleVetor from "../../../assets/images/GoogleVetor.svg";
+import axiosInstance from "../../../config/axiosInstance";
 
 function LoginModal({
   isLoginModalOpen,
@@ -105,7 +105,21 @@ function LoginModal({
 
   const [showSenha, setShowSenha] = React.useState(false);
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    console.log(data);
+
+    axiosInstance
+      .post("/login", {
+        email: data.email,
+        senha: data.senha,
+      })
+      .then((res) => {
+        console.info(res);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const handleClose = () => {
     setIsLoginModalOpen(!isLoginModalOpen);
