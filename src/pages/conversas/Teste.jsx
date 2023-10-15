@@ -8,7 +8,8 @@ const Teste = () => {
 
     useEffect(() => {
         axiosInstance.get('/usuarios').then(({ data }) => {
-            setUsuarios(data);
+      
+            setUsuarios(data.vetor.filter(usuario => usuario !== null));
         });
     }, []);
 

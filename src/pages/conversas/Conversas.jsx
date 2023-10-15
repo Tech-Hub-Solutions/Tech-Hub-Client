@@ -21,18 +21,6 @@ const Conversas = () => {
 
     useEffect(() => {
 
-        if (location.state?.usuario) {
-            const conversa = {
-                usuario: {
-                    id: location.state.usuario.id,
-                    nome: location.state.usuario.nome,
-                    pathPerfilImage: location.state.usuario.perfil?.pathPerfilImage
-                },
-                idPrimeiraConversa: location.state.usuario.id
-            }
-            setConversaSelecionada(conversa);
-        }
-
         carregarConversas();
 
         return () => {
@@ -60,7 +48,7 @@ const Conversas = () => {
         const socket = new SockJS('http://localhost:8080/websocket');
         let server = over(socket);
         // Log de mensagens
-        // server.debug = null
+        server.debug = null
 
 
         server.connect({}, () => onConnect(server), onError);
@@ -77,9 +65,27 @@ const Conversas = () => {
                     conectarWebSocket(conversasResponse);
                     socketConectado = true;
                 };
-            })
-            .catch((error) => {
-                console.log(error);
+
+                if (location.state?.usuario) {
+                    let conversa;
+                    if(response.data.length > 0) {
+                        conversa = conversasResponse.find((conversa) => conversa.usuario.id == location.state.usuario.id);
+                    }
+                    if (conversa) {
+                        setConversaSelecionada(conversa);
+                    } else {
+                        const conversa = {
+                            usuario: {
+                                id: location.state.usuario.id,
+                                nome: location.state.usuario.nome,
+                                pathPerfilImage: location.state.usuario.perfil?.pathPerfilImage
+                            },
+                            idPrimeiraConversa: location.state.usuario.id
+                        }
+                        setConversaSelecionada(conversa);
+                    }
+                   window.history.replaceState({}, document.title)
+                }
             })
     }
 

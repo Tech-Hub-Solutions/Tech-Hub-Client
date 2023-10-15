@@ -26,10 +26,6 @@
     background-color: #EBEBEB;
 }
 
-.conversa-content__mensagem--arquivo {
-    width: 100%;
-}
-
 .conversa-content__mensagem::before {
     content: '';
     position: absolute;
@@ -71,25 +67,15 @@
     color: var(--color-branco);
 }
 
-.conversa-content__mensagem__info__arquivo {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    border-radius: 10px;
-    background-color: #d2d2d2;
-    padding: 0.8rem;
-    gap: 1vw;
+.conversa-content__mensagem--arquivo {
+    width: 100%;
+}
+
+.conversa-content__mensagem__info__arquivo,
+.conversa-content__mensagem__info__imagem {
     margin-bottom: 1vh;
-    transition: filter 0.2s;
 }
 
-.conversa-content__mensagem--propria .conversa-content__mensagem__info__arquivo {
-    background-color: #0b77b1;
-}
-
-.conversa-content__mensagem__info__arquivo:hover {
-    filter: brightness(0.9);
-}
 
 .conversa-content__mensagem__info__arquivo img {
     height: 30px;
@@ -102,11 +88,12 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
+    max-width: 80%;
 }
 
 .conversa-content__mensagem__info__arquivo__informacoes__nome {
     font-size: 14px;
-    max-width: 80%;
+    max-width: 100%;
 }
 
 .conversa-content__mensagem__info__arquivo__informacoes__nome p {
