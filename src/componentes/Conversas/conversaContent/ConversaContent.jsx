@@ -18,17 +18,19 @@ const ConversaContent = (props) => {
 
     useEffect(() => {
 
-        carregarMensagens();
-
-        if (!conversaSelecionada?.idPrimeiraConversa) {
-            const conversa = stompClient?.subscribe(`/topic/sala/${conversaSelecionada?.roomCode}`, (response) => {
-                const mensagem = JSON.parse(response.body);
-                setMensagens((mensagens) => [...mensagens, mensagem]);
-            });
-
-            stompConversa.current = conversa;
+        if(conversaSelecionada.roomCode != null) {
+            carregarMensagens();
+            
+            if (!conversaSelecionada?.idPrimeiraConversa) {
+                const conversa = stompClient?.subscribe(`/topic/sala/${conversaSelecionada?.roomCode}`, (response) => {
+                    const mensagem = JSON.parse(response.body);
+                    setMensagens((mensagens) => [...mensagens, mensagem]);
+                });
+                
+                stompConversa.current = conversa;
+            }
         }
-
+            
         inputRef.current.focus();
 
         return () => {

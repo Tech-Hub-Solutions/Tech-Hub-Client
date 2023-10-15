@@ -87,9 +87,6 @@ const Conversas = () => {
                    window.history.replaceState({}, document.title)
                 }
             })
-            .catch((error) => {
-                console.log(error);
-            })
     }
 
     return (
