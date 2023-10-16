@@ -1,0 +1,19 @@
+.boxSkills {
+    display: flex;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.titulo {
+    color: var(--color-cinza);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: left;
+    margin-bottom: 8px;
+}

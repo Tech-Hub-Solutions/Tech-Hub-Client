@@ -11,84 +11,71 @@
     border: 1px solid #B4B4B4;
     border-radius: 16px 16px 0 0;
     margin-top: 90px;
-    padding-bottom: 200px;
+    padding-bottom: 50px;
 }
 
-.content__banner {
-    border-radius: 12px 12px 0 0;
-    height: 180px;
-    background-color: var(--color-azul);
-    position: relative;
-}
-
-.content__banner .banner__imagemUsuario {
-    width: 150px;
-    position: absolute;
-    bottom: -100px;
-    left: 50px;
-    background-color: #b3b3b3;
-}
-
-.content__descUsuario {
+.content__sectionSkills {
+    margin-top: 96px;
+    padding: 0 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
+    gap: 32px;
 }
 
-.content__infoUsuario {
+.content__sectionSkills .sectionSkills__experiencia {
+    border-radius: 8px;
+    border: 1px solid #B4B4B4;
     display: flex;
-    align-items: start;
     flex-direction: column;
-    margin-left: 220px;
-    margin-top: 12px;
+    padding: 32px 16px;
+    width: 50%;
 }
 
-.content__infoUsuario h1 {
+.content__sectionProjetos {
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-top: 56px;
+    overflow: hidden;
+}
+
+.content__sectionProjetos h1 {
+    color: var(--color-cinza);
     font-family: Montserrat;
-    font-size: 24px;
+    font-size: 18px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+    margin-bottom: 20px;
 }
 
-.content__infoUsuario .infoUsuario__nome {
+.content__listaProjetos {
+    width: 100%;
+}
+
+.content__sectionComentariosAvaliacoes {
+    width: 100%;
     display: flex;
-    gap: 16px;
+    justify-content: start;
+    margin-top: 72px;
+    padding: 0 20px;
 }
 
-.content__infoUsuario .infoUsuario__icones {
-    display: flex;
-    gap: 8px;
-}
-
-.infoUsuario__desc p {
-    margin-top: 8px;
-    color: var(--color-azul);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-}
-
-.infoUsuario__nacionalidade {
-    display: flex;
-    align-items: center;
-    margin-top: 8px;
-}
-
-.infoUsuario__nacionalidade img {
-    padding-right: 4px;
-    width: 20px;
-}
-
-.infoUsuario__nacionalidade p {
+.content__sectionComentariosAvaliacoes h1 {
     color: var(--color-cinza);
-    font-size: 14px;
+    font-family: Montserrat;
+    font-size: 18px;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 600;
     line-height: normal;
+    text-align: left;
+    margin-bottom: 36px;
 }
 
-.content__descUsuario .descUsuario__button {
-    margin-top: 12px;
-    margin-right: 18px;
+.content__sectionComentariosAvaliacoes .sectionComentariosAvaliacoes__comentarios {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
 }

@@ -1,68 +1,86 @@
 import React from "react";
-import styled from "@emotion/styled";
-import { Avatar } from "@mui/material";
-import { Button } from "@mui/material";
-
-import Header from "../../componentes/shared/header/Header";
 import styles from "./perfilUsuario.module.css"
-import LinkedinImg from "../../assets/images/LinkedinImg.svg"
-import GitHubImg from "../../assets/images/GithubImg.svg"
-import ReactCountryFlag from "react-country-flag";
+import Header from "../../componentes/shared/header/Header";
+import BannerDescUsuario from "../../componentes/perfilUsuario/bannerDescUsuario/BannerDescUsuario";
+import DescricaoUsuario from "../../componentes/perfilUsuario/descricaoUsuario/DescricaoUsuario";
+import BoxSoftSkills from "../../componentes/perfilUsuario/skillsUsuario/boxSkills/BoxSoftSkills";
+import BoxHardSkills from "../../componentes/perfilUsuario/skillsUsuario/boxHardSkills/BoxHardSkills";
+import ComentarioPerfil from "../../componentes/perfilUsuario/comentarioPerfil/comentarioPerfil/ComentarioPerfil";
+import CampoComentario from "../../componentes/perfilUsuario/comentarioPerfil/campoComentario/CampoComentario";
+
+import { Divider } from "@mui/material";
+import Carrossel from "../../componentes/shared/carrossel/Carrossel";
+
 
 const PerfilUsuario = (props) => {
 
-    const ButtonExplorarTalentos = styled(Button)({
-        fontFamily: "Montserrat, sans-serif",
-        padding: "10px 16px",
-        borderRadius: "6px",
-        fontWeight: "600",
-        fontStyle: "normal",
-        fontSize: "16px",
-        textTransform: "none",
-        backgroundColor: "transparent",
-        color: "#0f9eea",
-        border: "2px solid #0F9EEA",
-    });
+    let descExperiencia = '"Na minha jornada, liderei projetos desafiadores, desde aplicativos móveis para grandes marcas até sistemas de gerenciamento robustos, sempre buscando a excelência técnica e funcional."'
+
+    let descSobreMim = 'Sou um entusiasta da tecnologia dedicado, apaixonado por resolver problemas complexos de maneira criativa. Minha busca incessante por aprendizado impulsiona meu constante crescimento na área de desenvolvimento.'
+
+    const [comentario, setComentario] = React.useState([{
+        nomeUsuario: 'TechHub',
+        comentario: 'O desenvolvedor é uma verdadeira peça-chave em nossa equipe. Sempre traz soluções inovadoras e entrega resultados excepcionais. Sua habilidade de comunicação também enriquece nossa colaboração.',
+        value: 3
+    },
+    {
+        nomeUsuario: 'PlusHub',
+        comentario: 'Trabalhar com esse desenvolvedor foi uma experiência incrível. Sua dedicação incansável em enfrentar desafios e sua capacidade de transformar ideias em código funcional são notáveis. Um ativo para qualquer projeto',
+        value: 4
+    },
+    {
+        nomeUsuario: 'V6',
+        comentario: 'O desenvolvedor é uma verdadeira peça-chave em nossa equipe. Sempre traz soluções inovadoras e entrega resultados excepcionais. Sua habilidade de comunicação também enriquece nossa colaboração.',
+        value: 4
+    },
+    {
+        nomeUsuario: 'Simasturbo Mecânica',
+        comentario: 'O desenvolvedor é uma verdadeira peça-chave em nossa equipe. Sempre traz soluções inovadoras e entrega resultados excepcionais. Sua habilidade de comunicação também enriquece nossa colaboração.',
+        value: 4
+    },
+    ]);
 
     return (
         <>
             <Header />
             <div className={styles['perfil__usuario']}>
                 <div className={styles['content']}>
-                    <div className={styles['content__banner']}>
-                        <div>
-                            <Avatar className={styles['banner__imagemUsuario']}
-                                alt={'Imagem de perfil de ' + props.nomeUsuario}
-                                src={props.imagemPerfilUsuario}
-                                sx={{ width: 150, height: 150 }}
-                            />
+                    <BannerDescUsuario />
+                    <div className={styles['content__sectionSkills']}>
+                        <div className={styles['sectionSkills__experiencia']}>
+                            <DescricaoUsuario titulo='Experiência' texto={descExperiencia} />
+                            <Divider variant="middle" style={{ margin: '16px 0' }} />
+                            <DescricaoUsuario titulo='Sobre mim' texto={descSobreMim} />
+                        </div>
+                        <div className={styles['sectionSkills__experiencia']}>
+                            <BoxSoftSkills />
+                            <Divider variant="middle" style={{ margin: '16px 0' }} />
+                            <BoxHardSkills />
                         </div>
                     </div>
-                    <div className={styles['content__descUsuario']}>
-                        <div className={styles['content__infoUsuario']}>
-                            <div className={styles['infoUsuario__nome']}>
-                                {/* Limitar a Length da input para até 50 caracteres */}
-                                <h1>Bruno Silva</h1>
-                                <div className={styles['infoUsuario__icones']}>
-                                    <a href={props.srcLinkedInUsuario}><img src={LinkedinImg} alt="Ícone LinkedIn" /></a>
-                                    <a href={props.srcGitHubUsuario}><img src={GitHubImg} alt="Ícone GitHub" /></a>
-                                </div>
-                            </div>
-                            <div className={styles['infoUsuario__desc']}>
-                                {/* Limitar a Length da input para até 80 caracteres */}
-                                <p>Desenvolvedor Full-Stack | Angular</p>
-                            </div>
-                            <div className={styles['infoUsuario__nacionalidade']}>
-                                {/* <a href=""><img src={LinkedinImg} alt={'Bandeira do ' + props.pais} /></a> */}
-                                <ReactCountryFlag countryCode="BR" svg style={{
-                                    fontSize: '1.3em',
-                                    lineHeight: '1.3em',
-                                }} />
-                                <p>Brasil</p>
-                            </div>
+                    <div className={styles['content__sectionProjetos']}>
+                        <h1>Projetos desenvolvidos</h1>
+                        <div id="lista-projetos" className={styles['content__listaProjetos']}>
+                            <Carrossel />
                         </div>
-                        <div className={styles['descUsuario__button']}>
-                            <ButtonExplorarTalentos>Editar Perfil</ButtonExplorarTalentos>
+                    </div>
+                    <div className={styles['content__sectionComentariosAvaliacoes']}>
+                        <div className={styles['sectionComentariosAvaliacoes__comentarios']}>
+                            <h1>Comentários</h1>
+                            {
+                                comentario.map((comentario, index) => {
+                                    if (index < 3) {
+                                        return (
+                                            <ComentarioPerfil key={`comentario${index}`} nomeUsuario={comentario.nomeUsuario} comentario={comentario.comentario} value={comentario.value} />
+                                        )
+                                    }
+                                })
+                            }
+                            <CampoComentario nomeUsuario='Você' />
+                        </div>
+                        <Divider orientation="vertical" flexItem style={{ margin: '0 36px' }}></Divider>
+                        <div className={styles['sectionComentariosAvaliacoes__avaliacoes']}>
+                            <h1>Avaliações</h1>
                         </div>
                     </div>
                 </div>
