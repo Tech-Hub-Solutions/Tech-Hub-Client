@@ -34,6 +34,7 @@ function CadastroModal({
   const [snackbarSuccessOpen, setSnackbarSuccess] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
   const [showSenha, setShowSenha] = React.useState(false);
+  const [wasSubmitted, setWasSubmitted] = React.useState(false);
 
   const inpValidator = {
     campoObrigatorio: "Campo obrigatório.",
@@ -129,40 +130,44 @@ function CadastroModal({
   };
 
   const onSubmit = (data) => {
-    setIsLoading(true);
-    console.log(data);
+    if (!wasSubmitted) {
+      setWasSubmitted(true);
+      setIsLoading(true);
+      console.log(data);
 
-    axiosInstance
-      .post("/usuarios", {
-        nome: data.nome,
-        email: data.email,
-        senha: data.senha,
-        numeroCadastroPessoa: data.documento,
-        pais: "não tem",
-        funcao: user,
-      })
-      .then((res) => {
-        setIsLoading(!isLoading);
-        console.info(res);
-        setSnackbarSuccess({
-          open: true,
-          isError: false,
-          severity: "success",
-          message: snackbarMessages.success,
+      axiosInstance
+        .post("/usuarios", {
+          nome: data.nome,
+          email: data.email,
+          senha: data.senha,
+          numeroCadastroPessoa: data.documento,
+          pais: "não tem",
+          funcao: user,
+        })
+        .then((res) => {
+          setIsLoading(!isLoading);
+          console.info(res);
+          setSnackbarSuccess({
+            open: true,
+            isError: false,
+            severity: "success",
+            message: snackbarMessages.success,
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          setSnackbarSuccess({
+            open: true,
+            isError: true,
+            severity: "error",
+            message: snackbarMessages.error,
+          });
+        })
+        .finally(() => {
+          setWasSubmitted(false);
+          setIsLoading(false);
         });
-      })
-      .catch((error) => {
-        console.error(error);
-        setSnackbarSuccess({
-          open: true,
-          isError: true,
-          severity: "error",
-          message: snackbarMessages.error,
-        });
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    }
   };
 
   const handleClose = () => {
