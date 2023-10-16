@@ -26,6 +26,10 @@ const ButtonExplorarTalentos = styled(Button)({
 });
 
 function PrimeiraSecao() {
+  const redirectToCadastro = () => {
+    window.location.href = "/cadastro";
+  };
+
   return (
     <div className="first__section">
       <div className="container__section">
@@ -34,15 +38,23 @@ function PrimeiraSecao() {
             Dificuldade em <br />
             encontrar <span>talentos</span>?
           </h1>
+
           <p>
             Unindo talento e necessidade: o ponto de encontro para
             desenvolvedores freelancers e empresas!
           </p>
+
           <StackButtons direction={"row"}>
-            <BlueBackgroundButton>Quero ser um freelancer</BlueBackgroundButton>
-            <ButtonExplorarTalentos>Explorar talentos</ButtonExplorarTalentos>
+            <BlueBackgroundButton onClick={redirectToCadastro}>
+              Quero ser um freelancer
+            </BlueBackgroundButton>
+
+            <ButtonExplorarTalentos>
+              Explorar talentos
+            </ButtonExplorarTalentos>
           </StackButtons>
         </div>
+        
         <div className="container__right-part">
           <img src={RhWoman} alt="" />
         </div>

@@ -79,7 +79,7 @@ export default function AccountMenu(props) {
 
         <MenuItem onClick={handleClose}>
           <LogoutRoundedIcon style={{ color: '858585', marginRight: '6px', width: '24px' }} />
-            <p>Sair</p>
+          <p>Sair</p>
         </MenuItem>
       </Menu>
     </React.Fragment >

@@ -15,12 +15,23 @@ const BlueStyledButton = styled(Button)({
   lineHeight: "1.3",
 });
 
-BlueBackgroundButton.propTypes = {
-  children: PropTypes.node.isRequired,
+const BlueBackgroundButton = ({ onClick, children, style, type }) => {
+  return (
+    <BlueStyledButton
+      onClick={onClick}
+      variant="contained"
+      style={style}
+      type={type}
+    >
+      {children}
+    </BlueStyledButton>
+  );
 };
 
-function BlueBackgroundButton({ children }) {
-  return <BlueStyledButton variant="contained">{children}</BlueStyledButton>;
-}
-
+BlueBackgroundButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+  style: PropTypes.object,
+  type: PropTypes.string,
+};
 export default BlueBackgroundButton;
