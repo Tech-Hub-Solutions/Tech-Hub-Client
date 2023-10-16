@@ -12,7 +12,7 @@ import GoogleVetor from "../../../assets/images/GoogleVetor.svg";
 import Divider from "@mui/material/Divider";
 
 import React from "react";
-import { Alert, Snackbar, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
@@ -34,6 +34,7 @@ function CadastroModal({
 }) {
   const [snackbarSuccessOpen, setSnackbarSuccess] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
+  const [showSenha, setShowSenha] = React.useState(false);
 
   const inpValidator = {
     campoObrigatorio: "Campo obrigatório.",
@@ -131,8 +132,6 @@ function CadastroModal({
       },
     },
   };
-
-  const [showSenha, setShowSenha] = React.useState(false);
 
   const onSubmit = (data) => {
     setIsLoading(true);
@@ -357,9 +356,10 @@ function CadastroModal({
             </p>
           </div>
         </div>
+
         <SnackbarCustom
-          snackbarOpen={snackbarSuccessOpen?.open}
-          message={snackbarSuccessOpen?.message}
+          snackbarOpen={snackbarSuccessOpen.open}
+          message={snackbarSuccessOpen.message}
           severity={snackbarSuccessOpen.severity}
           setSnackbarOpen={() => {
             setSnackbarSuccess((prevState) => ({
