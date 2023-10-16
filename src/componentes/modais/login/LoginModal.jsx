@@ -5,7 +5,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 
 import styles from "../cadastro/CadastroModal.module.css";
-import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
 import Divider from "@mui/material/Divider";
 
 import { TextField } from "@mui/material";
@@ -23,6 +22,7 @@ import imageLogin from "../../../assets/images/LoginModal.svg";
 import GoogleVetor from "../../../assets/images/GoogleVetor.svg";
 import axiosInstance from "../../../config/axiosInstance";
 import SnackbarCustom from "../../shared/snackbar/SnackbarCustom.jsx";
+import CustomLoadingButton from "../../shared/customLoadingButton/CustomLoadingButton";
 
 function LoginModal({
   isLoginModalOpen,
@@ -30,7 +30,7 @@ function LoginModal({
   setTravaTelaOpen,
 }) {
   const [snackbarSuccessOpen, setSnackbarSuccess] = React.useState({});
-  // const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [showSenha, setShowSenha] = React.useState(false);
 
   const inpValidator = {
@@ -114,6 +114,7 @@ function LoginModal({
   };
 
   const onSubmit = (data) => {
+    setIsLoading(true);
     console.log(data);
 
     axiosInstance
@@ -133,6 +134,8 @@ function LoginModal({
           severity: "success",
           message: snackbarMessages.success,
         });
+
+        setIsLoading(!isLoading);
       })
       .catch((error) => {
         console.error(error);
@@ -143,6 +146,9 @@ function LoginModal({
           severity: "error",
           message: snackbarMessages.error,
         });
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -159,6 +165,11 @@ function LoginModal({
   const redirectToTravaTelaCadastro = () => {
     setIsLoginModalOpen(false);
     setTravaTelaOpen(true);
+  };
+
+  const redictToBuscar = () => {
+    // TODO - Inserir roteamento p/ ir à página de buscar talentos ou de perfil
+    return null;
   };
 
   const {
@@ -241,16 +252,11 @@ function LoginModal({
                   />
                 </Grid>
 
-                <BlueBackgroundButton
-                  // TODO - Add função para realizar login
-                  onClick={() => {
-                    console.log("fez login");
-                  }}
-                  style={stylesCSS.blueButton}
-                  type="submit"
-                >
-                  Entrar
-                </BlueBackgroundButton>
+                <CustomLoadingButton
+                  isLoading={isLoading}
+                  onClick={redictToBuscar}
+                  textButton={"Entrar"}
+                ></CustomLoadingButton>
               </form>
             </Grid>
           </DialogContent>

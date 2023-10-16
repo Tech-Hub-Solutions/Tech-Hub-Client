@@ -3,8 +3,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 
-import styled from "@emotion/styled";
-import { LoadingButton } from "@mui/lab";
 import styles from "./CadastroModal.module.css";
 import CadastroEmpresaImage from "../../../assets/images/CadastroEmpresa.svg";
 import CadastroFreelancerImage from "../../../assets/images/CadastroFreelancer.svg";
@@ -25,6 +23,7 @@ import * as yup from "yup";
 
 import axiosInstance from "../../../config/axiosInstance";
 import SnackbarCustom from "../../shared/snackbar/SnackbarCustom.jsx";
+import CustomLoadingButton from "../../shared/customLoadingButton/CustomLoadingButton.jsx";
 
 function CadastroModal({
   user,
@@ -114,10 +113,6 @@ function CadastroModal({
       color: "#666666",
       fontWeight: 600,
     },
-    blueButton: {
-      padding: "18px 125px",
-      marginTop: "16px",
-    },
     input: {
       "& input[type=number]": {
         MozAppearance: "textfield",
@@ -197,19 +192,6 @@ function CadastroModal({
     setCadastroIsOpen(false);
     setIsLoginModalOpen(true);
   };
-
-  const BlueBackgroundButton = styled(LoadingButton)({
-    fontFamily: "Montserrat, sans-serif",
-    textTransform: "none",
-    fontStyle: "normal",
-    fontSize: "16px",
-    padding: "10px 16px",
-    borderRadius: "6px",
-    fontWeight: "600",
-    backgroundColor: "#0F9EEA",
-    color: "#fdfdfd",
-    lineHeight: "1.3",
-  });
 
   const {
     register,
@@ -330,16 +312,11 @@ function CadastroModal({
                   />
                 </Grid>
 
-                <BlueBackgroundButton
-                  loading={isLoading}
-                  variant="contained"
+                <CustomLoadingButton
+                  isLoading={isLoading}
                   onClick={redictToBuscar}
-                  style={stylesCSS.blueButton}
-                  type="submit"
-                  color="primary"
-                >
-                  <span>Cadastre-se</span>
-                </BlueBackgroundButton>
+                  textButton={"Cadastre-se"}
+                ></CustomLoadingButton>
               </form>
             </Grid>
           </DialogContent>
