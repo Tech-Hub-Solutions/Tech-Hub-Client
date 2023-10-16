@@ -14,7 +14,7 @@ import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
@@ -32,6 +32,7 @@ function LoginModal({
   const [snackbarSuccessOpen, setSnackbarSuccess] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
   const [showSenha, setShowSenha] = React.useState(false);
+  const [wasSubmitted, setWasSubmitted] = React.useState(false);
 
   const inpValidator = {
     campoObrigatorio: "Campo obrigatório.",
@@ -114,42 +115,46 @@ function LoginModal({
   };
 
   const onSubmit = (data) => {
-    setIsLoading(true);
-    console.log(data);
+    if (!wasSubmitted) {
+      setWasSubmitted(true);
+      setIsLoading(true);
+      console.log(data);
 
-    axiosInstance
-      .post("/usuarios/login", {
-        email: data.email,
-        senha: data.senha,
-      })
-      .then((res) => {
-        console.info(res);
+      axiosInstance
+        .post("/usuarios/login", {
+          email: data.email,
+          senha: data.senha,
+        })
+        .then((res) => {
+          console.info(res);
 
-        sessionStorage.setItem("usuarioId", res.data.id);
-        sessionStorage.setItem("token", res.data.token);
+          sessionStorage.setItem("usuarioId", res.data.id);
+          sessionStorage.setItem("token", res.data.token);
 
-        setSnackbarSuccess({
-          open: true,
-          isError: false,
-          severity: "success",
-          message: snackbarMessages.success,
+          setSnackbarSuccess({
+            open: true,
+            isError: false,
+            severity: "success",
+            message: snackbarMessages.success,
+          });
+
+          setIsLoading(!isLoading);
+        })
+        .catch((error) => {
+          console.error(error);
+
+          setSnackbarSuccess({
+            open: true,
+            isError: true,
+            severity: "error",
+            message: snackbarMessages.error,
+          });
+        })
+        .finally(() => {
+          setWasSubmitted(false);
+          setIsLoading(false);
         });
-
-        setIsLoading(!isLoading);
-      })
-      .catch((error) => {
-        console.error(error);
-
-        setSnackbarSuccess({
-          open: true,
-          isError: true,
-          severity: "error",
-          message: snackbarMessages.error,
-        });
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    }
   };
 
   const handleClose = () => {
