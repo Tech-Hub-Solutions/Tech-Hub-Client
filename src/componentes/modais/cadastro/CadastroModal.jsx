@@ -20,6 +20,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import InputMask from "react-input-mask";
 
 import axiosInstance from "../../../config/axiosInstance";
 import SnackbarCustom from "../../shared/snackbar/SnackbarCustom.jsx";
@@ -133,14 +134,17 @@ function CadastroModal({
     if (!wasSubmitted) {
       setWasSubmitted(true);
       setIsLoading(true);
-      console.log(data);
+
+      const numeroDocumento = data.documento
+        .replace(/[^0-9]/g, "")
+        .replace(/[-./]/g, "");
 
       axiosInstance
         .post("/usuarios", {
           nome: data.nome,
           email: data.email,
           senha: data.senha,
-          numeroCadastroPessoa: data.documento,
+          numeroCadastroPessoa: numeroDocumento,
           pais: "não tem",
           funcao: user,
         })
@@ -257,19 +261,28 @@ function CadastroModal({
                 </Grid>
 
                 <Grid item>
-                  <TextField
-                    name="documento"
-                    label={user === "freelancer" ? "CPF" : "CNPJ"}
-                    variant="outlined"
-                    color="primary"
-                    type="number"
-                    sx={{ mb: 2, ...stylesCSS.input }}
-                    error={errors.documento?.message.length > 0}
-                    helperText={errors.documento?.message}
-                    fullWidth
-                    placeholder="Insira sem os pontos e traços"
+                  <InputMask
+                    mask={
+                      user === "freelancer"
+                        ? "999.999.999-99"
+                        : "99.999.999/9999-99"
+                    }
                     {...register("documento")}
-                  />
+                  >
+                    {() => (
+                      <TextField
+                        name="documento"
+                        label={user === "freelancer" ? "CPF" : "CNPJ"}
+                        sx={{ mb: 2, ...stylesCSS.input }}
+                        variant="outlined"
+                        color="primary"
+                        type="tel"
+                        helperText={errors.documento?.message}
+                        placeholder="Insira sem os pontos e traços"
+                        fullWidth
+                      />
+                    )}
+                  </InputMask>
                 </Grid>
 
                 <Grid item>
