@@ -28,6 +28,8 @@
     "react-image-file-resizer": "^0.4.8",
     "react-input-mask": "^2.0.4",
     "react-router-dom": "^6.16.0",
+    "react-slick": "^0.29.0",
+    "slick-carousel": "^1.8.1",
     "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3",
     "yup": "^1.3.2"

@@ -1,0 +1,32 @@
+.cardProjeto {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    min-width: 300px;
+    max-width: 300px;
+    align-items: start;
+    padding-bottom: 10px;
+}
+
+.cardProjeto h1 {
+    color: var(--color-cinza);
+    font-family: Montserrat;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-bottom: 4px;
+    margin-top: 6px;
+    color: var(--color-azul);
+}
+
+.cardProjeto__desc {
+    color: var(--color-textos);
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-align: left;
+    margin-bottom: 20px;
+}
