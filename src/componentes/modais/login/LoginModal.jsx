@@ -22,18 +22,28 @@ import * as yup from "yup";
 import imageLogin from "../../../assets/images/LoginModal.svg";
 import GoogleVetor from "../../../assets/images/GoogleVetor.svg";
 import axiosInstance from "../../../config/axiosInstance";
+import SnackbarCustom from "../../shared/snackbar/SnackbarCustom.jsx";
 
 function LoginModal({
   isLoginModalOpen,
   setIsLoginModalOpen,
   setTravaTelaOpen,
 }) {
+  const [snackbarSuccessOpen, setSnackbarSuccess] = React.useState({});
+  // const [isLoading, setIsLoading] = React.useState(false);
+  const [showSenha, setShowSenha] = React.useState(false);
+
   const inpValidator = {
     campoObrigatorio: "Campo obrigatório.",
     apenasNumeros: "Apenas números.",
     minimoCaracteres: "Mínimo de 8 caracteres.",
     maximoCaracteres: "Máximo de 15 caracteres.",
     emailInvalido: "E-mail inválido.",
+  };
+
+  const snackbarMessages = {
+    success: "Login realizado com sucesso!",
+    error: "Erro ao realizar login. Tente novamente.",
   };
 
   const schema = yup.object().shape({
@@ -103,8 +113,6 @@ function LoginModal({
     },
   };
 
-  const [showSenha, setShowSenha] = React.useState(false);
-
   const onSubmit = (data) => {
     console.log(data);
 
@@ -115,11 +123,26 @@ function LoginModal({
       })
       .then((res) => {
         console.info(res);
-        sessionStorage.setItem("token", res.data.token);
+
         sessionStorage.setItem("usuarioId", res.data.id);
+        sessionStorage.setItem("token", res.data.token);
+
+        setSnackbarSuccess({
+          open: true,
+          isError: false,
+          severity: "success",
+          message: snackbarMessages.success,
+        });
       })
       .catch((error) => {
         console.error(error);
+
+        setSnackbarSuccess({
+          open: true,
+          isError: true,
+          severity: "error",
+          message: snackbarMessages.error,
+        });
       });
   };
 
@@ -255,6 +278,18 @@ function LoginModal({
             alt="Homem tomando café e usando notebook"
           />
         </div>
+
+        <SnackbarCustom
+          snackbarOpen={snackbarSuccessOpen.open}
+          message={snackbarSuccessOpen.message}
+          severity={snackbarSuccessOpen.severity}
+          setSnackbarOpen={() => {
+            setSnackbarSuccess((prevState) => ({
+              ...prevState,
+              open: false,
+            }));
+          }}
+        ></SnackbarCustom>
       </Dialog>
     </>
   );
