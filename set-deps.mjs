@@ -32,8 +32,12 @@ const updateDependencies = async () => {
        * Remove a dependência Linux
        * Adiciona a dependência Windows
        */
-      packageJson.dependencies["@esbuild/linux-x64"] = undefined;
-      packageJson.dependencies["@esbuild/win32-x64"] = "0.18.20";
+      const linuxDep = packageJson.dependencies["@esbuild/linux-x64"];
+      delete packageJson.dependencies["@esbuild/linux-x64"];
+
+      if (linuxDep) {
+        packageJson.dependencies["@esbuild/win32-x64"] = "0.18.20";
+      }
     } else {
       /*
        * Se o sistema não for Windows,
@@ -42,8 +46,12 @@ const updateDependencies = async () => {
        * Remove a dependência Windows
        * Adiciona a dependência Linux
        */
-      packageJson.dependencies["@esbuild/win32-x64"] = undefined;
-      packageJson.dependencies["@esbuild/linux-x64"] = "0.15.18";
+      const winDep = packageJson.dependencies["@esbuild/win32-x64"];
+      delete packageJson.dependencies["@esbuild/win32-x64"];
+
+      if (winDep) {
+        packageJson.dependencies["@esbuild/linux-x64"] = "0.15.18";
+      }
     }
 
     await writeFile("./package.json", packageJson);
