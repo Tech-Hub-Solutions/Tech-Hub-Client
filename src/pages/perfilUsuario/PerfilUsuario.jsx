@@ -10,9 +10,13 @@ import CampoComentario from "../../componentes/perfilUsuario/comentarioPerfil/ca
 
 import { Divider } from "@mui/material";
 import Carrossel from "../../componentes/shared/carrossel/Carrossel";
+import AvaliacoesUsuario from "../../componentes/perfilUsuario/avaliacoesUsuario/AvaliacoesUsuario";
 
 
 const PerfilUsuario = (props) => {
+
+    const valorPerfil = 3;
+    const avaliacoesRealizadas = 59;
 
     let descExperiencia = '"Na minha jornada, liderei projetos desafiadores, desde aplicativos móveis para grandes marcas até sistemas de gerenciamento robustos, sempre buscando a excelência técnica e funcional."'
 
@@ -81,6 +85,7 @@ const PerfilUsuario = (props) => {
                         <Divider orientation="vertical" flexItem style={{ margin: '0 36px' }}></Divider>
                         <div className={styles['sectionComentariosAvaliacoes__avaliacoes']}>
                             <h1>Avaliações</h1>
+                            <AvaliacoesUsuario numeroAvaliacoes={avaliacoesRealizadas} value={valorPerfil} />
                         </div>
                     </div>
                 </div>
