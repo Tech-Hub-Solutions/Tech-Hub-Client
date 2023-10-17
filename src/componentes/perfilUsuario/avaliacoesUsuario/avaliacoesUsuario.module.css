@@ -1,34 +1,4 @@
-.avaliacoesUsuario {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    width: 100%;
-}
-
-.avaliacoesUsuario .avaliacoesUsuario__titulo {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.avaliacoesUsuario__titulo h2 {
-    color: #B4B4B4;
-    font-family: Montserrat;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-}
-
-.avaliacoesUsuario .avaliacoesUsuario__barrasProgresso {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-}
-
-.avaliacoesUsuario .avaliacoesUsuario__barra {
+.avaliacoesUsuario__barra {
     margin-top: 26px;
     display: flex;
     align-items: center;
