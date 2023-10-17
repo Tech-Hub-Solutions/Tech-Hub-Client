@@ -1,0 +1,39 @@
+.projetos {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    gap: 16px;
+}
+
+.projetos__titulo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.projetos__titulo h1 {
+    color: var(--color-cinza);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.projetos__lista {
+    display: flex;
+    width: 100%;
+    height: 21rem;
+    overflow-x: auto;
+}
+
+
+.projetos__lista__mensagem-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 15rem;
+    background-color: #f5f5f5;
+    color: #848484
+}
