@@ -33,7 +33,7 @@ const ComentarioPerfil = (props) => {
                     <p>{props.comentario}</p>
                 </div>
             </div>
-            <Divider style={{ margin: '32px' }} />
+            <Divider style={{ margin: '32px 0' }} />
         </div>
     );
 }

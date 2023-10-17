@@ -22,13 +22,50 @@
     gap: 32px;
 }
 
-.content__sectionSkills .sectionSkills__experiencia {
+.sectionSkills__experiencia {
     border-radius: 8px;
     border: 1px solid #B4B4B4;
     display: flex;
     flex-direction: column;
     padding: 32px 16px;
     width: 50%;
+}
+
+.content__sectionSkillsEmpresa {
+    margin-top: 96px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+}
+
+.sectionSkillsEmpresa__experiencia {
+    display: flex;
+}
+
+.sectionSkills__sobreNos {
+    border-radius: 8px 0px 0px 0px;
+    border: 1px solid #B4B4B4;
+    padding: 32px 16px;
+    width: 50%;
+}
+
+.sectionSkills__quemProcuramos {
+    border-radius: 0px 8px 0px 0px;
+    border-top: 1px solid #B4B4B4;
+    border-right: 1px solid #B4B4B4;
+    border-bottom: 1px solid #B4B4B4;
+    padding: 32px 16px;
+    width: 50%;
+}
+
+.sectionSkills__softSkills {
+    border-radius: 0px 0px 8px 8px;
+    border-right: 1px solid #B4B4B4;
+    border-bottom: 1px solid #B4B4B4;
+    border-left: 1px solid #B4B4B4;
+    padding: 32px 16px;
+    width: 100%;
 }
 
 .content__sectionProjetos {
@@ -86,4 +123,63 @@
     display: flex;
     flex-direction: column;
     align-items: start;
+}
+
+.avaliacoesUsuario {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+}
+
+.avaliacoesUsuario .avaliacoesUsuario__titulo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.avaliacoesUsuario__titulo h2 {
+    color: #B4B4B4;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.sectionComentariosAvaliacoes__adicionais {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.adicionais__informacoes {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+    margin-bottom: 16px;
+    gap: 8px;
+}
+
+.adicionais__informacoes h4 {
+    color: var(--color-cinza);
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-align: left;
+}
+
+.adicionais__informacoes p {
+    text-align: left;
+    color: #B4B4B4;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
 }
