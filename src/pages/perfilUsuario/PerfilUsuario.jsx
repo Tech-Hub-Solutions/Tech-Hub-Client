@@ -12,6 +12,7 @@ import { Box, Button, Divider, Rating } from "@mui/material";
 import Carrossel from "../../componentes/shared/carrossel/Carrossel";
 import AvaliacoesUsuario from "../../componentes/perfilUsuario/avaliacoesUsuario/AvaliacoesUsuario";
 import styled from "@emotion/styled";
+import Projetos from "../../componentes/perfilUsuario/projetosUsuario/Projetos";
 
 
 const PerfilUsuario = (props) => {
@@ -68,10 +69,11 @@ const PerfilUsuario = (props) => {
     if (isPerfilFreelancer) {
         showProjetos = (
             <div className={styles['content__sectionProjetos']}>
-                <h1>Projetos desenvolvidos</h1>
-                <div id="lista-projetos" className={styles['content__listaProjetos']}>
-                    <Carrossel />
-                </div>
+                {/* <h1>Projetos desenvolvidos</h1>
+                 <div id="lista-projetos" className={styles['content__listaProjetos']}>
+                     <Carrossel />
+                 </div> */}
+                <Projetos />
             </div>
         )
     } else {

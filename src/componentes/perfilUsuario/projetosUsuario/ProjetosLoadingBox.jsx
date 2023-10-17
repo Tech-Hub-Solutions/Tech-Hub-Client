@@ -3,7 +3,7 @@ import { Box, Skeleton, } from '@mui/material';
 
 const ProjetosLoadingBox = () => {
     const stylesMui = {
-        loaddingBox: { marginRight: "1rem", my: 5, display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" },
+        loaddingBox: { marginRight: "2rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" },
         loadingLanguages: { pt: 0.5, display: "flex", flexDirection: "row", justifyContent: "space-around", width: "100%" }
     }
 

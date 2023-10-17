@@ -3,7 +3,6 @@ import Institucional from './pages/institucional/Institucional'
 import Conversas from './pages/conversas/Conversas'
 import Teste from './pages/conversas/Teste';
 import PerfilUsuario from './pages/perfilUsuario/PerfilUsuario';
-import Projetos from './componentes/perfilUsuario/projetosUsuario/Projetos';
 
 function App() {
 
@@ -15,7 +14,6 @@ function App() {
           <Route path="/conversas" element={<Conversas />} />
           <Route path="/teste" element={<Teste />} />
           <Route path="/perfil" element={<PerfilUsuario />} />
-          <Route path="/github" element={<Projetos />} />
         </Routes>
       </Router>
     </>

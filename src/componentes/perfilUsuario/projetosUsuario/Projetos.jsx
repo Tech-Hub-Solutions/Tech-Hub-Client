@@ -52,7 +52,7 @@ const Projetos = ({ nome }) => {
     return (
         <div className={styles["projetos"]}>
             <div className="divParaExcluir">
-                <p>Nome temporário:</p>
+                <p>Input para digitar nome (será excluido):</p>
                 <input type="text" className="usuarioInput" placeholder="Usuário" value={usuario} onChange={e => setUsuario(e.target.value)} />
                 <button type="button" onClick={pesquisar}>Pesquisar</button>
             </div>
@@ -62,7 +62,7 @@ const Projetos = ({ nome }) => {
             </div>
             <div className={styles['projetos__lista']}>
                 {loading ?
-                    (Array.from(new Array(5))).map((index) => (
+                    (Array.from(new Array(4))).map((index) => (
                         <ProjetosLoadingBox key={index} />
                     ))
                     :
