@@ -29,6 +29,16 @@
   --color-branco: #fdfdfd;
   --color-textos: #505050;
 
+  --color-frontend: #84D5FF;
+  --color-backend: #FFA0A0;
+  --color-mobile: #FFCB8E;
+  --color-database: #FFEB84;
+  --color-testes: #84FFFF;
+  --color-analiseDados: #B5FF9B;
+  --color-devops: #FFA98E;
+  --color-ia: #FF9BFB;
+  --color-seguranca: #FF8EB7;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

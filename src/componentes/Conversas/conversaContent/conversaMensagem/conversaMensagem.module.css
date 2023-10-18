@@ -1,0 +1,157 @@
+.conversa-content__mensagem--data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.conversa-content__mensagem--data p {
+    font-size: 0.625rem;
+    font-style: normal;
+    font-weight: 400;
+    color: #505050;
+    background-color: #EBEBEB;
+    padding: 0.5rem;
+    border-radius: 7px;
+}
+
+.conversa-content__mensagem {
+    position: relative;
+    text-align: right;
+    margin-bottom: 10px;
+    max-width: 40%;
+    border-radius: 10px;
+    padding: 0.8rem;
+    background-color: #EBEBEB;
+}
+
+.conversa-content__mensagem::before {
+    content: '';
+    position: absolute;
+    left: -13px;
+    top: 5px;
+    border-width: 9px;
+    border-style: solid;
+    transform: rotate(15deg);
+    border-color: transparent #EBEBEB transparent transparent;
+}
+
+.conversa-content__mensagem p {
+    color: var(--color-cinza);
+}
+
+.conversa-content__mensagem--propria {
+    align-self: flex-end;
+    justify-self: flex-start;
+    background-color: var(--color-azul);
+}
+
+
+.conversa-content__mensagem--propria::before {
+    display: none;
+}
+
+.conversa-content__mensagem--propria::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    right: -13px;
+    border-width: 9px;
+    border-style: solid;
+    transform: rotate(-15deg);
+    border-color: transparent transparent transparent var(--color-azul);
+}
+
+.conversa-content__mensagem--propria p {
+    color: var(--color-branco);
+}
+
+.conversa-content__mensagem--arquivo {
+    width: 100%;
+}
+
+.conversa-content__mensagem__info__arquivo,
+.conversa-content__mensagem__info__imagem {
+    margin-bottom: 1vh;
+}
+
+
+.conversa-content__mensagem__info__arquivo img {
+    height: 30px;
+    width: 30px;
+}
+
+
+.conversa-content__mensagem__info__arquivo__informacoes {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    max-width: 80%;
+}
+
+.conversa-content__mensagem__info__arquivo__informacoes__nome {
+    font-size: 14px;
+    max-width: 100%;
+}
+
+.conversa-content__mensagem__info__arquivo__informacoes__nome p {
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.conversa-content__mensagem__info__arquivo__informacoes__metadado {
+    display: flex;
+    align-items: center;
+    font-size: 0.625rem;
+    gap: 0.5vw;
+    color: #505050;
+}
+
+.conversa-content__mensagem__info__texto {
+    max-width: 100%;
+    float: left;
+    text-align: start;
+    overflow-wrap: break-word;
+    font-size: 14px;
+    color: var(--color-branco);
+}
+
+.conversa-content__mensagem__info__white-space {
+    float: right;
+    width: 12px;
+    height: 12px;
+    margin-left: 1.1rem;
+    font-size: 0.625rem;
+    font-style: normal;
+    font-weight: 400;
+    display: flex;
+    align-items: flex-end;
+
+}
+
+.conversa-content__mensagem__info__data {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    margin-left: 1rem;
+    font-size: 0.625rem;
+    font-style: normal;
+    font-weight: 400;
+    display: flex;
+    align-items: flex-end;
+
+}
+
+.conversa-content__mensagem__info_data p {
+    color: #505050;
+    align-self: flex-end;
+    /* Alinhar para baixo */
+}
+
+.conversa-content__mensagem--propria .conversa-content__mensagem__info__data p {
+    color: #E2E2E2;
+}

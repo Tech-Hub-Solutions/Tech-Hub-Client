@@ -50,3 +50,7 @@
 .header__institucional .active:hover {
   color: #78cdfc;
 }
+
+.login__button {
+  cursor: pointer;
+}

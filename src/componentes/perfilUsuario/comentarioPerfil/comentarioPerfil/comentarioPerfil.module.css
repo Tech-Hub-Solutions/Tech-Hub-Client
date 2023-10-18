@@ -1,0 +1,53 @@
+.divider {
+    display: flex;
+    flex-direction: column;
+}
+
+.comentario {
+    display: flex;
+}
+
+.comentario__fotoPerfil {
+    margin-right: 24px;
+}
+
+.comentario__content {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+}
+
+.comentario__content h1 {
+    color: var(--color-cinza);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-bottom: 8px;
+}
+
+.comentario__content h4 {
+    color: var(--color-cinza);
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.infoUsuario__nacionalidade {
+    display: flex;
+    margin-bottom: 16px;
+}
+
+.comentario__content p {
+    color: var(--color-textos);
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-align: left;
+    margin-top: 8px;
+}
