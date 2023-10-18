@@ -15,7 +15,7 @@ const BoxTecnologias = () => {
             <div className="container__tecnologias">
                 <h1>O que você precisa a gente tem</h1>
                 <div className="box__tecnologias">
-                    <h3>Segmentos de mercado</h3>
+                    <h3>Procure pelas tecnologias desejadas!</h3>
                     <hr />
                     <div className="tecnologias">
                         <div className="combo__tecnologia">
