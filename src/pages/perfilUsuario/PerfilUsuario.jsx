@@ -19,68 +19,9 @@ const PerfilUsuario = (props) => {
 
     const isPerfilFreelancer = true;
 
-    // Seção de Descrição do Usuário
-
     let descExperiencia = '"Na minha jornada, liderei projetos desafiadores, desde aplicativos móveis para grandes marcas até sistemas de gerenciamento robustos, sempre buscando a excelência técnica e funcional."'
-
     let descSobreMim = 'Sou um entusiasta da tecnologia dedicado, apaixonado por resolver problemas complexos de maneira criativa. Minha busca incessante por aprendizado impulsiona meu constante crescimento na área de desenvolvimento.'
 
-    // Seção Boxes Desc Usuário
-
-    let showBox;
-
-    if (isPerfilFreelancer) {
-        showBox = (
-            <div className={styles['content__sectionSkills']}>
-                <div className={styles['sectionSkills__experiencia']}>
-                    <DescricaoUsuario titulo='Experiência' texto={descExperiencia} />
-                    <Divider variant="middle" style={{ margin: '16px 0' }} />
-                    <DescricaoUsuario titulo='Sobre mim' texto={descSobreMim} />
-                </div>
-                <div className={styles['sectionSkills__experiencia']}>
-                    <BoxSoftSkills />
-                    <Divider variant="middle" style={{ margin: '16px 0' }} />
-                    <BoxHardSkills />
-                </div>
-            </div>
-        )
-    } else {
-        showBox = (
-            <div className={styles['content__sectionSkillsEmpresa']}>
-                <div className={styles['sectionSkillsEmpresa__experiencia']}>
-                    <div className={styles['sectionSkills__sobreNos']}>
-                        <DescricaoUsuario titulo='Experiência' texto={descExperiencia} />
-                    </div>
-                    <div className={styles['sectionSkills__quemProcuramos']}>
-                        <DescricaoUsuario titulo='Sobre mim' texto={descSobreMim} />
-                    </div>
-                </div>
-                <div className={styles['sectionSkills__softSkills']}>
-                    <BoxSoftSkills />
-                </div>
-            </div>
-        )
-    }
-
-    // Seção Projetos
-
-    let showProjetos;
-
-    if (isPerfilFreelancer) {
-        showProjetos = (
-            <div className={styles['content__sectionProjetos']}>
-                {/* <h1>Projetos desenvolvidos</h1>
-                 <div id="lista-projetos" className={styles['content__listaProjetos']}>
-                     <Carrossel />
-                 </div> */}
-                <Projetos />
-            </div>
-        )
-    } else {
-        showProjetos = ''
-    }
-
-    // Seção de Comentários
 
     const [comentario, setComentario] = React.useState([{
         nomeUsuario: 'TechHub',
@@ -153,41 +94,6 @@ const PerfilUsuario = (props) => {
         marginTop: "8px"
     });
 
-    if (isPerfilFreelancer) {
-        showRecomendacoes = (
-            <>
-                <div className={styles['adicionais__informacoes']}>
-                    <h4>7</h4>
-                    <p>Projetos finalizados</p>
-                </div>
-                <div className={styles['adicionais__informacoes']}>
-                    <h4>4</h4>
-                    <p>Empresas interessadas</p>
-                </div>
-                <div className={styles['adicionais__informacoes']}>
-                    <h4>44</h4>
-                    <p>Recomendações</p>
-                </div>
-            </>
-        )
-    } else {
-        showRecomendacoes = (
-            <>
-                <div className={styles['adicionais__informacoes']}>
-                    <h4>7</h4>
-                    <p>Projetos finalizados</p>
-                </div>
-                <div className={styles['adicionais__informacoes']}>
-                    <h4>4</h4>
-                    <p>Freelancers contratados</p>
-                </div>
-                <div className={styles['adicionais__informacoes']}>
-                    <h4>44</h4>
-                    <p>Recomendações</p>
-                </div>
-            </>
-        )
-    }
 
     return (
         <>
@@ -195,8 +101,45 @@ const PerfilUsuario = (props) => {
             <div className={styles['perfil__usuario']}>
                 <div className={styles['content']}>
                     <BannerDescUsuario />
-                    {showBox}
-                    {showProjetos}
+                    {
+                        isPerfilFreelancer ?
+                            <div className={styles['content__sectionSkills']}>
+                                <div className={styles['sectionSkills__experiencia']}>
+                                    <DescricaoUsuario titulo='Experiência' texto={descExperiencia} />
+                                    <Divider variant="middle" style={{ margin: '16px 0' }} />
+                                    <DescricaoUsuario titulo='Sobre mim' texto={descSobreMim} />
+                                </div>
+                                <div className={styles['sectionSkills__experiencia']}>
+                                    <BoxSoftSkills />
+                                    <Divider variant="middle" style={{ margin: '16px 0' }} />
+                                    <BoxHardSkills />
+                                </div>
+                            </div>
+                            :
+                            <div className={styles['content__sectionSkillsEmpresa']}>
+                                <div className={styles['sectionSkillsEmpresa__experiencia']}>
+                                    <div className={styles['sectionSkills__sobreNos']}>
+                                        <DescricaoUsuario titulo='Experiência' texto={descExperiencia} />
+                                    </div>
+                                    <div className={styles['sectionSkills__quemProcuramos']}>
+                                        <DescricaoUsuario titulo='Sobre mim' texto={descSobreMim} />
+                                    </div>
+                                </div>
+                                <div className={styles['sectionSkills__softSkills']}>
+                                    <BoxSoftSkills />
+                                </div>
+                            </div>
+                    }
+                    {
+                        isPerfilFreelancer &&
+                        <div className={styles['content__sectionProjetos']}>
+                            {/* <h1>Projetos desenvolvidos</h1>
+                      <div id="lista-projetos" className={styles['content__listaProjetos']}>
+                          <Carrossel />
+                      </div> */}
+                            <Projetos />
+                        </div>
+                    }
                     <div className={styles['content__sectionComentariosAvaliacoes']}>
                         <div className={styles['sectionComentariosAvaliacoes__comentarios']}>
                             <h1>Comentários</h1>
@@ -236,7 +179,39 @@ const PerfilUsuario = (props) => {
                             <Divider variant="middle" style={{ width: '100%', margin: '40px 0' }} />
                             <div className={styles['sectionComentariosAvaliacoes__adicionais']}>
                                 <h1>Informações adicionais</h1>
-                                {showRecomendacoes}
+                                {
+                                    isPerfilFreelancer ?
+                                        <>
+                                            <div className={styles['adicionais__informacoes']}>
+                                                <h4>7</h4>
+                                                <p>Projetos finalizados</p>
+                                            </div>
+                                            <div className={styles['adicionais__informacoes']}>
+                                                <h4>4</h4>
+                                                <p>Empresas interessadas</p>
+                                            </div>
+                                            <div className={styles['adicionais__informacoes']}>
+                                                <h4>44</h4>
+                                                <p>Recomendações</p>
+                                            </div>
+                                        </>
+                                        :
+                                        <>
+                                            <div className={styles['adicionais__informacoes']}>
+                                                <h4>7</h4>
+                                                <p>Projetos finalizados</p>
+                                            </div>
+                                            <div className={styles['adicionais__informacoes']}>
+                                                <h4>4</h4>
+                                                <p>Freelancers contratados</p>
+                                            </div>
+                                            <div className={styles['adicionais__informacoes']}>
+                                                <h4>44</h4>
+                                                <p>Recomendações</p>
+                                            </div>
+                                        </>
+
+                                }
                                 <ButtonExplorarTalentos>Recomendar</ButtonExplorarTalentos>
                             </div>
                         </div>
