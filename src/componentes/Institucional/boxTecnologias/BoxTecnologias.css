@@ -15,7 +15,7 @@
 
 .section__tecnologias .container__tecnologias h1 {
     margin-top: 122px;
-    margin-bottom: 24px;
+    margin-bottom: 48px;
     color: var(--color-azul);
     text-align: center;
     font-family: Plus Jakarta Sans;
@@ -27,9 +27,9 @@
 }
 
 .section__tecnologias .container__tecnologias .box__tecnologias {
-    margin-bottom: 212px;
+    margin-bottom: 200px;
     width: 100%;
-    padding: 16px 32px 48px 32px;
+    padding: 16px 32px 32px 32px;
     height: auto;
     background-color: #FEFEFE;
     box-shadow: 0px 2px 15px 3px rgba(0, 0, 0, 0.08);

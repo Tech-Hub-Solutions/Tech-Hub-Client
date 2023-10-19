@@ -1,9 +1,28 @@
 import iconVerified from "../../../assets/images/iconVerified.svg"
 import "./Beneficios.css"
 import CardIndicadores from "./CardIndicadores"
+import CompareOutlinedIcon from '@mui/icons-material/CompareOutlined';
+import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
+import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
+import { Button } from "@mui/base";
+import styled from "@emotion/styled";
 
 
 const Beneficios = () => {
+
+    const ButtonExplorarTalentos = styled(Button)({
+        fontFamily: "Montserrat, sans-serif",
+        padding: "10px 16px",
+        borderRadius: "6px",
+        fontWeight: "600",
+        fontStyle: "normal",
+        fontSize: "16px",
+        textTransform: "none",
+        backgroundColor: "transparent",
+        color: "#0f9eea",
+        border: "2px solid #0F9EEA",
+    });
+
     const styleCard1 = {
         backgroundColor: '#BBE6FC',
         color: '#0686C8',
@@ -34,20 +53,21 @@ const Beneficios = () => {
                 <div className="beneficios__text">
                     <h1>O que podemos te proporcionar</h1>
                     <div className="text__titulo-beneficio">
-                        <img src={iconVerified} alt="Ícone verificado" />
+                        <BorderColorOutlinedIcon style={{ color: 'var(--color-azul)' }} />
                         <h3>Personalização de portfólio</h3>
                     </div>
                     <p>Avalie habilidades e competências com confiança antes de tomar uma decisão. Enxergue além das palavras e conheça o potencial real.</p>
                     <div className="text__titulo-beneficio">
-                        <img src={iconVerified} alt="Ícone verificado" />
+                        <CompareOutlinedIcon style={{ color: 'var(--color-azul)' }} />
                         <h3>Seleção e comparação entre freelancers</h3>
                     </div>
                     <p>Tome decisões informadas e simplifique a seleção. Compare habilidades técnicas e socioemocionais para escolher o candidato ideal.</p>
                     <div className="text__titulo-beneficio">
-                        <img src={iconVerified} alt="Ícone verificado" />
+                        <ChatOutlinedIcon style={{ color: 'var(--color-azul)' }} />
                         <h3>Chat online</h3>
                     </div>
                     <p>Comunique-se com transparência por meio do nosso chat online. Alinhe expectativas e detalhes essenciais do projeto de forma clara e direta.</p>
+                    <ButtonExplorarTalentos className="beneficios__text-button">Cadastre-se agora</ButtonExplorarTalentos>
                 </div>
                 <div className="beneficios__card">
                     <div className="card__left">

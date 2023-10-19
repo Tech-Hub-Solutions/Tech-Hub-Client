@@ -67,7 +67,10 @@ const Conversas = () => {
                 };
 
                 if (location.state?.usuario) {
-                    const conversa = conversasResponse.find((conversa) => conversa.usuario.id == location.state.usuario.id);
+                    let conversa;
+                    if(response.data.length > 0) {
+                        conversa = conversasResponse.find((conversa) => conversa.usuario.id == location.state.usuario.id);
+                    }
                     if (conversa) {
                         setConversaSelecionada(conversa);
                     } else {
@@ -81,11 +84,8 @@ const Conversas = () => {
                         }
                         setConversaSelecionada(conversa);
                     }
-                    window.history.replaceState({}, document.title)
+                   window.history.replaceState({}, document.title)
                 }
-            })
-            .catch((error) => {
-                console.log(error);
             })
     }
 

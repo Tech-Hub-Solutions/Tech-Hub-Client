@@ -24,8 +24,8 @@ export default function AccountMenu(props) {
   };
 
   return (
-    <div className={styles['accountMenu']}>
-      <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+    <React.Fragment>
+      <Box>
         <Tooltip title="Configurações">
           <IconButton
             onClick={handleClick}
@@ -51,12 +51,6 @@ export default function AccountMenu(props) {
             overflow: 'visible',
             filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.1))',
             mt: 1.5,
-            '& .MuiAvatar-root': {
-              width: 28,
-              height: 28,
-              ml: -0.5,
-              mr: 1,
-            },
             '&:before': {
               content: '""',
               display: 'block',
@@ -88,6 +82,6 @@ export default function AccountMenu(props) {
           <p>Sair</p>
         </MenuItem>
       </Menu>
-    </div >
+    </React.Fragment >
   );
 }
