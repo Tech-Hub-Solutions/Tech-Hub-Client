@@ -13,6 +13,11 @@ const HeaderInstitucional = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = React.useState(false);
   const [user, setUser] = React.useState({});
 
+  const redirecToLogin = () => {
+    setIsLoginModalOpen(true);
+    setTravaTelaOpen(false);
+  }
+
   return (
     <>
       <header className="header__section">
@@ -29,7 +34,7 @@ const HeaderInstitucional = () => {
                 <li className="active">Início</li>
               </a>
 
-              <a href="/busca-talentos">
+              <a href="#" onClick={redirecToLogin}>
                 <li>Explorar Talentos</li>
               </a>
 

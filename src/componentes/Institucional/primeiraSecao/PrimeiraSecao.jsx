@@ -39,8 +39,9 @@ function PrimeiraSecao() {
     setIsTravaTelaCadastroOpen(true);
   };
 
-  const redirectToBuscaTalentos = () => {
-    window.location.href = "/busca-talentos";
+  const redirectToLogin = () => {
+    setIsLoginModalOpen(true);
+    setIsTravaTelaCadastroOpen(false)
   };
 
   return (
@@ -62,7 +63,7 @@ function PrimeiraSecao() {
               Quero ser um freelancer
             </BlueBackgroundButton>
 
-            <ButtonExplorarTalentos onClick={redirectToBuscaTalentos}>
+            <ButtonExplorarTalentos onClick={redirectToLogin}>
               Explorar talentos
             </ButtonExplorarTalentos>
           </StackButtons>
