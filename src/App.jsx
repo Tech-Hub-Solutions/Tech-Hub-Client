@@ -1,11 +1,11 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Institucional from './pages/institucional/Institucional'
-import Conversas from './pages/conversas/Conversas'
-import Teste from './pages/conversas/Teste';
-import PerfilUsuario from './pages/perfilUsuario/PerfilUsuario';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Institucional from "./pages/institucional/Institucional";
+import Conversas from "./pages/conversas/Conversas";
+import Teste from "./pages/conversas/Teste";
+import PerfilUsuario from "./pages/perfilUsuario/PerfilUsuario";
+import BuscaTalentos from "./pages/buscaTalentos/BuscaTalentos";
 
 function App() {
-
   return (
     <>
       <Router>
@@ -14,6 +14,7 @@ function App() {
           <Route path="/conversas" element={<Conversas />} />
           <Route path="/teste" element={<Teste />} />
           <Route path="/perfil" element={<PerfilUsuario />} />
+          <Route path="/busca-talentos" element={<BuscaTalentos />} />
         </Routes>
       </Router>
     </>
