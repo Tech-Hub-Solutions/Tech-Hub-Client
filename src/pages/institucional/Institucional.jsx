@@ -10,13 +10,17 @@ import "./institucional.css";
 const Institucional = () => {
   return (
     <div>
-        <HeaderInstitucional />
-        <Primeirasecao />
-        <ApoioEmpresas />
-        <BoxTecnologias />
+      <HeaderInstitucional />
+      <Primeirasecao />
+      <ApoioEmpresas />
+      <BoxTecnologias />
+      <div id="sobre-nos">
         <DiagramaVisao />
+      </div>
+      <div id="beneficios">
         <Beneficios />
-        <Footer />
+      </div>
+      y<Footer />
     </div>
   );
 };
