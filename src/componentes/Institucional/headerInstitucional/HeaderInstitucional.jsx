@@ -16,28 +16,33 @@ const HeaderInstitucional = () => {
   return (
     <>
       <header className="header__section">
-        <div className="header__institucional">
+        <nav className="header__institucional">
           <div>
             <a href="#">
               <img src={LogoTechHub} alt="Logotipo escrito Tech Hub" />
             </a>
           </div>
+
           <div>
             <ul>
               <a href="#">
                 <li className="active">Início</li>
               </a>
-              <a href="#">
+
+              <a href="/busca-talentos">
                 <li>Explorar Talentos</li>
               </a>
-              <a href="#">
+
+              <a href="#sobre-nos">
                 <li>Sobre Nós</li>
               </a>
-              <a href="#">
+
+              <a href="#beneficios">
                 <li>Benefícios</li>
               </a>
             </ul>
           </div>
+
           <div>
             <ul>
               <a
@@ -54,7 +59,7 @@ const HeaderInstitucional = () => {
               </BlueBackgroundButton>
             </ul>
           </div>
-        </div>
+        </nav>
       </header>
 
       <LoginModal
