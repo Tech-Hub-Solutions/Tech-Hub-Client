@@ -1,10 +1,16 @@
 import React from "react";
 import styles from "./BuscaTalentos.module.css";
 import Header from "../../componentes/shared/header/Header";
+import BlueBackgroundButton from "../../componentes/shared/BlueButton/BlueBackgroundButton";
 
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import { Divider } from "@mui/material";
+import Slider from "@mui/material/Slider";
 
 const optionsStacks = [
   "Front-end",
@@ -18,8 +24,13 @@ const optionsOrdernar = [
   "Mais avaliado",
   "Maior preço",
   "Menor preço",
-  "Mais recentes",
 ];
+
+function valuetext(value) {
+  return `${value} reais`;
+}
+
+const minDistance = 10;
 
 function BuscaTalentos() {
   const [valueStacks, setValueStacks] = React.useState();
@@ -27,6 +38,25 @@ function BuscaTalentos() {
 
   const [valueOrdenar, setValueOrdenar] = React.useState(optionsOrdernar[0]);
   const [inputValueOrdenar, setInputValueOrdenar] = React.useState("");
+
+  const [value1, setValue1] = React.useState([0, 100]);
+  const [inputValue, setInputValue] = React.useState(1);
+
+  const onChange = (newValue) => {
+    setInputValue(newValue);
+  };
+
+  const handleChange1 = (event, newValue, activeThumb) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+
+    if (activeThumb === 0) {
+      setValue1([Math.min(newValue[0], value1[1] - minDistance), value1[1]]);
+    } else {
+      setValue1([value1[0], Math.max(newValue[1], value1[0] + minDistance)]);
+    }
+  };
 
   return (
     <>
@@ -39,31 +69,92 @@ function BuscaTalentos() {
         >
           <div className={styles["container__left"]}>
             <h1 className={styles["container__left__h1"]}>Procurar Talentos</h1>
+
             <h2 className={styles["container__left__h2"]}>
               Área de Tecnologia
             </h2>
 
-            <div className="checkbox">
-              {/* <div>{`value: ${value !== null ? `'${value}'` : "null"}`}</div>
-              <div>{`inputValue: '${inputValue}'`}</div> */}
-              <br />
-              <Autocomplete
-                value={valueStacks}
-                onChange={(event, newValueStacks) => {
-                  setValueStacks(newValueStacks);
-                }}
-                inputValue={inputValueStacks}
-                onInputChange={(event, newInputValueStacks) => {
-                  setInputValueStacks(newInputValueStacks);
-                }}
-                id="controllable-states-demo"
-                options={optionsStacks}
-                sx={{ width: 252 }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Stack" />
-                )}
+            {/*
+              <div>{`value: ${value !== null ? `'${value}'` : "null"}`}</div>
+              <div>{`inputValue: '${inputValue}'`}</div>
+            */}
+            <Autocomplete
+              value={valueStacks}
+              onChange={(event, newValueStacks) => {
+                setValueStacks(newValueStacks);
+              }}
+              inputValue={inputValueStacks}
+              onInputChange={(event, newInputValueStacks) => {
+                setInputValueStacks(newInputValueStacks);
+              }}
+              id="controllable-states-demo"
+              options={optionsStacks}
+              sx={{ width: 252 }}
+              renderInput={(params) => <TextField {...params} label="Stack" />}
+            />
+
+            <div className={styles["checkbox__tecnologias"]}>
+              <FormGroup>
+                <FormControlLabel control={<Checkbox />} label="HTML" />
+                <FormControlLabel control={<Checkbox />} label="Javascript" />
+                <FormControlLabel control={<Checkbox />} label="Typescript" />
+                <FormControlLabel control={<Checkbox />} label="Angular" />
+                <FormControlLabel control={<Checkbox />} label="React" />
+                <FormControlLabel control={<Checkbox />} label="Vue.JS" />
+              </FormGroup>
+            </div>
+
+            <div className={styles["divider"]}>
+              <Divider variant="fullWidth" />
+            </div>
+          </div>
+
+          <div className={styles["container__left__bottom"]}>
+            <h2 className={styles["container__left__h2"]}>Preço</h2>
+
+            <div className={styles["container__slider__textfield"]}>
+              <TextField
+                id="outlined-basic"
+                label="Mínimo"
+                variant="outlined"
+                type="number"
+                size="small"
+                sx={{ width: 120 }}
+                value={typeof value1 === "number" ? value1 : value1[0]}
+                onChange={onChange}
+              />
+
+              <TextField
+                id="outlined-basic"
+                label="Máximo"
+                variant="outlined"
+                type="number"
+                size="small"
+                sx={{ width: 120 }}
+                value={typeof value1 === "number" ? value1 : value1[1]}
+                onChange={onChange}
               />
             </div>
+
+            <Slider
+              getAriaLabel={() => "Preço mínimo"}
+              value={value1}
+              onChange={handleChange1}
+              valueLabelDisplay="auto"
+              getAriaValueText={valuetext}
+              disableSwap
+              valueLabelFormat={(x) => `R$${x},00`}
+              sx={{ color: "#0f9eea" }}
+            />
+          </div>
+
+          <div className={styles["btn__aplicar"]}>
+            <BlueBackgroundButton
+              onClick={() => {
+                console.log("Aplicar");
+              }}
+              style={{ width: "252px" }}
+            >Aplicar</BlueBackgroundButton>
           </div>
         </Stack>
 
@@ -77,7 +168,7 @@ function BuscaTalentos() {
               27 profissionais encontrados
             </span>
 
-            <div className={styles["checkbox__ordenar"]}>
+            <div className={styles["autocomplete__ordenar"]}>
               <Autocomplete
                 value={valueOrdenar}
                 onChange={(event, newValueOrdenar) => {
