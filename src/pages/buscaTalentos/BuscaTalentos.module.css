@@ -31,6 +31,11 @@
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+  margin-bottom: 16px;
+}
+
+.checkbox__tecnologias {
+  margin-top: 24px;
 }
 
 .stack__right {
@@ -51,10 +56,34 @@
   color: var(--color-cinza);
 }
 
-.checkbox__ordenar {
+.autocomplete__ordenar {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   margin-right: 99px;
+}
+
+.divider {
+  width: 100%;
+  color: #666;
+  font-weight: 600;
+  margin: 16px 0;
+}
+
+.container__left__bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.container__slider__textfield {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.btn__aplicar {
+  margin-top: 16px;
 }
