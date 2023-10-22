@@ -20,7 +20,7 @@ const Institucional = () => {
       <div id="beneficios">
         <Beneficios />
       </div>
-      y<Footer />
+      <Footer />
     </div>
   );
 };
