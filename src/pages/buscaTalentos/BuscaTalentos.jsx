@@ -2,49 +2,62 @@ import React from "react";
 import styles from "./BuscaTalentos.module.css";
 import Header from "../../componentes/shared/header/Header";
 
-import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
-const options = [
+const optionsStacks = [
   "Front-end",
   "Back-end",
   "Fullstack",
   "Banco de Dados",
   "Inteligência Artificial",
 ];
+
+const optionsOrdernar = [
+  "Mais avaliado",
+  "Maior preço",
+  "Menor preço",
+  "Mais recentes",
+];
+
 function BuscaTalentos() {
-  const [value, setValue] = React.useState(options[0]);
-  const [inputValue, setInputValue] = React.useState("");
+  const [valueStacks, setValueStacks] = React.useState();
+  const [inputValueStacks, setInputValueStacks] = React.useState("");
+
+  const [valueOrdenar, setValueOrdenar] = React.useState(optionsOrdernar[0]);
+  const [inputValueOrdenar, setInputValueOrdenar] = React.useState("");
 
   return (
     <>
       <Header />
 
       <div className={styles["container__all"]}>
-        <Stack alignItems={"center"} className={styles["container__left"]}>
-          <div id="container-left">
+        <Stack
+          className={styles["stack__left"]}
+          sx={{ marginRight: "18px", marginLeft: "98px" }}
+        >
+          <div className={styles["container__left"]}>
             <h1 className={styles["container__left__h1"]}>Procurar Talentos</h1>
             <h2 className={styles["container__left__h2"]}>
               Área de Tecnologia
             </h2>
 
             <div className="checkbox">
-              <div>{`value: ${value !== null ? `'${value}'` : "null"}`}</div>
-              <div>{`inputValue: '${inputValue}'`}</div>
+              {/* <div>{`value: ${value !== null ? `'${value}'` : "null"}`}</div>
+              <div>{`inputValue: '${inputValue}'`}</div> */}
               <br />
               <Autocomplete
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
+                value={valueStacks}
+                onChange={(event, newValueStacks) => {
+                  setValueStacks(newValueStacks);
                 }}
-                inputValue={inputValue}
-                onInputChange={(event, newInputValue) => {
-                  setInputValue(newInputValue);
+                inputValue={inputValueStacks}
+                onInputChange={(event, newInputValueStacks) => {
+                  setInputValueStacks(newInputValueStacks);
                 }}
                 id="controllable-states-demo"
-                options={options}
+                options={optionsStacks}
                 sx={{ width: 252 }}
                 renderInput={(params) => (
                   <TextField {...params} label="Stack" />
@@ -54,31 +67,34 @@ function BuscaTalentos() {
           </div>
         </Stack>
 
-        <Stack alignItems={"center"} className={styles["container__right"]}>
+        <Stack
+          alignItems={"center"}
+          className={styles["stack__right"]}
+          sx={{ marginRight: "18px", marginLeft: "98px" }}
+        >
           <div className={styles["container__right__header"]}>
-            <span>27 profissionais encontrados</span>
+            <span className={styles["total__encontrados"]}>
+              27 profissionais encontrados
+            </span>
 
-            <div className={styles["container__checkbox__ordenar"]}>
-              <span>ordenar por</span>
-
-              <div className="checkbox">
+            <div className={styles["checkbox__ordenar"]}>
               <Autocomplete
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
+                value={valueOrdenar}
+                onChange={(event, newValueOrdenar) => {
+                  setValueOrdenar(newValueOrdenar);
                 }}
-                inputValue={inputValue}
-                onInputChange={(event, newInputValue) => {
-                  setInputValue(newInputValue);
+                inputValue={inputValueOrdenar}
+                onInputChange={(event, newInputValueOrdenar) => {
+                  setInputValueOrdenar(newInputValueOrdenar);
                 }}
                 id="controllable-states-demo"
-                options={options}
-                sx={{ width: 176 }}
+                options={optionsOrdernar}
+                sx={{ width: 186 }}
+                size="small"
                 renderInput={(params) => (
                   <TextField {...params} label="ordenar por" />
                 )}
               />
-            </div>
             </div>
           </div>
         </Stack>
