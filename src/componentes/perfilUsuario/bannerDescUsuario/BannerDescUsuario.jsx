@@ -28,8 +28,6 @@ const BannerDescUsuario = (props) => {
         border: "2px solid #0F9EEA",
     });
 
-    {/* Element.classList.replace('classeAntiga', 'classeNova') */ }
-
     const isFreelancer = false;
     const isOwnProfile = false;
 
