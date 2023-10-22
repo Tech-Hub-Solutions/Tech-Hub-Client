@@ -81,7 +81,7 @@ const ConversaContent = (props) => {
                 <div className={styles['conversa-content__header']}>
                     <div className={styles['conversa-content__header__info']}>
                         <div className={styles['conversa-content__header__info__foto']}>
-                            <Avatar sx={{ width: 56, height: 56 }} src={conversaSelecionada.usuario?.pathPerfilImage}>
+                            <Avatar sx={{ width: 56, height: 56 }} src={conversaSelecionada.usuario?.urlFotoPerfil}>
                                 {conversaSelecionada.usuario?.nome[0]}
                             </Avatar>
                         </div>

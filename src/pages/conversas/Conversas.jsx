@@ -78,7 +78,7 @@ const Conversas = () => {
                             usuario: {
                                 id: location.state.usuario.id,
                                 nome: location.state.usuario.nome,
-                                pathPerfilImage: location.state.usuario.perfil?.pathPerfilImage
+                                urlFotoPerfil: location.state.usuario?.urlFotoPerfil
                             },
                             idPrimeiraConversa: location.state.usuario.id
                         }
