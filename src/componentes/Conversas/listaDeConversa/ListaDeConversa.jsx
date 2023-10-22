@@ -114,7 +114,7 @@ const ListaDeConversa = (props) => {
                                         >
 
                                             <div className={styles['lista-de-conversa__conversa__foto']}>
-                                                <Avatar src={conversa.usuario?.pathPerfilImage}>
+                                                <Avatar src={conversa.usuario?.urlFotoPerfil}>
                                                     {conversa.usuario?.nome[0]}
                                                 </Avatar>
                                             </div>
