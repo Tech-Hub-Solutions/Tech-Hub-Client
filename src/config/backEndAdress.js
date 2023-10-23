@@ -1,5 +1,5 @@
 const ipBackEnd = {
-    localhost: "26.59.202.47",
+    localhost: "localhost",
 }
 
 const adress = `http://${ipBackEnd.localhost}:8080`
