@@ -8,6 +8,7 @@ import SockJS from "sockjs-client";
 import { over } from "stompjs";
 import chatDefaultImg from '../../assets/images/chat-default.png';
 import Header from '../../componentes/shared/header/Header';
+import adress from '../../config/backEndAdress';
 
 let socketConectado = false;
 
@@ -45,7 +46,7 @@ const Conversas = () => {
     }
 
     const conectarWebSocket = () => {
-        const socket = new SockJS('http://localhost:8080/websocket');
+        const socket = new SockJS(adress + '/websocket');
         let server = over(socket);
         // Log de mensagens
         server.debug = null
@@ -68,7 +69,7 @@ const Conversas = () => {
 
                 if (location.state?.usuario) {
                     let conversa;
-                    if(response.data.length > 0) {
+                    if (response.data.length > 0) {
                         conversa = conversasResponse.find((conversa) => conversa.usuario.id == location.state.usuario.id);
                     }
                     if (conversa) {
@@ -84,7 +85,7 @@ const Conversas = () => {
                         }
                         setConversaSelecionada(conversa);
                     }
-                   window.history.replaceState({}, document.title)
+                    window.history.replaceState({}, document.title)
                 }
             })
     }
