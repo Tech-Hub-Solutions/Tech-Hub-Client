@@ -13,9 +13,43 @@ import Carrossel from "../../componentes/shared/carrossel/Carrossel";
 import AvaliacoesUsuario from "../../componentes/perfilUsuario/avaliacoesUsuario/AvaliacoesUsuario";
 import styled from "@emotion/styled";
 import Projetos from "../../componentes/perfilUsuario/projetosUsuario/Projetos";
+import axiosInstance from "../../config/axiosInstance";
 
 
 const PerfilUsuario = (props) => {
+
+    // const [usuario, setUsuario] = React.useState([]);
+
+    // React.useEffect(() => {
+    //     axiosInstance.get('/perfil-usuario')
+    //         .then((response) => {
+    //             if (response.status == 200) {
+    //                 const usuario = response.data;
+
+    //                 // trazerComentarios(1)
+    //             }
+    //         })
+
+    // }, []);
+
+    // const [paginas, setPaginas] = react.useState(1)
+
+    // const trazerComentarios = (pagina) => {
+    //     axios.get(`/perfil/comentarios?page=${pagina}`)
+    //         .then((response) => {
+    //             setComentario(prev => [
+    //                 ...prev,
+    //                 response.data
+    //             ])
+    //         })
+    // }
+
+    // Button "Ver mais"
+
+    // const verMais = () => {
+    //     trazerComentarios(paginas + 1)
+    //     setPaginas(paginas + 1)
+    // }
 
     const isPerfilFreelancer = true;
 
@@ -30,19 +64,19 @@ const PerfilUsuario = (props) => {
     },
     {
         nomeUsuario: 'PlusHub',
-        comentario: 'Trabalhar com esse desenvolvedor foi uma experiência incrível. Sua dedicação incansável em enfrentar desafios e sua capacidade de transformar ideias em código funcional são notáveis. Um ativo para qualquer projeto',
-        value: 4
+        comentario: 'Minha experiência de trabalho com Bruno foi desapontadora. Embora tenhamos tido expectativas iniciais positivas, o resultado final do projeto não atendeu às nossas necessidades. Houve problemas de comunicação, atrasos recorrentes e, infelizmente, a qualidade do trabalho entregue ficou aquém do que esperávamos. Esperávamos mais profissionalismo e um compromisso mais forte com a excelência.',
+        value: 2
     },
     {
         nomeUsuario: 'V6',
-        comentario: 'O desenvolvedor é uma verdadeira peça-chave em nossa equipe. Sempre traz soluções inovadoras e entrega resultados excepcionais. Sua habilidade de comunicação também enriquece nossa colaboração.',
+        comentario: 'Trabalhar com Bruno foi uma experiência excepcional. Sua expertise em tecnologia e dedicação à excelência tornaram nosso projeto um grande sucesso. Bruno é um profissional notável e estamos ansiosos para futuras colaborações. Altamente recomendado!',
         value: 4
     },
-    {
-        nomeUsuario: 'Simasturbo Mecânica',
-        comentario: 'O desenvolvedor é uma verdadeira peça-chave em nossa equipe. Sempre traz soluções inovadoras e entrega resultados excepcionais. Sua habilidade de comunicação também enriquece nossa colaboração.',
-        value: 4
-    },
+    // {
+    //     nomeUsuario: 'Tech Masters',
+    //     comentario: 'Bruno é simplesmente brilhante na área de tecnologia. Seu trabalho no nosso projeto superou todas as expectativas. Profissional, competente e confiável, Bruno é a escolha certa para qualquer desafio tecnológico. Mal posso esperar para trabalharmos juntos novamente!',
+    //     value: 4
+    // },
     ]);
 
     // Seção de Avaliações
@@ -78,7 +112,6 @@ const PerfilUsuario = (props) => {
 
     // Seção de recomendações 
 
-    let showRecomendacoes;
 
     const ButtonExplorarTalentos = styled(Button)({
         fontFamily: "Montserrat, sans-serif",
@@ -145,13 +178,12 @@ const PerfilUsuario = (props) => {
                             <h1>Comentários</h1>
                             {
                                 comentario.map((comentario, index) => {
-                                    if (index < 3) {
-                                        return (
-                                            <ComentarioPerfil key={`comentario${index}`} nomeUsuario={comentario.nomeUsuario} comentario={comentario.comentario} value={comentario.value} />
-                                        )
-                                    }
+                                    return (
+                                        <ComentarioPerfil key={`comentario${index}`} nomeUsuario={comentario.nomeUsuario} comentario={comentario.comentario} value={comentario.value} />
+                                    )
                                 })
                             }
+                            <Button style={{ color: 'var(--color-cinza)', marginBottom: '32px', fontWeight: '500' }}>Ver mais</Button>
                             <CampoComentario nomeUsuario='Você' />
                         </div>
                         <Divider orientation="vertical" flexItem style={{ margin: '0 36px' }}></Divider>
@@ -183,7 +215,7 @@ const PerfilUsuario = (props) => {
                                     isPerfilFreelancer ?
                                         <>
                                             <div className={styles['adicionais__informacoes']}>
-                                                <h4>7</h4>
+                                                <h4></h4>
                                                 <p>Projetos finalizados</p>
                                             </div>
                                             <div className={styles['adicionais__informacoes']}>

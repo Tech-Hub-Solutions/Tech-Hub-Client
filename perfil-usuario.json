@@ -1,0 +1,120 @@
+{
+  "usuario": {
+    "nome": "João",
+    "sobrenome": "da Silva",
+    "idade": 30,
+    "profissao": "Desenvolvedor",
+    "contato": {
+      "linkedin": "https://....",
+      "github": "https://...."
+    },
+    "pais": "Brazil",
+    "descricao": "Lorem lorem",
+    "sobreMim": "Lorem lorem",
+    "projeto": [
+      {
+        "id": 0,
+        "titulo": "Projeto 1",
+        "descricao": "Lorem lorem",
+        "tecnologias": [
+          "Java",
+          "Spring Boot",
+          "Angular",
+          "HTML",
+          "CSS"
+        ],
+        "linkAcesso": "https://...."
+      },
+      {
+        "id": 1,
+        "titulo": "Projeto 2",
+        "descricao": "Lorem lorem",
+        "tecnologias": [
+          "Java",
+          "Spring Boot",
+          "Angular",
+          "HTML",
+          "CSS"
+        ],
+        "linkAcesso": "https://...."
+      }
+    ],
+    "hardSkill": {
+      "area": [
+        {
+          "backEnd": [
+            {
+              "id": 0,
+              "nome": "Java"
+            },
+            {
+              "id": 1,
+              "nome": "Spring Boot"
+            }
+          ]
+        },
+        {
+          "frontEnd": [
+            {
+              "id": 0,
+              "nome": "Angular"
+            },
+            {
+              "id": 1,
+              "nome": "React"
+            },
+            {
+              "id": 2,
+              "nome": "HTML"
+            }
+          ]
+        }
+      ]
+    },
+    "softSkill": [
+      {
+        "id": 0,
+        "nome": "Comunicação"
+      },
+      {
+        "id": 1,
+        "nome": "Respeito"
+      },
+      {
+        "id": 2,
+        "nome": "Empatia"
+      }
+    ],
+    "comentarios": [
+      {
+        "id": 0,
+        "nome": "Tech Solutions",
+        "pais": "Brazil",
+        "flag": "br",
+        "nota": 4,
+        "comentario": "Lorem lorem"
+      },
+      {
+        "id": 1,
+        "nome": "PlusHub",
+        "pais": "Brazil",
+        "flag": "br",
+        "nota": 4,
+        "comentario": "Lorem loremloremloremlorem lorem"
+      }
+    ],
+    "avaliacoes": {
+      "total": 58,
+      "5estrelas": 50,
+      "4estrelas": 5,
+      "3estrelas": 2,
+      "2estrelas": 0,
+      "1estrela": 1
+    },
+    "infosAdicionais": {
+      "projetosFinalizados": 7,
+      "empresasInteressadas": 4,
+      "recomendacoes": 44
+    }
+  }
+}
