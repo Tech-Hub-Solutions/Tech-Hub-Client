@@ -73,10 +73,18 @@ const ListaDeConversa = (props) => {
                     <List component="nav" aria-label="lista de conversas"
                         sx={
                             {
-                                display: 'flex',
                                 flexDirection: 'column',
-                                gap: '0.8vw',
                                 maxHeight: '70vh',
+                                '&::-webkit-scrollbar': {
+                                    width: '5px',
+                                },
+                                '&::-webkit-scrollbar-thumb': {
+                                    backgroundColor: 'var(--color-azul)',
+                                },
+                                '&::-webkit-scrollbar-track': {
+                                    backgroundColor: 'rgba(180, 180, 180, 0.50)',
+                                },
+                                overflowY: 'auto',
                             }
                         }>
 
@@ -97,6 +105,7 @@ const ListaDeConversa = (props) => {
                                                     gap: '0.4vw',
                                                     borderRadius: '0.5rem',
                                                     padding: '1vw',
+                                                    width: '98%',
                                                     /* Aparecer 3 pontos se estourar */
                                                     overflow: 'hidden',
                                                     textOverflow: 'ellipsis',
@@ -109,6 +118,7 @@ const ListaDeConversa = (props) => {
                                                     '&.Mui-selected:hover': {
                                                         backgroundColor: '#c8ecff',
                                                     },
+                                                    marginBottom: '1.4vh',
                                                 }
                                             }
                                         >
@@ -120,7 +130,7 @@ const ListaDeConversa = (props) => {
                                             </div>
                                             <div className={styles['lista-de-conversa__conversa__info']}>
                                                 <div className={styles['lista-de-conversa__conversa__info__nome']}>
-                                                    <p style={{color: 'black'}}>
+                                                    <p style={{ color: 'black' }}>
                                                         {
                                                             nomePesquisado != '' ?
                                                                 letrasPesquisada(conversa.usuario?.nome, nomePesquisado)
@@ -133,12 +143,12 @@ const ListaDeConversa = (props) => {
                                                 <div className={styles['lista-de-conversa__conversa__info__mensagem']}>
                                                     <div>{conversa.mensagem?.texto || (
                                                         conversa.mensagem?.tipoArquivo == 'IMAGEM' ?
-                                                        <div style={{display:"flex", alignItems: "center", gap:"3px"}}>
-                                                            <ImageIcon fontSize="small" /> Imagem
-                                                        </div> :
-                                                        <div style={{display:"flex", alignItems: "center", gap:"3px"}}>
-                                                            <DescriptionIcon fontSize="small" /> Documento
-                                                        </div>
+                                                            <div style={{ display: "flex", alignItems: "center", gap: "3px" }}>
+                                                                <ImageIcon fontSize="small" /> Imagem
+                                                            </div> :
+                                                            <div style={{ display: "flex", alignItems: "center", gap: "3px" }}>
+                                                                <DescriptionIcon fontSize="small" /> Documento
+                                                            </div>
                                                     )}</div>
                                                 </div>
                                             </div>
