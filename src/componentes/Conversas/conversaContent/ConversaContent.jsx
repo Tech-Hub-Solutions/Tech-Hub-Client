@@ -35,7 +35,9 @@ const ConversaContent = (props) => {
         inputRef.current.focus();
 
         return () => {
-            stompConversa.current?.unsubscribe();
+            if (stompClient?.connected) {
+                stompConversa.current?.unsubscribe();
+            }
         }
     }, [conversaSelecionada])
 

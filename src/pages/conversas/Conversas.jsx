@@ -10,49 +10,42 @@ import chatDefaultImg from '../../assets/images/chat-default.png';
 import Header from '../../componentes/shared/header/Header';
 import adress from '../../config/backEndAdress';
 
-let socketConectado = false;
-
 const Conversas = () => {
     const usuarioId = sessionStorage.getItem('usuarioId');
     const location = useLocation();
-
     const [stompClient, setStompClient] = useState(null);
+
     const [conversas, setConversas] = useState([]);
     const [conversaSelecionada, setConversaSelecionada] = useState(null);
 
     useEffect(() => {
+        const sock = new SockJS(adress + "/websocket");
+        const stomp = over(sock);
+        stomp.debug = () => { };
 
-        carregarConversas();
-
-        return () => {
-            if (!stompClient) return;
-            stompClient.disconnect();
-            socketConectado = false;
-        }
+        setStompClient(stomp);
 
     }, []);
 
-    const onConnect = (stompClient) => {
-        stompClient.subscribe(`/topic/usuario/${usuarioId}`, () => {
+    useEffect(() => {
+        stompClient?.connect(onError, () => {
             carregarConversas();
-        })
+            stompClient.subscribe(`/topic/usuario/${usuarioId}`, () => {
+                carregarConversas();
+            });
+        });
 
-        setStompClient(stompClient);
-    }
+        return () => {
+            if (stompClient?.connected) {
+                stompClient.disconnect();
+            }
+        };
+    }, [stompClient]);
+
 
     const onError = (err) => {
-        console.log("Erro ao conectar com o WebSocket");
+        alert('Erro ao conectar com o servidor');
         console.log(err);
-    }
-
-    const conectarWebSocket = () => {
-        const socket = new SockJS(adress + '/websocket');
-        let server = over(socket);
-        // Log de mensagens
-        server.debug = null
-
-
-        server.connect({}, () => onConnect(server), onError);
     }
 
     const carregarConversas = () => {
@@ -62,30 +55,28 @@ const Conversas = () => {
                 if (response.status == 200) {
                     setConversas(conversasResponse);
                 }
-                if (!socketConectado) {
-                    conectarWebSocket(conversasResponse);
-                    socketConectado = true;
-                };
 
-                if (location.state?.usuario) {
-                    let conversa;
-                    if (response.data.length > 0) {
-                        conversa = conversasResponse.find((conversa) => conversa.usuario.id == location.state.usuario.id);
-                    }
-                    if (conversa) {
-                        setConversaSelecionada(conversa);
-                    } else {
-                        const conversa = {
-                            usuario: {
-                                id: location.state.usuario.id,
-                                nome: location.state.usuario.nome,
-                                urlFotoPerfil: location.state.usuario?.urlFotoPerfil
-                            },
-                            idPrimeiraConversa: location.state.usuario.id
+                if (conversaSelecionada == null || conversasResponse.length <= 0) {
+                    if (location.state?.usuario) {
+                        let conversa;
+                        if (response.data.length > 0) {
+                            conversa = conversasResponse.find((conversa) => conversa.usuario.id == location.state.usuario.id);
                         }
-                        setConversaSelecionada(conversa);
+                        if (conversa) {
+                            setConversaSelecionada(conversa);
+                        } else {
+                            const conversa = {
+                                usuario: {
+                                    id: location.state.usuario.id,
+                                    nome: location.state.usuario.nome,
+                                    urlFotoPerfil: location.state.usuario?.urlFotoPerfil
+                                },
+                                idPrimeiraConversa: location.state.usuario.id
+                            }
+                            setConversaSelecionada(conversa);
+                        }
+                        window.history.replaceState({}, document.title)
                     }
-                    window.history.replaceState({}, document.title)
                 }
             })
     }
