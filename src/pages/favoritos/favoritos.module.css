@@ -1,0 +1,42 @@
+.container {
+    margin-top: calc(70px + 1rem);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.content {
+    max-width: 1200px;
+    width: 90%;
+}
+
+.usuarios {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 280px);
+    grid-row-gap: 2rem;
+    justify-content: space-between;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+}
+
+.favoritos__titulo {
+    color: var(--color-azul);
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.favoritos__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.favoritos__quantidade-desenvolvedores {
+    font-weight: 400;
+    color: var(--color-textos, #505050);
+    font-size: 1rem;
+}
