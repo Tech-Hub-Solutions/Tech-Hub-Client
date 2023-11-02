@@ -7,7 +7,7 @@ const Teste = () => {
     const [usuarios, setUsuarios] = useState([]); 
 
     useEffect(() => {
-        axiosInstance.get('/usuarios').then(({ data }) => {
+        axiosInstance.get('/usuarios/teste').then(({ data }) => {
       
             setUsuarios(data.vetor.filter(usuario => usuario !== null));
         });

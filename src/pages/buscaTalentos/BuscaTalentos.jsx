@@ -11,6 +11,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { Divider } from "@mui/material";
 import Slider from "@mui/material/Slider";
+import SelectOrdernar from "../../componentes/shared/SelectOrdernar";
 
 const optionsStacks = [
   "Front-end",
@@ -20,11 +21,6 @@ const optionsStacks = [
   "Inteligência Artificial",
 ];
 
-const optionsOrdernar = [
-  "Mais avaliado",
-  "Maior preço",
-  "Menor preço",
-];
 
 function valuetext(value) {
   return `${value} reais`;
@@ -36,11 +32,9 @@ function BuscaTalentos() {
   const [valueStacks, setValueStacks] = React.useState();
   const [inputValueStacks, setInputValueStacks] = React.useState("");
 
-  const [valueOrdenar, setValueOrdenar] = React.useState(optionsOrdernar[0]);
-  const [inputValueOrdenar, setInputValueOrdenar] = React.useState("");
+  const [valueOrdenar, setValueOrdenar] = React.useState("");
 
   const [value1, setValue1] = React.useState([0, 100]);
-  const [inputValue, setInputValue] = React.useState(1);
 
   const onChange = (newValue) => {
     setInputValue(newValue);
@@ -167,24 +161,10 @@ function BuscaTalentos() {
             <span className={styles["total__encontrados"]}>
               27 profissionais encontrados
             </span>
-
             <div className={styles["autocomplete__ordenar"]}>
-              <Autocomplete
-                value={valueOrdenar}
-                onChange={(event, newValueOrdenar) => {
-                  setValueOrdenar(newValueOrdenar);
-                }}
-                inputValue={inputValueOrdenar}
-                onInputChange={(event, newInputValueOrdenar) => {
-                  setInputValueOrdenar(newInputValueOrdenar);
-                }}
-                id="controllable-states-demo"
-                options={optionsOrdernar}
-                sx={{ width: 186 }}
-                size="small"
-                renderInput={(params) => (
-                  <TextField {...params} label="ordenar por" />
-                )}
+              <SelectOrdernar
+                valueOrdenar={valueOrdenar}
+                setValueOrdenar={setValueOrdenar}
               />
             </div>
           </div>

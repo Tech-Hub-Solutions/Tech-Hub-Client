@@ -4,6 +4,7 @@ import Conversas from "./pages/conversas/Conversas";
 import Teste from "./pages/conversas/Teste";
 import PerfilUsuario from "./pages/perfilUsuario/PerfilUsuario";
 import BuscaTalentos from "./pages/buscaTalentos/BuscaTalentos";
+import Favoritos from "./pages/favoritos/Favoritos";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/teste" element={<Teste />} />
           <Route path="/perfil" element={<PerfilUsuario />} />
           <Route path="/busca-talentos" element={<BuscaTalentos />} />
+          <Route path="/favoritos" element={<Favoritos />} />
         </Routes>
       </Router>
     </>

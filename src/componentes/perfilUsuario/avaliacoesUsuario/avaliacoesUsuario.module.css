@@ -1,0 +1,40 @@
+.avaliacoesUsuario__barra {
+    margin-top: 26px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.avaliacoesUsuario__barra h5 {
+    color: #505050;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    width: auto;
+}
+
+.avaliacoesUsuario__barra p {
+    color: var(--color-cinza);
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.numeroEstrelas {
+    text-align: left;
+    width: 20%;
+    margin-right: 24px;
+
+}
+
+.barra__progresso {
+    width: 80%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+}

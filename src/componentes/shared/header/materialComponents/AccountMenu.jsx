@@ -11,6 +11,7 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import { Link } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export default function AccountMenu(props) {
 
@@ -22,6 +23,8 @@ export default function AccountMenu(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const navigate = useNavigate();
 
   return (
     <React.Fragment>
@@ -77,7 +80,10 @@ export default function AccountMenu(props) {
         </MenuItem>
         <Divider variant="middle" />
 
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={() => {
+          sessionStorage.clear();
+          navigate('/')
+        }}>
           <LogoutRoundedIcon style={{ color: '858585', marginRight: '6px', width: '24px' }} />
           <p>Sair</p>
         </MenuItem>
