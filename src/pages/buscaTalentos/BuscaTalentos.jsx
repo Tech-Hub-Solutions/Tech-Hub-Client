@@ -12,6 +12,8 @@ import Checkbox from "@mui/material/Checkbox";
 import { Divider } from "@mui/material";
 import Slider from "@mui/material/Slider";
 import SelectOrdernar from "../../componentes/shared/SelectOrdernar";
+import axiosInstance from "../../config/axiosInstance";
+import CardPerfil from "../../componentes/shared/cardPerfil/CardPerfil";
 
 const optionsStacks = [
   "Front-end",
@@ -20,7 +22,6 @@ const optionsStacks = [
   "Banco de Dados",
   "Inteligência Artificial",
 ];
-
 
 function valuetext(value) {
   return `${value} reais`;
@@ -31,10 +32,60 @@ const minDistance = 10;
 function BuscaTalentos() {
   const [valueStacks, setValueStacks] = React.useState();
   const [inputValueStacks, setInputValueStacks] = React.useState("");
-
   const [valueOrdenar, setValueOrdenar] = React.useState("");
-
   const [value1, setValue1] = React.useState([0, 100]);
+  const [usuarios, setUsuarios] = React.useState([]);
+
+  React.useEffect(() => {
+    axiosInstance
+      .post("usuarios/filtro", {
+        nome: null,
+        area: null,
+        tecnologiasIds: [],
+        precoMax: null,
+        precoMin: null,
+      })
+      .then((response) => {
+        if (response.status == 200) {
+          const responseUsuarios = response.data.content;
+
+          const responseMapeada = responseUsuarios.map((item) => {
+            return {
+              ...item,
+            };
+          });
+
+          setUsuarios(responseMapeada);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  // REQ Completo
+  //   React.useEffect(() => {
+  //     axiosInstance.post("usuarios/filtro", {
+  //         area: "front"
+  //     })
+  //         .then((response) => {
+  //             if (response.status == 200) {
+  //                 const responseUsuarios = response.data.content;
+
+  //                 const responseMapeada = responseUsuarios.map((item) => {
+  //                     return {
+  //                         ...item,
+  //                         isFavorito: true,
+  //                     };
+  //                 });
+
+  //                 setUsuarios(responseMapeada);
+  //             }
+  //         })
+  //         .catch((error) => {
+  //             console.error(error);
+  //         });
+  // }, []);
 
   const onChange = (newValue) => {
     setInputValue(newValue);
@@ -68,10 +119,6 @@ function BuscaTalentos() {
               Área de Tecnologia
             </h2>
 
-            {/*
-              <div>{`value: ${value !== null ? `'${value}'` : "null"}`}</div>
-              <div>{`inputValue: '${inputValue}'`}</div>
-            */}
             <Autocomplete
               value={valueStacks}
               onChange={(event, newValueStacks) => {
@@ -148,7 +195,9 @@ function BuscaTalentos() {
                 console.log("Aplicar");
               }}
               style={{ width: "252px" }}
-            >Aplicar</BlueBackgroundButton>
+            >
+              Aplicar
+            </BlueBackgroundButton>
           </div>
         </Stack>
 
@@ -161,12 +210,26 @@ function BuscaTalentos() {
             <span className={styles["total__encontrados"]}>
               27 profissionais encontrados
             </span>
+
             <div className={styles["autocomplete__ordenar"]}>
               <SelectOrdernar
                 valueOrdenar={valueOrdenar}
                 setValueOrdenar={setValueOrdenar}
               />
             </div>
+          </div>
+
+          <div className={styles["container__usuarios"]}>
+            {usuarios?.map((usuario) => {
+              return (
+                <div className={styles["card_usuario"]}>
+                  <CardPerfil
+                    key={usuario.id}
+                    usuario={usuario}
+                  />
+                </div>
+              );
+            })}
           </div>
         </Stack>
       </div>
