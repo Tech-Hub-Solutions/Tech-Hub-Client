@@ -112,7 +112,6 @@ const PerfilUsuario = (props) => {
 
     // Seção de recomendações 
 
-
     const ButtonExplorarTalentos = styled(Button)({
         fontFamily: "Montserrat, sans-serif",
         padding: "4px 16px",
@@ -126,7 +125,6 @@ const PerfilUsuario = (props) => {
         border: "2px solid #0F9EEA",
         marginTop: "8px"
     });
-
 
     return (
         <>
@@ -155,7 +153,7 @@ const PerfilUsuario = (props) => {
                                         <DescricaoUsuario titulo='Experiência' texto={descExperiencia} />
                                     </div>
                                     <div className={styles['sectionSkills__quemProcuramos']}>
-                                        <DescricaoUsuario titulo='Sobre mim' texto={descSobreMim} />
+                                        <DescricaoUsuario titulo='Quem procuramos' texto={descSobreMim} />
                                     </div>
                                 </div>
                                 <div className={styles['sectionSkills__softSkills']}>

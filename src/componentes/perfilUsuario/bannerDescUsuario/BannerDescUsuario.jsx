@@ -45,7 +45,7 @@ const BannerDescUsuario = (props) => {
         showOptions = (
             <>
                 <Checkbox color="error" style={{ marginRight: '6px' }} icon={<FavoriteBorder sx={{ fontSize: 32 }} style={{ color: '#505050' }} />} checkedIcon={<Favorite sx={{ fontSize: 32 }} />} />
-                <Link to='/chat'>
+                <Link to='/conversas'>
                     <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
                 </Link>
                 <BlueBackgroundButton className={styles['botaoCondicional']}>Proposta</BlueBackgroundButton>
