@@ -8,8 +8,11 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import { Avatar, Checkbox, Rating } from "@mui/material";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const CardPerfil = (props) => {
+  const navigate = useNavigate();
+
   const {
     usuario,
     usuariosSelecionados,
@@ -49,42 +52,51 @@ const CardPerfil = (props) => {
     });
   };
 
+  const navigateToPerfil = () => {
+    navigate({
+      pathname: "/perfil",
+      // passar parametro de url 1 para pegar com useParam
+      search: `?id=${usuario.id}`,
+    });
+  };
   return (
     <>
       <Card sx={{ width: 280, height: "100%" }}>
-        <CardMedia sx={{ height: 187 }} title="Foto de perfil de freelancer">
-          <Avatar
-            variant="square"
-            sx={{ height: "100%", width: "100%" }}
-            src={usuario?.urlFotoPerfil}
-            title="Foto de perfil de freelancer"
+        <div onClick={navigateToPerfil} className={styles["navigate__perfil"]}>
+          <CardMedia sx={{ height: 187 }} title="Foto de perfil de freelancer">
+            <Avatar
+              variant="square"
+              sx={{ height: "100%", width: "100%" }}
+              src={usuario?.urlFotoPerfil}
+              title="Foto de perfil de freelancer"
+            >
+              <p style={{ fontSize: "3rem" }}>{usuario?.nome[0]}</p>
+            </Avatar>
+          </CardMedia>
+
+          <CardContent
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
+            }}
           >
-            <p style={{ fontSize: "3rem" }}>{usuario?.nome[0]}</p>
-          </Avatar>
-        </CardMedia>
+            <span className={styles["name"]}>{usuario?.nome}</span>
 
-        <CardContent
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-start",
-            alignItems: "flex-start",
-          }}
-        >
-          <span className={styles["name"]}>{usuario?.nome}</span>
+            <div className={styles["container__infos__usuario"]}>
+              <span className={styles["function"]}>{usuario?.descricao}</span>
 
-          <div className={styles["container__infos__usuario"]}>
-            <span className={styles["function"]}>{usuario?.descricao}</span>
+              <Rating
+                className={styles["rating"]}
+                value={usuario?.qtdEstrela}
+                readOnly
+              />
 
-            <Rating
-              className={styles["rating"]}
-              value={usuario?.qtdEstrela}
-              readOnly
-            />
-
-            <span className={styles["price"]}>R$ {usuario?.precoMedio}</span>
-          </div>
-        </CardContent>
+              <span className={styles["price"]}>R$ {usuario?.precoMedio}</span>
+            </div>
+          </CardContent>
+        </div>
 
         {props?.isTelaFavoritos && (
           <CardActions>
@@ -112,6 +124,7 @@ const CardPerfil = (props) => {
             >
               {usuarioSelecionado ? "Selecionado" : "Selecionar"}
             </Button>
+
             <Checkbox
               checked={usuario.isFavorito}
               onChange={handleFavoritar}

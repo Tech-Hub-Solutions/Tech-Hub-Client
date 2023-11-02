@@ -39,3 +39,7 @@
   font-weight: 600;
   line-height: normal;
 }
+
+.navigate__perfil {
+  cursor: pointer;
+}
