@@ -1,120 +1,62 @@
 {
-  "usuario": {
-    "nome": "João",
-    "sobrenome": "da Silva",
-    "idade": 30,
-    "profissao": "Desenvolvedor",
-    "contato": {
-      "linkedin": "https://....",
-      "github": "https://...."
+  "id": 1,
+  "sobreMim": "Sou um Cientista de Dados",
+  "experiencia": "Com mais de 5 anos de experiência em análise de dados",
+  "descricao": "Interessado em projetos que envolvem análise de dados e aprendizado de máquina.",
+  "precoMedio": 450,
+  "nomeGithub": "meugithubusuario",
+  "linkGithub": "https://github.com/meugithubusuario",
+  "linkLinkedin": "https://www.linkedin.com/in/meulinkedinusuario",
+  "flags": [
+    {
+      "id": 1,
+      "nome": "HTML/CSS",
+      "area": "front-end",
+      "categoria": "hard-skill"
     },
-    "pais": "Brazil",
-    "descricao": "Lorem lorem",
-    "sobreMim": "Lorem lorem",
-    "projeto": [
-      {
-        "id": 0,
-        "titulo": "Projeto 1",
-        "descricao": "Lorem lorem",
-        "tecnologias": [
-          "Java",
-          "Spring Boot",
-          "Angular",
-          "HTML",
-          "CSS"
-        ],
-        "linkAcesso": "https://...."
-      },
-      {
-        "id": 1,
-        "titulo": "Projeto 2",
-        "descricao": "Lorem lorem",
-        "tecnologias": [
-          "Java",
-          "Spring Boot",
-          "Angular",
-          "HTML",
-          "CSS"
-        ],
-        "linkAcesso": "https://...."
-      }
-    ],
-    "hardSkill": {
-      "area": [
-        {
-          "backEnd": [
-            {
-              "id": 0,
-              "nome": "Java"
-            },
-            {
-              "id": 1,
-              "nome": "Spring Boot"
-            }
-          ]
-        },
-        {
-          "frontEnd": [
-            {
-              "id": 0,
-              "nome": "Angular"
-            },
-            {
-              "id": 1,
-              "nome": "React"
-            },
-            {
-              "id": 2,
-              "nome": "HTML"
-            }
-          ]
-        }
-      ]
+    {
+      "id": 5,
+      "nome": "Vue.js",
+      "area": "front-end",
+      "categoria": "hard-skill"
     },
-    "softSkill": [
-      {
-        "id": 0,
-        "nome": "Comunicação"
-      },
-      {
-        "id": 1,
-        "nome": "Respeito"
-      },
-      {
-        "id": 2,
-        "nome": "Empatia"
-      }
-    ],
-    "comentarios": [
-      {
-        "id": 0,
-        "nome": "Tech Solutions",
-        "pais": "Brazil",
-        "flag": "br",
-        "nota": 4,
-        "comentario": "Lorem lorem"
-      },
-      {
-        "id": 1,
-        "nome": "PlusHub",
-        "pais": "Brazil",
-        "flag": "br",
-        "nota": 4,
-        "comentario": "Lorem loremloremloremlorem lorem"
-      }
-    ],
-    "avaliacoes": {
-      "total": 58,
-      "5estrelas": 50,
-      "4estrelas": 5,
-      "3estrelas": 2,
-      "2estrelas": 0,
-      "1estrela": 1
+    {
+      "id": 7,
+      "nome": "Node.js",
+      "area": "back-end",
+      "categoria": "hard-skill"
     },
-    "infosAdicionais": {
-      "projetosFinalizados": 7,
-      "empresasInteressadas": 4,
-      "recomendacoes": 44
+    {
+      "id": 10,
+      "nome": "Ruby on Rails",
+      "area": "back-end",
+      "categoria": "hard-skill"
+    },
+    {
+      "id": 12,
+      "nome": "Python",
+      "area": "back-end",
+      "categoria": "hard-skill"
+    },
+    {
+      "id": 16,
+      "nome": "Java (Android)",
+      "area": "mobile",
+      "categoria": "hard-skill"
+    },
+    {
+      "id": 18,
+      "nome": "Flutter",
+      "area": "mobile",
+      "categoria": "hard-skill"
+    },
+    {
+      "id": 23,
+      "nome": "Microsoft SQL Server",
+      "area": "banco de dados",
+      "categoria": "hard-skill"
     }
-  }
+  ],
+  "avaliacoes": [],
+  "referencias": []
 }
