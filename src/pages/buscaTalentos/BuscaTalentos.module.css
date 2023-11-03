@@ -106,3 +106,9 @@
   background-color: #f0f0f0;
   box-sizing: border-box;
 }
+
+.container__paginator {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
