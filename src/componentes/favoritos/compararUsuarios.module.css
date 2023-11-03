@@ -1,0 +1,148 @@
+.container {
+    margin-top: calc(70px + 1rem);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.comparacao {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: fixed;
+    z-index: 100;
+    bottom: 0;
+    left: 0;
+    height: calc(100vh - 70px);
+    width: 100%;
+    max-height: 3.875rem;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.25);
+    background-color: var(--color-white, #fff);
+    padding: 1rem 0;
+}
+
+.comparacao-active {
+    padding: 1rem 0;
+    max-height: 100rem;
+}
+
+.comparacao__titulo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+}
+
+.comparacao__titulo h1 {
+    color: var(--color-black);
+    font-size: 1rem;
+    font-weight: 700;
+    transition: 0.3s ease-in-out;
+
+}
+
+.comparacao-active .comparacao__titulo h1 {
+    font-size: 2rem;
+}
+
+.comparacao__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0 1rem;
+    width: 90%;
+    max-width: 1320px;
+    margin-top: 2rem;
+}
+
+.comparacao__content__header,
+.comparacao__content__areas__area__tecnologias--content {
+    align-self: flex-end;
+    width: 55rem;
+    display: grid;
+    grid-template-columns: repeat(4, 10.5rem);
+    /* de traz para frente */
+    column-gap: 4rem;
+    justify-self: flex-end;
+}
+
+.comparacao__content__header {
+    margin-right: 2rem;
+}
+
+.comparacao__content__header__item {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.comparacao__content__header__item__info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.comparacao__content__areas {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    padding: 1rem;
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
+    max-height: 45vh;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.comparacao__content__areas__area {
+    border-bottom: 1px solid #B7B7B7;
+    width: 100%;
+}
+
+.comparacao__content__areas__area__titulo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.comparacao__content__areas__area__titulo h3 {
+    color: var(--color-black);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.comparacao__content__areas__area__dropdown {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.comparacao__content__areas__area__tecnologias {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border-bottom: 1px solid #EAEAEA;
+    padding: 0.3rem 0;
+}
+
+/* Add a class for the opened dropdown */
+.opened-dropdown {
+    max-height: 1000px; /* Adjust the maximum height as needed */
+    transition: max-height 0.3s ease-in-out; /* Adjust the duration and easing as needed */
+    overflow: hidden;
+  }
+  
+  /* Closed dropdown */
+  .closed-dropdown {
+    max-height: 0;
+    transition: max-height 0.3s ease-in-out;
+    overflow: hidden;
+  }
+  

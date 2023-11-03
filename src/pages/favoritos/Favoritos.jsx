@@ -3,27 +3,46 @@ import Header from "../../componentes/shared/header/Header";
 import styles from "./Favoritos.module.css";
 import CardPerfil from "../../componentes/shared/cardPerfil/CardPerfil";
 import SelectOrdernar from "../../componentes/shared/SelectOrdernar";
-import MockImageCardPerfil from "../../assets/images/mockImageCardPerfil.png";
 import axiosInstance from '../../config/axiosInstance'
+
+import CompararUsuarios from "../../componentes/favoritos/compararUsuarios";
 
 const Favoritos = () => {
     const [valueOrdenar, setValueOrdenar] = React.useState("");
     const [usuarios, setUsuarios] = React.useState([]);
     const [usuariosSelecionados, setUsuariosSelecionados] = React.useState([]);
+    const [showComparacao, setComparacao] = React.useState(false);
+    const [conjuntoSkill, setConjuntoSkill] = React.useState([]);
 
     React.useEffect(() => {
         axiosInstance.get("usuarios/favoritos")
             .then((response) => {
                 if (response.status == 200) {
                     const responseUsuarios = response.data.content;
+                    const conjuntoSkillResponse = [];
 
-                    const responseMapeada = responseUsuarios.map((item) => {
+                    const responseMapeada = responseUsuarios.map((usuario) => {
+
+                        usuario?.flags?.forEach(flag => {
+                            const area = conjuntoSkillResponse.find(area => area.area == flag.area);
+
+                            if (!area) {
+                                conjuntoSkillResponse.push({ area: flag.area, tecnologias: [] });
+                            }
+
+                            const tecnologia = area?.tecnologias.find(tecnologia => tecnologia == flag.nome);
+                            if (!tecnologia) {
+                                area?.tecnologias.push(flag.nome);
+                            }
+                        });
+
                         return {
-                            ...item,
+                            ...usuario,
                             isFavorito: true,
                         };
                     });
 
+                    setConjuntoSkill(conjuntoSkillResponse);
                     setUsuarios(responseMapeada);
                 }
             })
@@ -64,6 +83,17 @@ const Favoritos = () => {
                     </div>
                 </div>
             </div>
+            {
+                usuariosSelecionados.length > 1 &&
+                <CompararUsuarios
+                    usuariosSelecionados={usuariosSelecionados}
+                    setUsuariosSelecionados={setUsuariosSelecionados}
+                    conjuntoSkill={conjuntoSkill}
+                    showComparacao={showComparacao}
+                    setComparacao={setComparacao}
+                />
+            }
+
         </>
     )
 };
