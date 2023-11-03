@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import { Avatar, Checkbox, Rating } from "@mui/material";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../../config/axiosInstance";
 
 const CardPerfil = (props) => {
   const navigate = useNavigate();
@@ -39,17 +40,23 @@ const CardPerfil = (props) => {
   };
 
   const handleFavoritar = () => {
-    setUsuarios((prev) => {
-      return prev.map((item) => {
-        if (item.id === usuario.id) {
-          return {
-            ...item,
-            isFavorito: !item.isFavorito,
-          };
-        }
-        return item;
+    axiosInstance.put(`/perfis/favoritar/${usuario.id}`)
+      .then((res) => {
+        setUsuarios((prev) => {
+          return prev.map((item) => {
+            if (item.id === usuario.id) {
+              return {
+                ...item,
+                isFavorito: !item.isFavorito,
+              };
+            }
+            return item;
+          });
+        });
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    });
   };
 
   const navigateToPerfil = () => {
