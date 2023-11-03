@@ -8,11 +8,20 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import { Avatar, Checkbox, Rating } from "@mui/material";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const CardPerfil = (props) => {
+  const navigate = useNavigate();
 
-  const { usuario, usuariosSelecionados, setUsuariosSelecionados, setUsuarios } = props;
-  const usuarioSelecionado = usuariosSelecionados?.find((item) => item.id === usuario.id);
+  const {
+    usuario,
+    usuariosSelecionados,
+    setUsuariosSelecionados,
+    setUsuarios,
+  } = props;
+  const usuarioSelecionado = usuariosSelecionados?.find(
+    (item) => item.id === usuario.id
+  );
 
   const handleSelecionar = () => {
     setUsuariosSelecionados((prev) => {
@@ -27,7 +36,7 @@ const CardPerfil = (props) => {
       }
       return [...prev, usuario];
     });
-  }
+  };
 
   const handleFavoritar = () => {
     setUsuarios((prev) => {
@@ -40,65 +49,82 @@ const CardPerfil = (props) => {
         }
         return item;
       });
-    })
-  }
+    });
+  };
 
+  const navigateToPerfil = () => {
+    navigate({
+      pathname: "/perfil",
+      // passar parametro de url 1 para pegar com useParam
+      search: `?id=${usuario.id}`,
+    });
+  };
   return (
     <>
-      <Card sx={{ width: 280 }}>
-        <CardMedia
-          sx={{ height: 187 }}
-          title="Foto de perfil de freelancer"
-        >
-          <Avatar
-            variant="square"
-            sx={{ height: '100%', width: '100%' }}
-            src={usuario?.urlFotoPerfil}
-            title="Foto de perfil de freelancer"
+      <Card sx={{ width: 280, height: "100%" }}>
+        <div onClick={navigateToPerfil} className={styles["navigate__perfil"]}>
+          <CardMedia sx={{ height: 187 }} title="Foto de perfil de freelancer">
+            <Avatar
+              variant="square"
+              sx={{ height: "100%", width: "100%" }}
+              src={usuario?.urlFotoPerfil}
+              title="Foto de perfil de freelancer"
+            >
+              <p style={{ fontSize: "3rem" }}>{usuario?.nome[0]}</p>
+            </Avatar>
+          </CardMedia>
+
+          <CardContent
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
+            }}
           >
-            <p style={{ fontSize: '3rem' }}>{usuario?.nome[0]}</p>
-          </Avatar>
+            <span className={styles["name"]}>{usuario?.nome}</span>
 
-        </CardMedia>
+            <div className={styles["container__infos__usuario"]}>
+              <span className={styles["function"]}>{usuario?.descricao}</span>
 
-        <CardContent
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-start",
-            alignItems: "flex-start",
-          }}
-        >
-          <span className={styles["name"]} gutterBottom component="div">
-            {usuario?.nome}
-          </span>
+              <Rating
+                className={styles["rating"]}
+                value={usuario?.qtdEstrela}
+                readOnly
+              />
 
-          <span className={styles["function"]}>
-            {usuario?.descricao}
-          </span>
+              <span className={styles["price"]}>R$ {usuario?.precoMedio}</span>
+            </div>
+          </CardContent>
+        </div>
 
-          <Rating className={styles["rating"]} value={usuario?.qtdEstrela} readOnly />
-
-          <span className={styles["price"]}>R$ {usuario?.precoMedio}</span>
-        </CardContent>
-
-        {
-          props?.isTelaFavoritos &&
-
+        {props?.isTelaFavoritos && (
           <CardActions>
-            <Button fullWidth size="small"
+            <Button
+              fullWidth
+              size="small"
               onClick={handleSelecionar}
               sx={{
-                backgroundColor: usuarioSelecionado ? "var(--color-azul)" : "var(--color-branco)",
+                backgroundColor: usuarioSelecionado
+                  ? "var(--color-azul)"
+                  : "var(--color-branco)",
                 border: "1px solid var(--color-azul)",
-                color: usuarioSelecionado ? "var(--color-branco)" : "var(--color-azul)",
-                '&:hover': {
-                  backgroundColor: usuarioSelecionado ? "var(--color-azul)" : "var(--color-branco)",
-                  color: usuarioSelecionado ? "var(--color-branco)" : "var(--color-azul)",
+                color: usuarioSelecionado
+                  ? "var(--color-branco)"
+                  : "var(--color-azul)",
+                "&:hover": {
+                  backgroundColor: usuarioSelecionado
+                    ? "var(--color-azul)"
+                    : "var(--color-branco)",
+                  color: usuarioSelecionado
+                    ? "var(--color-branco)"
+                    : "var(--color-azul)",
                 },
-              }}>
+              }}
+            >
               {usuarioSelecionado ? "Selecionado" : "Selecionar"}
             </Button>
+
             <Checkbox
               checked={usuario.isFavorito}
               onChange={handleFavoritar}
@@ -113,8 +139,7 @@ const CardPerfil = (props) => {
               checkedIcon={<Favorite sx={{ fontSize: 32 }} />}
             />
           </CardActions>
-        }
-
+        )}
       </Card>
     </>
   );
