@@ -10,16 +10,16 @@ const ProjetosLoadingBox = ({ repositorio }) => {
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center',
+                alignItems: 'start',
                 justifyContent: 'flex-start',
                 gap: '1rem',
                 backgroundColor: '#fff',
-                borderRadius: '0.5rem',
-                boxShadow: ' 0 0 5px rgba(0, 0, 0, 0.2)',
-                margin: '1rem',
-                padding: '2rem',
-                width: '10rem',
-                minWidth: '20rem',
+                borderRadius: '6px',
+                boxShadow: '0px 4px 10px 4px rgba(0, 0, 0, 0.05);',
+                margin: '12px',
+                padding: '16px',
+                width: '280px',
+                minWidth: '285px',
                 height: 'auto',
                 textTransform: 'none',
                 position: 'relative',
@@ -33,7 +33,7 @@ const ProjetosLoadingBox = ({ repositorio }) => {
                 {
                     repositorio.languagens?.map((languagen) => {
                         return (
-                            <LanguageLogo language={languagen} height={"30px"} />
+                            <LanguageLogo language={languagen} height={"40px"} />
                         )
                     })
                 }

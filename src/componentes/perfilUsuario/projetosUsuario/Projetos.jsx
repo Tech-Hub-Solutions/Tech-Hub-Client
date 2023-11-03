@@ -48,7 +48,6 @@ const Projetos = ({ nome }) => {
             })
     }
 
-
     return (
         <div className={styles["projetos"]}>
             <div className="divParaExcluir">

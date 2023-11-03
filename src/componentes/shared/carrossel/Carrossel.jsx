@@ -8,8 +8,6 @@ import CardProjeto from "../../perfilUsuario/projetosUsuario/cardProjeto/CardPro
 
 const Carrossel = () => {
 
-    
-
     const settings = {
         dots: true,
         infinite: true,

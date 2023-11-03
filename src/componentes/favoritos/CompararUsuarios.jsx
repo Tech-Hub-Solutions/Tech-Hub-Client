@@ -54,7 +54,7 @@ const CompararUsuarios = (props) => {
                                     key={`content__header__${usuario.id}`}
                                     alt={usuario.nome}
                                     variant="square"
-                                    src={usuario.foto}
+                                    src={usuario.urlFotoPerfil}
                                     sx={{ width: '10rem', height: '8rem' }}
                                 >
                                     {usuario.nome[0]}

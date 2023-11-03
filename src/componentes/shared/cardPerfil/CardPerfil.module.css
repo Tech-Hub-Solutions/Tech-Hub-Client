@@ -8,14 +8,18 @@
   margin-bottom: 2px;
 }
 
-.function {
+.container__infos__usuario__descricao {
   color: #111113;
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
   line-height: 19.6px;
-  display: flex;
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* Number of lines to show */
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
   text-align: start;
 }
 
@@ -27,11 +31,11 @@
   justify-content: space-between;
 }
 
-.rating {
+.container__infos__usuario__rating {
   margin: 4px 0;
 }
 
-.price {
+.container__infos__usuario__price {
   color: #000;
   font-family: "Montserrat", sans-serif;
   font-size: 24px;
