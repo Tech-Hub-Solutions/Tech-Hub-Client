@@ -4,81 +4,188 @@ import Header from "../../componentes/shared/header/Header";
 import BannerDescUsuario from "../../componentes/perfilUsuario/bannerDescUsuario/BannerDescUsuario";
 import DescricaoUsuario from "../../componentes/perfilUsuario/descricaoUsuario/DescricaoUsuario";
 import BoxSoftSkills from "../../componentes/perfilUsuario/skillsUsuario/boxSkills/BoxSoftSkills";
-import BoxHardSkills from "../../componentes/perfilUsuario/skillsUsuario/boxHardSkills/BoxHardSkills";
 import ComentarioPerfil from "../../componentes/perfilUsuario/comentarioPerfil/comentarioPerfil/ComentarioPerfil";
 import CampoComentario from "../../componentes/perfilUsuario/comentarioPerfil/campoComentario/CampoComentario";
 
 import { Box, Button, Divider, Rating } from "@mui/material";
-import Carrossel from "../../componentes/shared/carrossel/Carrossel";
 import AvaliacoesUsuario from "../../componentes/perfilUsuario/avaliacoesUsuario/AvaliacoesUsuario";
 import styled from "@emotion/styled";
 import Projetos from "../../componentes/perfilUsuario/projetosUsuario/Projetos";
-
+import axiosInstance from "../../config/axiosInstance";
+import WidgetSoftSkill from "../../componentes/perfilUsuario/skillsUsuario/widgetSoftSkill/WidgetSoftSkill";
+import WidgetHardSkills from "../../componentes/perfilUsuario/skillsUsuario/widgetHardSkills/WidgetHardSkills";
+import { useLocation } from 'react-router-dom'
 
 const PerfilUsuario = (props) => {
 
+    const [usuario, setUsuario] = React.useState([]);
+    const [avaliacao, setAvaliacao] = React.useState([])
+    const [totalAvaliacoes, setTotalAvaliacoes] = React.useState([]);
+    const [mediaEstrelas, setMediaEstrelas] = React.useState(0);
+    const [idRequisicao, setIdRequisicao] = React.useState(0);
+    const location = useLocation();
+
+    React.useEffect(() => {
+
+        const searchParams = new URLSearchParams(location.search);
+        const usuarioParamId = searchParams.get('id');
+
+        const usuarioLogadoId = sessionStorage.getItem('usuarioId');
+
+        let idRequisicao;
+
+        const isOwnProfile = !usuarioParamId || (usuarioParamId == usuarioLogadoId)
+
+        if (isOwnProfile) {
+            idRequisicao = usuarioLogadoId;
+        } else {
+            idRequisicao = usuarioParamId;
+        }
+
+        setIdRequisicao(idRequisicao);
+
+        axiosInstance.get('/perfis/' + idRequisicao)
+            .then((response) => {
+                if (response.status == 200) {
+                    const usuarioPerfil = response.data
+                    usuarioPerfil.isOwnProfile = isOwnProfile;
+
+                    setUsuario(usuarioPerfil);
+
+                    axiosInstance.get('/perfis/avaliacao/geral/' + idRequisicao)
+                        .then((response) => {
+                            if (response.status == 200) {
+                                const usuarioAvaliacao = response.data;
+
+                                // use reduce() method to find the sum
+                                let sum = usuarioAvaliacao.reduce((accumulator, currentValue) => {
+                                    return accumulator + currentValue.quantidade
+                                }, 0);
+
+                                setTotalAvaliacoes(sum);
+
+                                for (var i = 1; i <= 5; i++) {
+                                    if (!usuarioAvaliacao.some(avaliacao => avaliacao.qtdEstrela == i)) {
+                                        usuarioAvaliacao.push({ qtdEstrela: i, quantidade: 0 });
+                                    }
+                                }
+
+                                usuarioAvaliacao.forEach(usuario => {
+                                    usuario.porcentagem = ((usuario.quantidade / sum) * 100).toFixed(0)
+                                });
+
+                                usuarioAvaliacao.sort((a, b) => {
+                                    if (a.qtdEstrela > b.qtdEstrela) {
+                                        return -1
+                                    } else {
+                                        return 1
+                                    }
+                                })
+
+                                let media = 0;
+                                usuarioAvaliacao.forEach(usuario => {
+                                    media += (usuario.qtdEstrela * usuario.quantidade)
+                                });
+
+
+                                setMediaEstrelas(Math.round(media / sum))
+
+                                setAvaliacao(usuarioAvaliacao);
+                            }
+                        })
+                }
+            })
+    }, []);
+
+    // const totalAvaliacoes 
+
+    const [flags, setFlags] = React.useState([]);
+
+    React.useEffect(() => {
+
+        const newSkills = usuario?.flags?.map((flags) => {
+            // map varre a lista e transforma o json antigo em um novo
+
+            let background;
+
+            switch (flags.area) {
+
+                case 'front-end':
+                    background = "var(--color-frontend)"
+                    break;
+                case 'back-end':
+                    background = "var(--color-backend)"
+                    break;
+                case 'mobile':
+                    background = "var(--color-mobile)";
+                    break;
+                case 'banco de dados':
+                    background = "var(--color-database)";
+                    break;
+                case 'testes':
+                    background = "var(--color-testes)";
+                    break;
+                case 'análise de dados':
+                    background = "var(--color-analiseDados)";
+                    break;
+                case 'devops':
+                    background = "var(--color-devops)";
+                    break;
+                case 'I.A.':
+                    background = "var(--color-ia)";
+                    break;
+                case 'segurança':
+                    background = "var(--color-seguranca)";
+                    break;
+            }
+
+
+            return {
+                ...flags, // Pega todos os atributos do json que já existem.
+                background // adiciona novo atributo com base na variável background
+            }
+        })
+
+        setFlags(newSkills);
+    }, [usuario])
+
+    React.useEffect(() => {
+        if (idRequisicao == 0) {
+            return
+        }
+        trazerComentarios(0, idRequisicao);
+
+    }, [idRequisicao])
+
+    const [paginas, setPaginas] = React.useState(1)
+    const [comentario, setComentario] = React.useState([]);
+    const [comentariosFim, setComentariosFim] = React.useState(false)
+
+    const verMais = () => {
+        setPaginas(paginas + 1)
+        trazerComentarios(paginas, idRequisicao)
+    }
+
+    const trazerComentarios = (paginas, idRequisicao) => {
+        axiosInstance.get(`/perfis/avaliacao/${idRequisicao}?page=${paginas}&size=3`)
+            .then((response) => {
+                if (!response.data.content) return setComentariosFim(true);
+
+                setComentario(prev => {
+                    if (!prev) {
+                        return response.data.content
+                    }
+                    return [
+                        ...prev,
+                        ...response.data.content
+                    ]
+                })
+            })
+    }
+
     const isPerfilFreelancer = true;
 
-    let descExperiencia = '"Na minha jornada, liderei projetos desafiadores, desde aplicativos móveis para grandes marcas até sistemas de gerenciamento robustos, sempre buscando a excelência técnica e funcional."'
-    let descSobreMim = 'Sou um entusiasta da tecnologia dedicado, apaixonado por resolver problemas complexos de maneira criativa. Minha busca incessante por aprendizado impulsiona meu constante crescimento na área de desenvolvimento.'
-
-
-    const [comentario, setComentario] = React.useState([{
-        nomeUsuario: 'TechHub',
-        comentario: 'O desenvolvedor é uma verdadeira peça-chave em nossa equipe. Sempre traz soluções inovadoras e entrega resultados excepcionais. Sua habilidade de comunicação também enriquece nossa colaboração.',
-        value: 3
-    },
-    {
-        nomeUsuario: 'PlusHub',
-        comentario: 'Trabalhar com esse desenvolvedor foi uma experiência incrível. Sua dedicação incansável em enfrentar desafios e sua capacidade de transformar ideias em código funcional são notáveis. Um ativo para qualquer projeto',
-        value: 4
-    },
-    {
-        nomeUsuario: 'V6',
-        comentario: 'O desenvolvedor é uma verdadeira peça-chave em nossa equipe. Sempre traz soluções inovadoras e entrega resultados excepcionais. Sua habilidade de comunicação também enriquece nossa colaboração.',
-        value: 4
-    },
-    {
-        nomeUsuario: 'Simasturbo Mecânica',
-        comentario: 'O desenvolvedor é uma verdadeira peça-chave em nossa equipe. Sempre traz soluções inovadoras e entrega resultados excepcionais. Sua habilidade de comunicação também enriquece nossa colaboração.',
-        value: 4
-    },
-    ]);
-
-    // Seção de Avaliações
-
-    const valorPerfil = 3;
-    const avaliacoesRealizadas = 59;
-
-    const [avaliacao, setAvaliacao] = React.useState([{
-        estrelas: 5,
-        numeroAvaliacoes: 50,
-        porcentagem: 68,
-    },
-    {
-        estrelas: 4,
-        numeroAvaliacoes: 21,
-        porcentagem: 20,
-    },
-    {
-        estrelas: 3,
-        numeroAvaliacoes: 5,
-        porcentagem: 6,
-    },
-    {
-        estrelas: 2,
-        numeroAvaliacoes: 2,
-        porcentagem: 4,
-    },
-    {
-        estrelas: 1,
-        numeroAvaliacoes: 0,
-        porcentagem: 0,
-    },])
-
     // Seção de recomendações 
-
-    let showRecomendacoes;
 
     const ButtonExplorarTalentos = styled(Button)({
         fontFamily: "Montserrat, sans-serif",
@@ -94,25 +201,44 @@ const PerfilUsuario = (props) => {
         marginTop: "8px"
     });
 
-
     return (
         <>
             <Header />
             <div className={styles['perfil__usuario']}>
                 <div className={styles['content']}>
-                    <BannerDescUsuario />
+                    <BannerDescUsuario usuario={usuario} />
                     {
                         isPerfilFreelancer ?
                             <div className={styles['content__sectionSkills']}>
                                 <div className={styles['sectionSkills__experiencia']}>
-                                    <DescricaoUsuario titulo='Experiência' texto={descExperiencia} />
+                                    <DescricaoUsuario titulo='Experiência' texto={usuario.experiencia} />
                                     <Divider variant="middle" style={{ margin: '16px 0' }} />
-                                    <DescricaoUsuario titulo='Sobre mim' texto={descSobreMim} />
+                                    <DescricaoUsuario titulo='Sobre mim' texto={usuario.sobreMim} />
                                 </div>
                                 <div className={styles['sectionSkills__experiencia']}>
-                                    <BoxSoftSkills />
+                                    <h1 className={styles['titulo']}>Soft Skills</h1>
+                                    <div className={styles['boxSkills']}>
+                                        {
+                                            flags?.filter(flags => flags.categoria === "soft-skill")?.map((flags) => {
+                                                return (
+                                                    <WidgetSoftSkill key={flags.nome} softSkill={flags.nome} />
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                    {/* <BoxSoftSkills /> */}
                                     <Divider variant="middle" style={{ margin: '16px 0' }} />
-                                    <BoxHardSkills />
+                                    <h1 className={styles['titulo']}>Hard Skill</h1>
+                                    <div className={styles['boxSkills']}>
+                                        {
+                                            flags?.filter(flags => flags.categoria === "hard-skill")?.map((flags) => {
+                                                return (
+                                                    <WidgetHardSkills key={flags.nome} hardSkill={flags.nome} background={flags.background} />
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                    {/* <BoxHardSkills /> */}
                                 </div>
                             </div>
                             :
@@ -122,7 +248,7 @@ const PerfilUsuario = (props) => {
                                         <DescricaoUsuario titulo='Experiência' texto={descExperiencia} />
                                     </div>
                                     <div className={styles['sectionSkills__quemProcuramos']}>
-                                        <DescricaoUsuario titulo='Sobre mim' texto={descSobreMim} />
+                                        <DescricaoUsuario titulo='Quem procuramos' texto={descSobreMim} />
                                     </div>
                                 </div>
                                 <div className={styles['sectionSkills__softSkills']}>
@@ -145,35 +271,37 @@ const PerfilUsuario = (props) => {
                             <h1>Comentários</h1>
                             {
                                 comentario.map((comentario, index) => {
-                                    if (index < 3) {
-                                        return (
-                                            <ComentarioPerfil key={`comentario${index}`} nomeUsuario={comentario.nomeUsuario} comentario={comentario.comentario} value={comentario.value} />
-                                        )
-                                    }
+                                    return (
+                                        <ComentarioPerfil key={`comentario${index}`} nomeUsuario='hahaha' comentario={comentario.comentario} value={comentario.qtdEstrela} />
+                                    )
                                 })
                             }
-                            <CampoComentario nomeUsuario='Você' />
+                            {!comentariosFim && comentario.length >= 3 &&
+                                <Button style={{ color: 'var(--color-cinza)', marginBottom: '32px', fontWeight: '500' }} onClick={verMais}>Ver mais</Button>
+                            }
+                            {!usuario.isOwnProfile &&
+                                <CampoComentario idRequisicao={idRequisicao} setComentario={setComentario} nomeUsuario='Você' />
+                            }
                         </div>
                         <Divider orientation="vertical" flexItem style={{ margin: '0 36px' }}></Divider>
                         <div className={styles['sectionComentariosAvaliacoes__avaliacoes']}>
                             <h1>Avaliações</h1>
                             <div className={styles['avaliacoesUsuario']}>
                                 <div className={styles['avaliacoesUsuario__titulo']}>
-                                    <h2>{avaliacoesRealizadas} avaliações realizadas</h2>
+                                    <h2>{totalAvaliacoes} avaliações realizadas</h2>
                                     <Box
                                         sx={{
                                             '& > legend': { mt: 2 },
                                         }}
                                     >
-                                        <Rating name="read-only" value={valorPerfil} readOnly />
+                                        <Rating name="read-only" value={mediaEstrelas} readOnly />
                                     </Box>
                                 </div>
-                                {
-                                    avaliacao.map((avaliacao) => {
-                                        return (
-                                            <AvaliacoesUsuario key={`avaliacao${avaliacao.estrelas}`} numeroEstrelas={avaliacao.estrelas} value={avaliacao.porcentagem} numeroAvaliacoes={avaliacao.numeroAvaliacoes} />
-                                        )
-                                    })
+                                {avaliacao.map((avaliacao) => {
+                                    return (
+                                        <AvaliacoesUsuario key={`qtdEstrelas${avaliacao.qtdEstrela}`} qtdEstrelas={avaliacao.qtdEstrela} numeroAvaliacoes={avaliacao.quantidade} value={avaliacao.porcentagem} />
+                                    )
+                                })
                                 }
                             </div>
                             <Divider variant="middle" style={{ width: '100%', margin: '40px 0' }} />
@@ -183,7 +311,7 @@ const PerfilUsuario = (props) => {
                                     isPerfilFreelancer ?
                                         <>
                                             <div className={styles['adicionais__informacoes']}>
-                                                <h4>7</h4>
+                                                <h4></h4>
                                                 <p>Projetos finalizados</p>
                                             </div>
                                             <div className={styles['adicionais__informacoes']}>

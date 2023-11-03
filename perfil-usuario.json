@@ -1,0 +1,62 @@
+{
+  "id": 1,
+  "sobreMim": "Sou um Cientista de Dados",
+  "experiencia": "Com mais de 5 anos de experiência em análise de dados",
+  "descricao": "Interessado em projetos que envolvem análise de dados e aprendizado de máquina.",
+  "precoMedio": 450,
+  "nomeGithub": "meugithubusuario",
+  "linkGithub": "https://github.com/meugithubusuario",
+  "linkLinkedin": "https://www.linkedin.com/in/meulinkedinusuario",
+  "flags": [
+    {
+      "id": 1,
+      "nome": "HTML/CSS",
+      "area": "front-end",
+      "categoria": "hard-skill"
+    },
+    {
+      "id": 5,
+      "nome": "Vue.js",
+      "area": "front-end",
+      "categoria": "hard-skill"
+    },
+    {
+      "id": 7,
+      "nome": "Node.js",
+      "area": "back-end",
+      "categoria": "hard-skill"
+    },
+    {
+      "id": 10,
+      "nome": "Ruby on Rails",
+      "area": "back-end",
+      "categoria": "hard-skill"
+    },
+    {
+      "id": 12,
+      "nome": "Python",
+      "area": "back-end",
+      "categoria": "hard-skill"
+    },
+    {
+      "id": 16,
+      "nome": "Java (Android)",
+      "area": "mobile",
+      "categoria": "hard-skill"
+    },
+    {
+      "id": 18,
+      "nome": "Flutter",
+      "area": "mobile",
+      "categoria": "hard-skill"
+    },
+    {
+      "id": 23,
+      "nome": "Microsoft SQL Server",
+      "area": "banco de dados",
+      "categoria": "hard-skill"
+    }
+  ],
+  "avaliacoes": [],
+  "referencias": []
+}
