@@ -9,11 +9,20 @@ import Autocomplete from "@mui/material/Autocomplete";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { Divider, TablePagination } from "@mui/material";
+import {
+  Divider,
+  IconButton,
+  InputBase,
+  TablePagination,
+  alpha,
+  styled,
+} from "@mui/material";
 import Slider from "@mui/material/Slider";
 import SelectOrdernar from "../../componentes/shared/SelectOrdernar";
 import axiosInstance from "../../config/axiosInstance";
 import CardPerfil from "../../componentes/shared/cardPerfil/CardPerfil";
+import { Search } from "@mui/icons-material";
+import SearchIcon from "@mui/icons-material/Search";
 
 function BuscaTalentos() {
   const [valueStacks, setValueStacks] = React.useState();
@@ -31,6 +40,7 @@ function BuscaTalentos() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [precoMedioMin, setPrecoMedioMin] = React.useState(0);
   const [precoMedioMax, setPrecoMedioMax] = React.useState(0);
+  const [searchText, setSearchText] = React.useState("");
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -186,6 +196,37 @@ function BuscaTalentos() {
     return `${value} reais`;
   }
 
+  const handleSearch = () => {
+    axiosInstance
+      .post(`usuarios/filtro?page=${page}&size=${rowsPerPage}`, {
+        nome: searchText[0],
+        area: inputValueStacks === "" ? null : inputValueStacks,
+        tecnologiasIds:
+          tecnologiasSelecionadas.length <= 0 ? null : tecnologiasSelecionadas,
+        precoMax: value1[1],
+        precoMin: value1[0],
+      })
+      .then((response) => {
+        if (response.status == 200) {
+          setUsuarios(response.data.content);
+        }
+      })
+      .catch((error) => {
+        const params = {
+          nome: searchText,
+          area: inputValueStacks === "" ? null : inputValueStacks,
+          tecnologiasIds:
+            tecnologiasSelecionadas.length <= 0
+              ? null
+              : tecnologiasSelecionadas,
+          precoMax: value1[1],
+          precoMin: value1[0],
+        };
+        console.log("AAAAAAAAAAAAAAAAAA => ", params);
+        console.error(error);
+      });
+  };
+
   return (
     <>
       <Header />
@@ -281,7 +322,7 @@ function BuscaTalentos() {
 
           <div className={styles["btn__aplicar"]}>
             <BlueBackgroundButton
-              onClick={() => handleApplyFilters()}
+              onClick={handleSearch}
               style={{ width: "252px" }}
             >
               Aplicar
@@ -298,6 +339,27 @@ function BuscaTalentos() {
             <span className={styles["total__encontrados"]}>
               {todosUsuarios} profissionais encontrados
             </span>
+
+            <div className="container__search">
+              <IconButton
+                type="button"
+                sx={{ p: "10px" }}
+                aria-label="Ícone de pesquisa"
+                onClick={handleSearch}
+              >
+                <SearchIcon />
+              </IconButton>
+
+              <InputBase
+                sx={{ ml: 1, flex: 1, width: 260 }}
+                placeholder="Pesquisar por nome de talento"
+                inputProps={{ "aria-label": "Pesquisar por nome de talento" }}
+                value={searchText}
+                onChange={(e) => (
+                  setSearchText(e.target.value), console.log(searchText)
+                )}
+              />
+            </div>
 
             <div className={styles["autocomplete__ordenar"]}>
               <SelectOrdernar
