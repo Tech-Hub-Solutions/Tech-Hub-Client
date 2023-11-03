@@ -21,7 +21,7 @@ function BuscaTalentos() {
   const [valueOrdenar, setValueOrdenar] = React.useState("");
   const [value1, setValue1] = React.useState([0, 5000]);
   const [usuarios, setUsuarios] = React.useState([]);
-  const [todosUsuarios, setTodosUsuarios] = React.useState([]);
+  const [todosUsuarios, setTodosUsuarios] = React.useState(0);
   const [optionsStacks, setOptionsStacks] = React.useState([]);
   const [tecnologias, setTecnologias] = React.useState([]);
   const [tecnologiasSelecionadas, setTecnologiasSelecionadas] = React.useState(
@@ -29,34 +29,11 @@ function BuscaTalentos() {
   );
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [precoMedioMin, setPrecoMedioMin] = React.useState(0);
+  const [precoMedioMax, setPrecoMedioMax] = React.useState(0);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-
-    axiosInstance
-      .post(`usuarios/filtro?page=${newPage}&size=${rowsPerPage}`, {
-        nome: null,
-        area: inputValueStacks,
-        tecnologiasIds: tecnologiasSelecionadas,
-        precoMax: value1[1],
-        precoMin: value1[0],
-      })
-      .then((response) => {
-        if (response.status == 200) {
-          const responseUsuarios = response.data.content;
-
-          const responseMapeada = responseUsuarios.map((item) => {
-            return {
-              ...item,
-            };
-          });
-
-          setUsuarios(responseMapeada);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -72,9 +49,13 @@ function BuscaTalentos() {
     getAllTechnologies();
   }, []);
 
+  React.useEffect(() => {
+    handleApplyFilters();
+  }, [rowsPerPage, page]);
+
   function getAllUsers() {
     axiosInstance
-      .post("usuarios/filtro", {
+      .post(`usuarios/filtro?page=${page}&size=${rowsPerPage}`, {
         nome: null,
         area: null,
         tecnologiasIds: [],
@@ -83,17 +64,19 @@ function BuscaTalentos() {
       })
       .then((response) => {
         if (response.status == 200) {
-          const responseUsuarios = response.data.content;
+          setTodosUsuarios(response.data.totalElements);
+          setUsuarios(response.data.content);
 
-          const responseMapeada = responseUsuarios.map((item) => {
-            return {
-              ...item,
-            };
-          });
+          const arrayPrecoMedio = response.data.content.map(
+            (usuario) => usuario.precoMedio
+          );
 
-          setTodosUsuarios(responseMapeada);
-          // TODO - Inserir forma de renderizar os 10 primeiros usuários ao carregar a página
-          // setUsuarios(responseMapeada);
+          setPrecoMedioMin(Math.min(...arrayPrecoMedio));
+          setPrecoMedioMax(Math.max(...arrayPrecoMedio));
+          setValue1([
+            Math.min(...arrayPrecoMedio),
+            Math.max(...arrayPrecoMedio),
+          ]);
         }
       })
       .catch((error) => {
@@ -148,8 +131,6 @@ function BuscaTalentos() {
             }
           });
 
-          console.log("Tecnologias por área => ", tecnologiasPorArea);
-
           setTecnologias(tecnologiasPorArea);
         }
       })
@@ -180,7 +161,7 @@ function BuscaTalentos() {
 
   const handleApplyFilters = () => {
     axiosInstance
-      .post("usuarios/filtro", {
+      .post(`usuarios/filtro?page=${page}&size=${rowsPerPage}`, {
         nome: null,
         area: inputValueStacks,
         tecnologiasIds: tecnologiasSelecionadas,
@@ -188,26 +169,8 @@ function BuscaTalentos() {
         precoMin: value1[0],
       })
       .then((response) => {
-        const param = {
-          nome: null,
-          area: inputValueStacks,
-          tecnologiasIds: tecnologiasSelecionadas,
-          precoMax: value1[1],
-          precoMin: value1[0],
-        };
-        console.log("PARAMS => ", param);
-
         if (response.status == 200) {
-          const responseUsuarios = response.data.content;
-
-          const responseMapeada = responseUsuarios.map((item) => {
-            return {
-              ...item,
-            };
-          });
-
-          setUsuarios(responseMapeada);
-          console.log("USUARIOS => ", usuarios);
+          setUsuarios(response.data.content);
         }
       })
       .catch((error) => {
@@ -311,8 +274,8 @@ function BuscaTalentos() {
               disableSwap
               valueLabelFormat={(x) => `R$${x},00`}
               sx={{ color: "#0f9eea" }}
-              min={0}
-              max={5000}
+              min={precoMedioMin}
+              max={precoMedioMax}
             />
           </div>
 
@@ -333,7 +296,7 @@ function BuscaTalentos() {
         >
           <div className={styles["container__right__header"]}>
             <span className={styles["total__encontrados"]}>
-              27 profissionais encontrados
+              {todosUsuarios} profissionais encontrados
             </span>
 
             <div className={styles["autocomplete__ordenar"]}>
@@ -345,7 +308,7 @@ function BuscaTalentos() {
           </div>
 
           <div className={styles["container__usuarios"]}>
-            {usuarios?.map((usuario) => {
+            {usuarios.map((usuario) => {
               return (
                 <div className={styles["card_usuario"]} key={usuario.id}>
                   <CardPerfil key={usuario.id} usuario={usuario} />
@@ -357,7 +320,7 @@ function BuscaTalentos() {
           <div className={styles["container__paginator"]}>
             <TablePagination
               labelRowsPerPage={"Talentos por página:"}
-              count={todosUsuarios.length}
+              count={todosUsuarios}
               component="div"
               page={page}
               onPageChange={handleChangePage}
