@@ -15,6 +15,8 @@ import { Link } from "react-router-dom";
 
 const BannerDescUsuario = (props) => {
 
+    const usuario = props.usuario;
+
     const ButtonExplorarTalentos = styled(Button)({
         fontFamily: "Montserrat, sans-serif",
         padding: "10px 16px",
@@ -26,18 +28,20 @@ const BannerDescUsuario = (props) => {
         backgroundColor: "transparent",
         color: "#0f9eea",
         border: "2px solid #0F9EEA",
+        lineHeight: "1.3",
     });
 
-    const isFreelancer = false;
-    const isOwnProfile = false;
+    // const isFreelancer = usuario.funcao;
+    const isFreelancer = sessionStorage.getItem("funcao") == "FREELANCER";
+    const isOwnProfile = usuario.isOwnProfile;
 
     let showOptions;
 
-    if (isFreelancer && isOwnProfile) {
+    if (!isFreelancer && isOwnProfile) {
         showOptions = (
             <ButtonExplorarTalentos className={styles['botaoCondicional']}>Editar Perfil</ButtonExplorarTalentos>
         )
-    } else if (!isFreelancer && isOwnProfile) {
+    } else if (isFreelancer && isOwnProfile) {
         showOptions = (
             <BlueBackgroundButton className={styles['botaoCondicional']}>Editar Perfil</BlueBackgroundButton>
         )
@@ -51,17 +55,15 @@ const BannerDescUsuario = (props) => {
                 <BlueBackgroundButton className={styles['botaoCondicional']}>Proposta</BlueBackgroundButton>
             </>
         )
-    } else {
-        ''
     }
 
     return (
         <>
-            <div className={styles['content__banner']}>
+            <div className={styles['content__banner']} style={{backgroundImage: `url(${usuario.urlFotoWallpaper || ''})`}}>
                 <div>
                     <Avatar className={styles['banner__imagemUsuario']}
-                        alt={'Imagem de perfil de ' + props.nomeUsuario}
-                        src={props.imagemPerfilUsuario}
+                        alt={'Imagem de perfil de ' + usuario.nomeUsuario}
+                        src={usuario.urlFotoPerfil}
                         sx={{ width: 150, height: 150 }}
                     />
                 </div>
@@ -70,15 +72,15 @@ const BannerDescUsuario = (props) => {
                 <div className={styles['content__infoUsuario']}>
                     <div className={styles['infoUsuario__nome']}>
                         {/* Limitar a Length da input para até 50 caracteres */}
-                        <h1>Bruno Silva</h1>
+                        <h1>{usuario?.nome || "Sem nome"}</h1>
                         <div className={styles['infoUsuario__icones']}>
-                            <a href={props.srcLinkedInUsuario}><img src={LinkedinImg} alt="Ícone LinkedIn" /></a>
-                            <a href={props.srcGitHubUsuario}><img src={GitHubImg} alt="Ícone GitHub" /></a>
+                            <a href={usuario.linkLinkedin} target="_blank"><img src={LinkedinImg} alt="Ícone LinkedIn" /></a>
+                            <a href={usuario.linkGithub} target="_blank"><img src={GitHubImg} alt="Ícone GitHub" /></a>
                         </div>
                     </div>
                     <div className={styles['infoUsuario__desc']}>
                         {/* Limitar a Length da input para até 80 caracteres */}
-                        <p>Desenvolvedor Full-Stack | Angular</p>
+                        <p>{usuario?.descricao || "Usuário sem descrição"}</p>
                     </div>
                     <div className={styles['infoUsuario__nacionalidade']}>
                         {/* <a href=""><img src={LinkedinImg} alt={'Bandeira do ' + props.pais} /></a> */}
@@ -86,7 +88,7 @@ const BannerDescUsuario = (props) => {
                             fontSize: '1.3em',
                             lineHeight: '1.3em',
                         }} />
-                        <p>Brasil</p>
+                        <p>{usuario.pais}</p>
                     </div>
                 </div>
                 <div className={styles['descUsuario__button']}>
