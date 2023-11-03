@@ -69,8 +69,20 @@ const CardPerfil = (props) => {
   return (
     <>
       <Card sx={{ width: 280, height: "100%" }}>
-        <div onClick={navigateToPerfil} className={styles["navigate__perfil"]}>
-          <CardMedia sx={{ height: 187 }} title="Foto de perfil de freelancer">
+        <Button onClick={navigateToPerfil} className={styles["navigate__perfil"]}
+        sx={{
+          width: "100%",
+          height: "100%",
+          maxHeight: "85%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
+          padding: "0px",
+          textTransform: "none",          
+      
+        }}>
+          <CardMedia sx={{ height: 187, width:'100%' }} title="Foto de perfil de freelancer">
             <Avatar
               variant="square"
               sx={{ height: "100%", width: "100%" }}
@@ -85,25 +97,27 @@ const CardPerfil = (props) => {
             sx={{
               display: "flex",
               flexDirection: "column",
-              justifyContent: "flex-start",
+              justifyContent: "space-between",
               alignItems: "flex-start",
+              height: "100%",
+              maxHeight: "100%",
             }}
           >
             <span className={styles["name"]}>{usuario?.nome}</span>
 
             <div className={styles["container__infos__usuario"]}>
-              <span className={styles["function"]}>{usuario?.descricao}</span>
+              <span className={styles["container__infos__usuario__descricao"]}>{usuario?.descricao}</span>
 
               <Rating
-                className={styles["rating"]}
+                className={styles["container__infos__usuario__rating"]}
                 value={usuario?.qtdEstrela}
                 readOnly
               />
 
-              <span className={styles["price"]}>R$ {usuario?.precoMedio}</span>
+              <span className={styles["container__infos__usuario__price"]}>R$ {usuario?.precoMedio}</span>
             </div>
           </CardContent>
-        </div>
+        </Button>
 
         {props?.isTelaFavoritos && (
           <CardActions>
