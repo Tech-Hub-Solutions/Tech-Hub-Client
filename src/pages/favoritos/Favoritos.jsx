@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import Header from "../../componentes/shared/header/Header";
 import styles from "./Favoritos.module.css";
 import CardPerfil from "../../componentes/shared/cardPerfil/CardPerfil";
@@ -6,20 +6,33 @@ import SelectOrdernar from "../../componentes/shared/SelectOrdernar";
 import axiosInstance from '../../config/axiosInstance'
 
 import CompararUsuarios from "../../componentes/favoritos/compararUsuarios";
+import { Button } from "@mui/material";
 
 const Favoritos = () => {
     const [valueOrdenar, setValueOrdenar] = React.useState("");
     const [usuarios, setUsuarios] = React.useState([]);
+    const totalUsuarios = useRef(0);
     const [usuariosSelecionados, setUsuariosSelecionados] = React.useState([]);
     const [showComparacao, setComparacao] = React.useState(false);
     const [conjuntoSkill, setConjuntoSkill] = React.useState([]);
+    const [page, setPage] = React.useState(0);
 
     React.useEffect(() => {
-        axiosInstance.get("usuarios/favoritos")
+        carregarUsuarios();
+    }, [page]);
+
+    const carregarUsuarios = async () => {
+        let sort; 
+       
+        await axiosInstance.get(`usuarios/favoritos?page=${page}&size=10%sort`)
             .then((response) => {
                 if (response.status == 200) {
                     const responseUsuarios = response.data.content;
-                    const conjuntoSkillResponse = [];
+                    const conjuntoSkillResponse = conjuntoSkill;
+
+                    if (totalUsuarios.current == 0) {
+                        totalUsuarios.current = response.data.totalElements;
+                    }
 
                     const responseMapeada = responseUsuarios.map((usuario) => {
 
@@ -43,13 +56,13 @@ const Favoritos = () => {
                     });
 
                     setConjuntoSkill(conjuntoSkillResponse);
-                    setUsuarios(responseMapeada);
+                    setUsuarios([...usuarios, ...responseMapeada]);
                 }
             })
             .catch((error) => {
                 console.log(error);
             });
-    }, []);
+    }
 
     return (
         <>
@@ -59,7 +72,7 @@ const Favoritos = () => {
                     <h1 className={styles["favoritos__titulo"]}>Favoritos</h1>
                     <div className={styles["favoritos__header"]}>
                         <h2 className={styles["favoritos__quantidade-desenvolvedores"]}>
-                            {usuarios.length} desenvolvedores na lista de favoritos
+                            {totalUsuarios?.current} desenvolvedores na lista de favoritos
                         </h2>
                         <SelectOrdernar
                             valueOrdenar={valueOrdenar}
@@ -81,6 +94,12 @@ const Favoritos = () => {
                             ))
                         }
                     </div>
+                    {
+                        usuarios.length < totalUsuarios.current &&
+                        <div className={styles['usuarios__ver-mais']}>
+                            <Button style={{ color: 'var(--color-cinza)', marginBottom: '32px', fontWeight: '500' }} onClick={() => setPage(prev => prev + 1)}>Ver mais</Button>
+                        </div>
+                    }
                 </div>
             </div>
             {
