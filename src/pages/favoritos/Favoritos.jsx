@@ -15,16 +15,22 @@ const Favoritos = () => {
     const [usuariosSelecionados, setUsuariosSelecionados] = React.useState([]);
     const [showComparacao, setComparacao] = React.useState(false);
     const [conjuntoSkill, setConjuntoSkill] = React.useState([]);
-    const [page, setPage] = React.useState(0);
+    const page = useRef(0);
 
     React.useEffect(() => {
+        page.current = 0;
         carregarUsuarios();
-    }, [page]);
+    }, [valueOrdenar]);
+
+    const handleVerMais = () => {
+        page.current++;
+        carregarUsuarios();
+    }
 
     const carregarUsuarios = async () => {
         let sort; 
        
-        await axiosInstance.get(`usuarios/favoritos?page=${page}&size=10%sort`)
+        await axiosInstance.get(`usuarios/favoritos?page=${page.current}&size=10&ordem=${valueOrdenar}`)
             .then((response) => {
                 if (response.status == 200) {
                     const responseUsuarios = response.data.content;
@@ -56,7 +62,14 @@ const Favoritos = () => {
                     });
 
                     setConjuntoSkill(conjuntoSkillResponse);
-                    setUsuarios([...usuarios, ...responseMapeada]);
+                    setUsuarios(()=> {
+                        if(page.current == 0){
+                            return responseMapeada;
+                        }
+                        else{
+                            return [...usuarios, ...responseMapeada];
+                        }
+                    });
                 }
             })
             .catch((error) => {
@@ -97,7 +110,7 @@ const Favoritos = () => {
                     {
                         usuarios.length < totalUsuarios.current &&
                         <div className={styles['usuarios__ver-mais']}>
-                            <Button style={{ color: 'var(--color-cinza)', marginBottom: '32px', fontWeight: '500' }} onClick={() => setPage(prev => prev + 1)}>Ver mais</Button>
+                            <Button style={{ color: 'var(--color-cinza)', marginBottom: '32px', fontWeight: '500' }} onClick={handleVerMais}>Ver mais</Button>
                         </div>
                     }
                 </div>
