@@ -7,6 +7,7 @@ import axiosInstance from '../../config/axiosInstance'
 
 import CompararUsuarios from "../../componentes/favoritos/compararUsuarios";
 import { Button } from "@mui/material";
+import CardPerfilSketon from "../../componentes/shared/cardPerfil/CardPerfilSkeleton";
 
 const Favoritos = () => {
     const [valueOrdenar, setValueOrdenar] = React.useState("");
@@ -15,6 +16,8 @@ const Favoritos = () => {
     const [usuariosSelecionados, setUsuariosSelecionados] = React.useState([]);
     const [showComparacao, setComparacao] = React.useState(false);
     const [conjuntoSkill, setConjuntoSkill] = React.useState([]);
+    const [isLoading, setIsLoading] = React.useState(false);
+
     const page = useRef(0);
 
     React.useEffect(() => {
@@ -28,8 +31,9 @@ const Favoritos = () => {
     }
 
     const carregarUsuarios = async () => {
-        let sort; 
-       
+
+        setIsLoading(true);
+
         await axiosInstance.get(`usuarios/favoritos?page=${page.current}&size=10&ordem=${valueOrdenar}`)
             .then((response) => {
                 if (response.status == 200) {
@@ -62,15 +66,16 @@ const Favoritos = () => {
                     });
 
                     setConjuntoSkill(conjuntoSkillResponse);
-                    setUsuarios(()=> {
-                        if(page.current == 0){
+                    setUsuarios(() => {
+                        if (page.current == 0) {
                             return responseMapeada;
                         }
-                        else{
+                        else {
                             return [...usuarios, ...responseMapeada];
                         }
                     });
                 }
+                setIsLoading(false);
             })
             .catch((error) => {
                 console.log(error);
@@ -95,16 +100,21 @@ const Favoritos = () => {
 
                     <div className={styles['usuarios']}>
                         {
-                            usuarios.map((usuario) => (
-                                <CardPerfil
-                                    key={usuario.id}
-                                    usuario={usuario}
-                                    isTelaFavoritos={true}
-                                    setUsuarios={setUsuarios}
-                                    usuariosSelecionados={usuariosSelecionados}
-                                    setUsuariosSelecionados={setUsuariosSelecionados}
-                                />
-                            ))
+                            isLoading ?
+                                Array.from(Array(8).keys()).map((item) => (
+                                    <CardPerfilSketon key={item}/>
+                                ))
+                                :
+                                usuarios.map((usuario) => (
+                                    <CardPerfil
+                                        key={usuario.id}
+                                        usuario={usuario}
+                                        isTelaFavoritos={true}
+                                        setUsuarios={setUsuarios}
+                                        usuariosSelecionados={usuariosSelecionados}
+                                        setUsuariosSelecionados={setUsuariosSelecionados}
+                                    />
+                                ))
                         }
                     </div>
                     {
