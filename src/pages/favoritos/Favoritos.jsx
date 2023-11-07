@@ -21,6 +21,7 @@ const Favoritos = () => {
     const page = useRef(0);
 
     React.useEffect(() => {
+        if(valueOrdenar == "") return;
         page.current = 0;
         carregarUsuarios();
     }, [valueOrdenar]);
@@ -34,7 +35,7 @@ const Favoritos = () => {
 
         setIsLoading(true);
 
-        await axiosInstance.get(`usuarios/favoritos?page=${page.current}&size=10&ordem=${valueOrdenar}`)
+        return await axiosInstance.get(`usuarios/favoritos?page=${page.current}&size=10&ordem=${valueOrdenar}`)
             .then((response) => {
                 if (response.status == 200) {
                     const responseUsuarios = response.data.content;
@@ -66,12 +67,12 @@ const Favoritos = () => {
                     });
 
                     setConjuntoSkill(conjuntoSkillResponse);
-                    setUsuarios(() => {
+                    setUsuarios((prev) => {
                         if (page.current == 0) {
                             return responseMapeada;
                         }
                         else {
-                            return [...usuarios, ...responseMapeada];
+                            return [...prev, ...responseMapeada];
                         }
                     });
                 }
