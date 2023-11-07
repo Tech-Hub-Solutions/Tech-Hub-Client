@@ -1,4 +1,4 @@
-import iconVerified from "../../../assets/images/iconVerified.svg"
+import iconVerified from "../../../assets/images/IconVerified.svg"
 import "./Beneficios.css"
 import CardIndicadores from "./CardIndicadores"
 import CompareOutlinedIcon from '@mui/icons-material/CompareOutlined';

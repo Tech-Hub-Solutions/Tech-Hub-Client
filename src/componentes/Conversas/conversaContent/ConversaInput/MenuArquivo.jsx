@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, ClickAwayListener, Grow, MenuItem, MenuList, Popper, Paper } from "@mui/material";
 import styled from '@emotion/styled';
 import Clips from '../../../../assets/images/icons/Clips.svg'
-import ImageImg from '../../../../assets/images/icons/Image.png'
+import ImageImg from '../../../../assets/images/icons/image.png'
 import DocumentImg from '../../../../assets/images/icons/documento.png'
 import { resizeImage } from '../../../../utils/geral';
 

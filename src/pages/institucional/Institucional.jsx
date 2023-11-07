@@ -1,4 +1,4 @@
-import BoxTecnologias from "../../componentes/Institucional/BoxTecnologias/BoxTecnologias";
+import BoxTecnologias from "../../componentes/Institucional/boxTecnologias/BoxTecnologias";
 import ApoioEmpresas from "../../componentes/Institucional/apoioEmpresas/ApoioEmpresas";
 import Beneficios from "../../componentes/Institucional/beneficios/Beneficios";
 import DiagramaVisao from "../../componentes/Institucional/diagramaVisao/DiagramaVisao";

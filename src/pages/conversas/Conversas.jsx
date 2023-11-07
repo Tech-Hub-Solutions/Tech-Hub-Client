@@ -1,5 +1,5 @@
 import styles from './conversas.module.css'
-import ListaDeConversas from '../../componentes/Conversas/ListaDeConversa/ListaDeConversa'
+import ListaDeConversas from '../../componentes/Conversas/listaDeConversa/ListaDeConversa'
 import ConversaContent from '../../componentes/Conversas/conversaContent/ConversaContent'
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';

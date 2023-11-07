@@ -1,11 +1,11 @@
 import React from "react";
 import Header from "../../componentes/shared/header/Header";
-import styles from "./Favoritos.module.css";
+import styles from "./favoritos.module.css";
 import CardPerfil from "../../componentes/shared/cardPerfil/CardPerfil";
 import SelectOrdernar from "../../componentes/shared/SelectOrdernar";
 import axiosInstance from '../../config/axiosInstance'
 
-import CompararUsuarios from "../../componentes/favoritos/compararUsuarios";
+import CompararUsuarios from "../../componentes/favoritos/CompararUsuarios";
 
 const Favoritos = () => {
     const [valueOrdenar, setValueOrdenar] = React.useState("");
