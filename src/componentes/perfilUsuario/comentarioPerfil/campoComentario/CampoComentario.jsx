@@ -4,10 +4,32 @@ import styles from "./campoComentario.module.css"
 import ReactCountryFlag from "react-country-flag";
 import { Avatar, Box, Rating, TextField } from "@mui/material";
 import BlueBackgroundButton from "../../../shared/BlueButton/BlueBackgroundButton";
+import axiosInstance from "../../../../config/axiosInstance";
 
 const CampoComentario = (props) => {
 
-    const [value, setValue] = React.useState(2);
+    const [qtdEstrelas, setQtdEstrelas] = React.useState(2);
+    const [comentarioUsuario, setComentarioUsuario] = React.useState("");
+
+    const fazerComentario = () => {
+        axiosInstance.post(`/perfis/avaliacao/${props.idRequisicao}`, {
+            comentario: comentarioUsuario,
+            qtdEstrela: qtdEstrelas,
+        })
+            .then((response) => {
+                props.setComentario((prev) => {
+                    if (!prev) {
+                        return response.data
+                    }
+                    return [
+                        response.data,
+                        ...prev
+                    ]
+                })
+
+                setComentarioUsuario('')
+            })
+    }
 
     return (
         <div className={styles['comentario']}>
@@ -33,10 +55,9 @@ const CampoComentario = (props) => {
                 >
                     <Rating
                         name="simple-controlled"
-                        value={value}
+                        value={qtdEstrelas}
                         onChange={(event, newValue) => {
-                            setValue(newValue);
-                            let valorSelecionado = newValue;
+                            setQtdEstrelas(newValue);
                         }}
                     />
                 </Box>
@@ -46,10 +67,14 @@ const CampoComentario = (props) => {
                         label="Adicione um comentário"
                         multiline
                         rows={4}
+                        value={comentarioUsuario}
+                        onChange={(e) => {
+                        setComentarioUsuario(e.target.value)
+                        }}
                     />
                 </div>
                 <div className={styles['comentario__button']}>
-                    <BlueBackgroundButton>Comentar</BlueBackgroundButton>
+                    <BlueBackgroundButton onClick={fazerComentario}>Comentar</BlueBackgroundButton>
                 </div>
             </div>
         </div>

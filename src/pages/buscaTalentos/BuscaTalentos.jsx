@@ -9,41 +9,152 @@ import Autocomplete from "@mui/material/Autocomplete";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { Divider } from "@mui/material";
+import {
+  Divider,
+  IconButton,
+  InputBase,
+  TablePagination,
+  alpha,
+  styled,
+} from "@mui/material";
 import Slider from "@mui/material/Slider";
-
-const optionsStacks = [
-  "Front-end",
-  "Back-end",
-  "Fullstack",
-  "Banco de Dados",
-  "Inteligência Artificial",
-];
-
-const optionsOrdernar = [
-  "Mais avaliado",
-  "Maior preço",
-  "Menor preço",
-];
-
-function valuetext(value) {
-  return `${value} reais`;
-}
-
-const minDistance = 10;
+import SelectOrdernar from "../../componentes/shared/SelectOrdernar";
+import axiosInstance from "../../config/axiosInstance";
+import CardPerfil from "../../componentes/shared/cardPerfil/CardPerfil";
+import { Search } from "@mui/icons-material";
+import SearchIcon from "@mui/icons-material/Search";
 
 function BuscaTalentos() {
   const [valueStacks, setValueStacks] = React.useState();
   const [inputValueStacks, setInputValueStacks] = React.useState("");
+  const [valueOrdenar, setValueOrdenar] = React.useState("");
+  const [value1, setValue1] = React.useState([0, 5000]);
+  const [usuarios, setUsuarios] = React.useState([]);
+  const [todosUsuarios, setTodosUsuarios] = React.useState(0);
+  const [optionsStacks, setOptionsStacks] = React.useState([]);
+  const [tecnologias, setTecnologias] = React.useState([]);
+  const [tecnologiasSelecionadas, setTecnologiasSelecionadas] = React.useState(
+    []
+  );
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [precoMedioMin, setPrecoMedioMin] = React.useState(0);
+  const [precoMedioMax, setPrecoMedioMax] = React.useState(0);
+  const [searchText, setSearchText] = React.useState("");
 
-  const [valueOrdenar, setValueOrdenar] = React.useState(optionsOrdernar[0]);
-  const [inputValueOrdenar, setInputValueOrdenar] = React.useState("");
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
-  const [value1, setValue1] = React.useState([0, 100]);
-  const [inputValue, setInputValue] = React.useState(1);
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
-  const onChange = (newValue) => {
-    setInputValue(newValue);
+  React.useEffect(() => {
+    getAllUsers();
+
+    getAllFlags();
+
+    getAllTechnologies();
+  }, []);
+
+  React.useEffect(() => {
+    handleApplyFilters();
+  }, [rowsPerPage, page]);
+
+  function getAllUsers() {
+    axiosInstance
+      .post(`usuarios/filtro?page=${page}&size=${rowsPerPage}`, {
+        nome: null,
+        area: null,
+        tecnologiasIds: [],
+        precoMax: null,
+        precoMin: null,
+      })
+      .then((response) => {
+        if (response.status == 200) {
+          setTodosUsuarios(response.data.totalElements);
+          setUsuarios(response.data.content);
+
+          const arrayPrecoMedio = response.data.content.map(
+            (usuario) => usuario.precoMedio
+          );
+
+          setPrecoMedioMin(Math.min(...arrayPrecoMedio));
+          setPrecoMedioMax(Math.max(...arrayPrecoMedio));
+          setValue1([
+            Math.min(...arrayPrecoMedio),
+            Math.max(...arrayPrecoMedio),
+          ]);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  function getAllFlags() {
+    axiosInstance
+      .get("flags")
+      .then((response) => {
+        if (response.status === 200) {
+          const responseFlags = response.data;
+          const uniqueAreasSet = new Set();
+
+          responseFlags.forEach((item) => {
+            if (item.area !== null) {
+              uniqueAreasSet.add(item.area.toLowerCase());
+            }
+          });
+
+          const uniqueAreas = Array.from(uniqueAreasSet);
+          setOptionsStacks(uniqueAreas);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  function getAllTechnologies() {
+    axiosInstance
+      .get("flags")
+      .then((response) => {
+        if (response.status === 200) {
+          const responseTecnologia = response.data;
+          const tecnologiasPorArea = [];
+
+          responseTecnologia.forEach((item) => {
+            if (item.area !== null) {
+              const areaLowerCase = item.area.toLowerCase();
+              if (!tecnologiasPorArea[areaLowerCase]) {
+                tecnologiasPorArea[areaLowerCase] = [];
+              }
+
+              const tecnologia = {
+                id: item.id,
+                nome: item.nome,
+              };
+
+              tecnologiasPorArea[areaLowerCase].push(tecnologia);
+            }
+          });
+
+          setTecnologias(tecnologiasPorArea);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  const onChangeValue = (value, type) => {
+    if (type === "min") {
+      setValue1([value, value1[1]]);
+    } else {
+      setValue1([value1[0], value]);
+    }
   };
 
   const handleChange1 = (event, newValue, activeThumb) => {
@@ -52,10 +163,68 @@ function BuscaTalentos() {
     }
 
     if (activeThumb === 0) {
-      setValue1([Math.min(newValue[0], value1[1] - minDistance), value1[1]]);
+      setValue1([Math.min(newValue[0], value1[1]), value1[1]]);
     } else {
-      setValue1([value1[0], Math.max(newValue[1], value1[0] + minDistance)]);
+      setValue1([value1[0], Math.max(newValue[1], value1[0])]);
     }
+  };
+
+  const handleApplyFilters = () => {
+    axiosInstance
+      .post(`usuarios/filtro?page=${page}&size=${rowsPerPage}`, {
+        nome: null,
+        area: inputValueStacks,
+        tecnologiasIds: tecnologiasSelecionadas,
+        precoMax: value1[1],
+        precoMin: value1[0],
+      })
+      .then((response) => {
+        if (response.status == 200) {
+          setUsuarios(response.data.content);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleSetTecnologiasSelecionadas = (tecnologiaID) => {
+    setTecnologiasSelecionadas([...tecnologiasSelecionadas, tecnologiaID]);
+  };
+
+  function valueText(value) {
+    return `${value} reais`;
+  }
+
+  const handleSearch = () => {
+    axiosInstance
+      .post(`usuarios/filtro?page=${page}&size=${rowsPerPage}`, {
+        nome: searchText[0],
+        area: inputValueStacks === "" ? null : inputValueStacks,
+        tecnologiasIds:
+          tecnologiasSelecionadas.length <= 0 ? null : tecnologiasSelecionadas,
+        precoMax: value1[1],
+        precoMin: value1[0],
+      })
+      .then((response) => {
+        if (response.status == 200) {
+          setUsuarios(response.data.content);
+        }
+      })
+      .catch((error) => {
+        const params = {
+          nome: searchText,
+          area: inputValueStacks === "" ? null : inputValueStacks,
+          tecnologiasIds:
+            tecnologiasSelecionadas.length <= 0
+              ? null
+              : tecnologiasSelecionadas,
+          precoMax: value1[1],
+          precoMin: value1[0],
+        };
+        console.log("AAAAAAAAAAAAAAAAAA => ", params);
+        console.error(error);
+      });
   };
 
   return (
@@ -74,10 +243,6 @@ function BuscaTalentos() {
               Área de Tecnologia
             </h2>
 
-            {/*
-              <div>{`value: ${value !== null ? `'${value}'` : "null"}`}</div>
-              <div>{`inputValue: '${inputValue}'`}</div>
-            */}
             <Autocomplete
               value={valueStacks}
               onChange={(event, newValueStacks) => {
@@ -95,12 +260,17 @@ function BuscaTalentos() {
 
             <div className={styles["checkbox__tecnologias"]}>
               <FormGroup>
-                <FormControlLabel control={<Checkbox />} label="HTML" />
-                <FormControlLabel control={<Checkbox />} label="Javascript" />
-                <FormControlLabel control={<Checkbox />} label="Typescript" />
-                <FormControlLabel control={<Checkbox />} label="Angular" />
-                <FormControlLabel control={<Checkbox />} label="React" />
-                <FormControlLabel control={<Checkbox />} label="Vue.JS" />
+                {valueStacks &&
+                  tecnologias[valueStacks]?.map((tecnologia) => (
+                    <FormControlLabel
+                      key={tecnologia.id}
+                      control={<Checkbox />}
+                      label={tecnologia.nome}
+                      onClick={() =>
+                        handleSetTecnologiasSelecionadas(tecnologia.id)
+                      }
+                    />
+                  ))}
               </FormGroup>
             </div>
 
@@ -121,7 +291,7 @@ function BuscaTalentos() {
                 size="small"
                 sx={{ width: 120 }}
                 value={typeof value1 === "number" ? value1 : value1[0]}
-                onChange={onChange}
+                onChange={(e) => onChangeValue(e.target.value, "min")}
               />
 
               <TextField
@@ -132,7 +302,7 @@ function BuscaTalentos() {
                 size="small"
                 sx={{ width: 120 }}
                 value={typeof value1 === "number" ? value1 : value1[1]}
-                onChange={onChange}
+                onChange={(e) => onChangeValue(e.target.value, "max")}
               />
             </div>
 
@@ -141,20 +311,22 @@ function BuscaTalentos() {
               value={value1}
               onChange={handleChange1}
               valueLabelDisplay="auto"
-              getAriaValueText={valuetext}
+              getAriaValueText={valueText}
               disableSwap
               valueLabelFormat={(x) => `R$${x},00`}
               sx={{ color: "#0f9eea" }}
+              min={precoMedioMin}
+              max={precoMedioMax}
             />
           </div>
 
           <div className={styles["btn__aplicar"]}>
             <BlueBackgroundButton
-              onClick={() => {
-                console.log("Aplicar");
-              }}
+              onClick={handleSearch}
               style={{ width: "252px" }}
-            >Aplicar</BlueBackgroundButton>
+            >
+              Aplicar
+            </BlueBackgroundButton>
           </div>
         </Stack>
 
@@ -165,28 +337,59 @@ function BuscaTalentos() {
         >
           <div className={styles["container__right__header"]}>
             <span className={styles["total__encontrados"]}>
-              27 profissionais encontrados
+              {todosUsuarios} profissionais encontrados
             </span>
 
-            <div className={styles["autocomplete__ordenar"]}>
-              <Autocomplete
-                value={valueOrdenar}
-                onChange={(event, newValueOrdenar) => {
-                  setValueOrdenar(newValueOrdenar);
-                }}
-                inputValue={inputValueOrdenar}
-                onInputChange={(event, newInputValueOrdenar) => {
-                  setInputValueOrdenar(newInputValueOrdenar);
-                }}
-                id="controllable-states-demo"
-                options={optionsOrdernar}
-                sx={{ width: 186 }}
-                size="small"
-                renderInput={(params) => (
-                  <TextField {...params} label="ordenar por" />
+            <div className="container__search">
+              <IconButton
+                type="button"
+                sx={{ p: "10px" }}
+                aria-label="Ícone de pesquisa"
+                onClick={handleSearch}
+              >
+                <SearchIcon />
+              </IconButton>
+
+              <InputBase
+                sx={{ ml: 1, flex: 1, width: 260 }}
+                placeholder="Pesquisar por nome de talento"
+                inputProps={{ "aria-label": "Pesquisar por nome de talento" }}
+                value={searchText}
+                onChange={(e) => (
+                  setSearchText(e.target.value), console.log(searchText)
                 )}
               />
             </div>
+
+            <div className={styles["autocomplete__ordenar"]}>
+              <SelectOrdernar
+                valueOrdenar={valueOrdenar}
+                setValueOrdenar={setValueOrdenar}
+              />
+            </div>
+          </div>
+
+          <div className={styles["container__usuarios"]}>
+            {usuarios.map((usuario) => {
+              return (
+                <div className={styles["card_usuario"]} key={usuario.id}>
+                  <CardPerfil key={usuario.id} usuario={usuario} />
+                </div>
+              );
+            })}
+          </div>
+
+          <div className={styles["container__paginator"]}>
+            <TablePagination
+              labelRowsPerPage={"Talentos por página:"}
+              count={todosUsuarios}
+              component="div"
+              page={page}
+              onPageChange={handleChangePage}
+              rowsPerPage={rowsPerPage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              color="primary"
+            />
           </div>
         </Stack>
       </div>

@@ -28,7 +28,7 @@ const ComentarioPerfil = (props) => {
                             '& > legend': { mt: 2 },
                         }}
                     >
-                        <Rating name="read-only" value={props.value} readOnly />
+                        <Rating name="read-only" value={Number(props.value)} readOnly />
                     </Box>
                     <p>{props.comentario}</p>
                 </div>
