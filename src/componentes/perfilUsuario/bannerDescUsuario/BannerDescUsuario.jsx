@@ -53,11 +53,18 @@ const BannerDescUsuario = (props) => {
                 <BlueBackgroundButton className={styles['botaoCondicional']}>Editar Perfil</BlueBackgroundButton>
             )
         } else if (!isFreelancer && !isOwnProfile) {        
+            const usuarioConversa = {
+                nome: usuario.nome,
+                urlFotoPerfil: usuario.urlFotoPerfil,
+                id: usuario.idUsuario,
+                isFreelancer: usuario.isFreelancer
+            };
+
             setShowOptions(
                 <>
                     <Checkbox color="error" style={{ marginRight: '6px' }} icon={<FavoriteBorder sx={{ fontSize: 32 }} style={{ color: '#505050' }} />} checkedIcon={<Favorite sx={{ fontSize: 32 }} />} />
                     <Link to='/conversas'
-                    state={{ usuario }}
+                    state={{ usuario: usuarioConversa }}
                     >
                         <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
                     </Link>
