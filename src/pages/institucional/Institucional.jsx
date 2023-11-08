@@ -1,4 +1,4 @@
-import BoxTecnologias from "../../componentes/Institucional/BoxTecnologias/BoxTecnologias";
+import BoxTecnologias from "../../componentes/Institucional/boxTecnologias/BoxTecnologias";
 import ApoioEmpresas from "../../componentes/Institucional/apoioEmpresas/ApoioEmpresas";
 import Beneficios from "../../componentes/Institucional/beneficios/Beneficios";
 import DiagramaVisao from "../../componentes/Institucional/diagramaVisao/DiagramaVisao";
@@ -10,13 +10,17 @@ import "./institucional.css";
 const Institucional = () => {
   return (
     <div>
-        <HeaderInstitucional />
-        <Primeirasecao />
-        <ApoioEmpresas />
-        <BoxTecnologias />
+      <HeaderInstitucional />
+      <Primeirasecao />
+      <ApoioEmpresas />
+      <BoxTecnologias />
+      <div id="sobre-nos">
         <DiagramaVisao />
+      </div>
+      <div id="beneficios">
         <Beneficios />
-        <Footer />
+      </div>
+      <Footer />
     </div>
   );
 };

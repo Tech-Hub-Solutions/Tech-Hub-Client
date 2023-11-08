@@ -5,6 +5,10 @@ import { Stack } from "@mui/material";
 import styles from "./PrimeiraSecao.css";
 import RhWoman from "../../../assets/images/RhWoman.png";
 import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
+import { useState } from "react";
+import TravaTelaCadastro from "../../modais/travaTelaCadastro/TravaTelaCadastro";
+import CadastroModal from "../../modais/cadastro/CadastroModal";
+import LoginModal from "../../modais/login/LoginModal";
 
 const StackButtons = styled(Stack)({
   display: "flex",
@@ -26,8 +30,18 @@ const ButtonExplorarTalentos = styled(Button)({
 });
 
 function PrimeiraSecao() {
+  const [isTravaTelaCadastroOpen, setIsTravaTelaCadastroOpen] = useState(false);
+  const [isCadastroOpen, setCadastroIsOpen] = useState(false);
+  const [user, setUser] = useState({});
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
   const redirectToCadastro = () => {
-    window.location.href = "/cadastro";
+    setIsTravaTelaCadastroOpen(true);
+  };
+
+  const redirectToLogin = () => {
+    setIsLoginModalOpen(true);
+    setIsTravaTelaCadastroOpen(false)
   };
 
   return (
@@ -49,15 +63,36 @@ function PrimeiraSecao() {
               Quero ser um freelancer
             </BlueBackgroundButton>
 
-            <ButtonExplorarTalentos>
+            <ButtonExplorarTalentos onClick={redirectToLogin}>
               Explorar talentos
             </ButtonExplorarTalentos>
           </StackButtons>
         </div>
-        
+
         <div className="container__right-part">
           <img src={RhWoman} alt="" />
         </div>
+
+        <TravaTelaCadastro
+          isTravaTelaOpen={isTravaTelaCadastroOpen}
+          setTravaTelaOpen={setIsTravaTelaCadastroOpen}
+          setCadastroIsOpen={setCadastroIsOpen}
+          user={user}
+          setUser={setUser}
+        />
+
+        <CadastroModal
+          isCadastroOpen={isCadastroOpen}
+          setCadastroIsOpen={setCadastroIsOpen}
+          setIsLoginModalOpen={setIsLoginModalOpen}
+          user={user}
+        />
+
+        <LoginModal
+          isLoginModalOpen={isLoginModalOpen}
+          setIsLoginModalOpen={setIsLoginModalOpen}
+          setTravaTelaOpen={setIsTravaTelaCadastroOpen}
+        />
       </div>
     </div>
   );

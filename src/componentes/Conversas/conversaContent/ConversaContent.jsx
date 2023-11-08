@@ -5,6 +5,7 @@ import { Avatar } from '@mui/material'
 import ConversaInput from './ConversaInput/ConversaInput';
 import moment from 'moment-timezone';
 import ConversaMensagem from './conversaMensagem/ConversaMensagem';
+import MenuConversa from './MenuConversa';
 
 const ConversaContent = (props) => {
 
@@ -18,23 +19,25 @@ const ConversaContent = (props) => {
 
     useEffect(() => {
 
-        if(conversaSelecionada.roomCode != null) {
+        if (conversaSelecionada.roomCode != null) {
             carregarMensagens();
-            
+
             if (!conversaSelecionada?.idPrimeiraConversa) {
                 const conversa = stompClient?.subscribe(`/topic/sala/${conversaSelecionada?.roomCode}`, (response) => {
                     const mensagem = JSON.parse(response.body);
                     setMensagens((mensagens) => [...mensagens, mensagem]);
                 });
-                
+
                 stompConversa.current = conversa;
             }
         }
-            
+
         inputRef.current.focus();
 
         return () => {
-            stompConversa.current?.unsubscribe();
+            if (stompClient?.connected) {
+                stompConversa.current?.unsubscribe();
+            }
         }
     }, [conversaSelecionada])
 
@@ -80,7 +83,7 @@ const ConversaContent = (props) => {
                 <div className={styles['conversa-content__header']}>
                     <div className={styles['conversa-content__header__info']}>
                         <div className={styles['conversa-content__header__info__foto']}>
-                            <Avatar sx={{ width: 56, height: 56 }} src={conversaSelecionada.usuario?.pathPerfilImage}>
+                            <Avatar sx={{ width: 56, height: 56 }} src={conversaSelecionada.usuario?.urlFotoPerfil}>
                                 {conversaSelecionada.usuario?.nome[0]}
                             </Avatar>
                         </div>
@@ -88,14 +91,15 @@ const ConversaContent = (props) => {
                             <p>{conversaSelecionada?.usuario?.nome}</p>
                         </div>
                     </div>
+                    <MenuConversa roomCode={conversaSelecionada?.roomCode} />
                 </div>
-                <div className={styles['conversa-content__mensagens']} 
-                style={{
-                    opacity: mensagens.length > 0 ? 1 : 0,
-                    scrollBehavior: mensagens.length > 0 ? "smooth" : "none",
-                    transition: "0.5s"
-                }}
-                ref={contentMessagesRef}>
+                <div className={styles['conversa-content__mensagens']}
+                    style={{
+                        opacity: mensagens.length > 0 ? 1 : 0,
+                        scrollBehavior: mensagens.length > 0 ? "smooth" : "none",
+                        transition: "0.5s"
+                    }}
+                    ref={contentMessagesRef}>
                     {mensagens.map((mensagem, index) => {
                         return (
                             <ConversaMensagem

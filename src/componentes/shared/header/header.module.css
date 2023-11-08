@@ -6,6 +6,8 @@
     background-color: #FAFAFA;
     box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.06);
     z-index: 999;
+    top: 0;
+    left: 0;
     display: flex;
     justify-content: center;
     position: fixed;
@@ -74,4 +76,8 @@
     border-radius: 50px;
     cursor: pointer;
     background-color: var(--color-azul);
+}
+
+.active * {
+    color: var(--color-azul) !important;
 }

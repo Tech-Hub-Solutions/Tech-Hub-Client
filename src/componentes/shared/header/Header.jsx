@@ -10,41 +10,51 @@ const Header = () => {
 
     const isEmpresa = true;
 
+    const verificaPagina = (pagina) => {
+        if (window.location.pathname === pagina) {
+            return styles['active']
+        }
+        return ''
+    }
     return (
-        <header className={styles['header']}>
-            <div className={styles['content']}>
-                <div className={styles['logo__tech-hub']}>
-                    <Link to={'/'}>
-                        <img src={TechHubImg} alt="Logo Tech Hub" />
-                    </Link>
+        <div className={styles['abc']}>
+            <header className={styles['header']}>
+                <div className={styles['content']}>
+                    <div className={styles['logo__tech-hub']}>
+                        <Link to={'/'}>
+                            <img src={TechHubImg} alt="Logo Tech Hub" />
+                        </Link>
+                    </div>
+                    <div className={styles['right__content']}>
+                        <ul>
+                            <Link
+                                className={verificaPagina('/busca-talentos')}
+                                to={'/busca-talentos'}>
+                                <li>
+                                    Explorar Talentos
+                                </li>
+                            </Link>
+                            <Link className={verificaPagina('/contratos')}>
+                                <li>
+                                    Contratos
+                                </li>
+                            </Link>
+                        </ul>
+                        {isEmpresa ?
+                            <Link to={'/favoritos'} className={verificaPagina('/favoritos')}>
+                                {/* Ícone Favoritos */}
+                                <FavoriteBorderOutlinedIcon aria-label='Ícone favoritos' role='button' className={styles['icone__header']} sx={{ fontSize: 26 }} />
+                            </Link>
+                            : ''}
+                        <Link to={'/conversas'} className={verificaPagina('/conversas')}>
+                            {/* Ícone Mensagens */}
+                            <MessageOutlinedIcon className={styles['icone__header']} sx={{ fontSize: 26 }} />
+                        </Link>
+                        <AccountMenu />
+                    </div>
                 </div>
-                <div className={styles['right__content']}>
-                    <ul>
-                        <Link to={'/explorar-talentos'}>
-                            <li>
-                                Explorar Talentos
-                            </li>
-                        </Link>
-                        <Link to={'/contratos'}>
-                            <li>
-                                Contratos
-                            </li>
-                        </Link>
-                    </ul>
-                    {isEmpresa ?
-                        <Link to={'/favoritos'}>
-                            {/* Ícone Favoritos */}
-                            <FavoriteBorderOutlinedIcon aria-label='Ícone favoritos' role='button' className={styles['icone__header']} sx={{ fontSize: 26 }} />
-                        </Link>
-                        : ''}
-                    <Link to={'/chat'}>
-                        {/* Ícone Mensagens */}
-                        <MessageOutlinedIcon className={styles['icone__header']} sx={{ fontSize: 26 }} />
-                    </Link>
-                    <AccountMenu />
-                </div>
-            </div>
-        </header>
+            </header>
+        </div>
     );
 }
 

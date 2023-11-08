@@ -13,31 +13,56 @@ const HeaderInstitucional = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = React.useState(false);
   const [user, setUser] = React.useState({});
 
+  const redirecToLogin = () => {
+    setIsLoginModalOpen(true);
+    setTravaTelaOpen(false);
+  };
+
+  const handleNavClick = (event) => {
+    const currentActive = document.querySelector(".active");
+
+    if (currentActive) {
+      currentActive.classList.remove("active");
+    }
+
+    event.target.classList.add("active");
+  };
+
   return (
     <>
       <header className="header__section">
-        <div className="header__institucional">
+        <nav className="header__institucional">
           <div>
             <a href="#">
               <img src={LogoTechHub} alt="Logotipo escrito Tech Hub" />
             </a>
           </div>
+
           <div>
             <ul>
-              <a href="#">
+              <a href="#" onClick={handleNavClick}>
                 <li className="active">Início</li>
               </a>
-              <a href="#">
+
+              <a
+                href="#"
+                onClick={(event) => {
+                  handleNavClick(event), redirecToLogin();
+                }}
+              >
                 <li>Explorar Talentos</li>
               </a>
-              <a href="#">
+
+              <a href="#sobre-nos" onClick={handleNavClick}>
                 <li>Sobre Nós</li>
               </a>
-              <a href="#">
+
+              <a href="#beneficios" onClick={handleNavClick}>
                 <li>Benefícios</li>
               </a>
             </ul>
           </div>
+
           <div>
             <ul>
               <a
@@ -54,7 +79,7 @@ const HeaderInstitucional = () => {
               </BlueBackgroundButton>
             </ul>
           </div>
-        </div>
+        </nav>
       </header>
 
       <LoginModal
