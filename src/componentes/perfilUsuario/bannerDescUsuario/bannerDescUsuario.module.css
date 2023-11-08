@@ -2,6 +2,7 @@
     border-radius: 12px 12px 0 0;
     height: 180px;
     background-color: var(--color-azul);
+    background-size: cover;
     position: relative;
     display: flex;
     justify-content: center;

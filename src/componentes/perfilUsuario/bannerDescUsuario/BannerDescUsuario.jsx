@@ -16,6 +16,7 @@ import AlterarImagem from "../AlterarImagem";
 
 const BannerDescUsuario = (props) => {
 
+    const [showOptions, setShowOptions] = React.useState(null);
     const [loading, setLoading] = React.useState({
         value: false,
         tipoArquivo: ""
@@ -37,31 +38,32 @@ const BannerDescUsuario = (props) => {
         lineHeight: "1.3",
     });
 
-    // const isFreelancer = usuario.funcao;
-    const isFreelancer = sessionStorage.getItem("funcao") == "FREELANCER";
-    const isOwnProfile = usuario.isOwnProfile;
+    React.useEffect(() => {
+        // const isFreelancer = usuario.funcao;
+        const isFreelancer = usuario.isFreelancer;
+        const isOwnProfile = usuario.isOwnProfile;
 
-    let showOptions;
 
-    if (!isFreelancer && isOwnProfile) {
-        showOptions = (
-            <ButtonExplorarTalentos className={styles['botaoCondicional']}>Editar Perfil</ButtonExplorarTalentos>
-        )
-    } else if (isFreelancer && isOwnProfile) {
-        showOptions = (
-            <BlueBackgroundButton className={styles['botaoCondicional']}>Editar Perfil</BlueBackgroundButton>
-        )
-    } else if (!isFreelancer && !isOwnProfile) {
-        showOptions = (
-            <>
-                <Checkbox color="error" style={{ marginRight: '6px' }} icon={<FavoriteBorder sx={{ fontSize: 32 }} style={{ color: '#505050' }} />} checkedIcon={<Favorite sx={{ fontSize: 32 }} />} />
-                <Link to='/conversas'>
-                    <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
-                </Link>
-                <BlueBackgroundButton className={styles['botaoCondicional']}>Proposta</BlueBackgroundButton>
-            </>
-        )
-    }
+        if (!isFreelancer && isOwnProfile) {
+            setShowOptions(
+                <ButtonExplorarTalentos className={styles['botaoCondicional']}>Editar Perfil</ButtonExplorarTalentos>
+            )
+        } else if (isFreelancer && isOwnProfile) {
+            setShowOptions(
+                <BlueBackgroundButton className={styles['botaoCondicional']}>Editar Perfil</BlueBackgroundButton>
+            )
+        } else if (!isFreelancer && !isOwnProfile) {
+            setShowOptions(
+                <>
+                    <Checkbox color="error" style={{ marginRight: '6px' }} icon={<FavoriteBorder sx={{ fontSize: 32 }} style={{ color: '#505050' }} />} checkedIcon={<Favorite sx={{ fontSize: 32 }} />} />
+                    <Link to='/conversas'>
+                        <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
+                    </Link>
+                    <BlueBackgroundButton className={styles['botaoCondicional']}>Proposta</BlueBackgroundButton>
+                </>
+            )
+        }
+    }, [])
 
     return (
         <>
@@ -81,12 +83,15 @@ const BannerDescUsuario = (props) => {
                     >
                         {loading.value && loading.tipoArquivo === "PERFIL" && <CircularProgress />}
                     </Avatar>
-                    <div className={styles['banner__alterarImagem']}>
-                        <AlterarImagem
-                            setLoading={setLoading}
-                            loading={loading}
-                        />
-                    </div>
+                    {
+                        usuario.isOwnProfile &&
+                        <div className={styles['banner__alterarImagem']}>
+                            <AlterarImagem
+                                setLoading={setLoading}
+                                loading={loading}
+                            />
+                        </div>
+                    }
                 </div>
             </div>
             <div className={styles['content__descUsuario']}>
