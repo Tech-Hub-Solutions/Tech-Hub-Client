@@ -49,7 +49,6 @@ const PerfilUsuario = (props) => {
                 if (response.status == 200) {
                     const usuarioPerfil = response.data
                     usuarioPerfil.isOwnProfile = isOwnProfile;
-                    console.log(usuarioPerfil);
                     usuarioPerfil.isPerfilFreelancer = usuarioPerfil.funcao == 'FREELANCER';
 
                     setUsuario(usuarioPerfil);
