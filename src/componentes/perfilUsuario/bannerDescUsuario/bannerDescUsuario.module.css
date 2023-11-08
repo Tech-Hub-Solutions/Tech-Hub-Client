@@ -3,6 +3,19 @@
     height: 180px;
     background-color: var(--color-azul);
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content__banner-loading {
+    border-radius: 12px 12px 0 0;
+    height: 180px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
 }
 
 .content__banner .banner__imagemUsuario {
@@ -10,8 +23,14 @@
     position: absolute;
     bottom: -100px;
     left: 50px;
-    background-color: #b3b3b3;
 }
+
+.banner__alterarImagem {
+    position: absolute;
+    bottom: 0rem;
+    right: 0rem;
+}
+
 
 .content__descUsuario {
     display: flex;
@@ -85,4 +104,3 @@
     vertical-align: middle;
     color: #505050;
 }
-

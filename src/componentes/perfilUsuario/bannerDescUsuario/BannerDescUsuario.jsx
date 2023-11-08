@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./bannerDescUsuario.module.css"
 import styled from "@emotion/styled";
-import { Avatar, Checkbox } from "@mui/material";
+import { Avatar, Checkbox, CircularProgress } from "@mui/material";
 import { Button } from "@mui/material";
 
 import LinkedinImg from "../../../assets/images/LinkedinImg.svg"
@@ -11,9 +11,15 @@ import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import AlterarImagem from "../AlterarImagem";
 
 
 const BannerDescUsuario = (props) => {
+
+    const [loading, setLoading] = React.useState({
+        value: false,
+        tipoArquivo: ""
+    });
 
     const usuario = props.usuario;
 
@@ -59,13 +65,28 @@ const BannerDescUsuario = (props) => {
 
     return (
         <>
-            <div className={styles['content__banner']} style={{backgroundImage: `url(${usuario.urlFotoWallpaper || ''})`}}>
-                <div>
-                    <Avatar className={styles['banner__imagemUsuario']}
+            <div className={styles['content__banner']} style={{ backgroundImage: `url(${usuario.urlFotoWallpaper || ''})` }}>
+                {
+                    loading.value && loading.tipoArquivo == "WALLPAPER" &&
+                    <div className={styles['content__banner-loading']} style={{ backgroundColor: '#F5F5F5' }}>
+                        <CircularProgress />
+                    </div>
+                }
+
+                <div className={styles['banner__imagemUsuario']}>
+                    <Avatar className={styles['banner__imagem']}
                         alt={'Imagem de perfil de ' + usuario.nomeUsuario}
-                        src={usuario.urlFotoPerfil}
-                        sx={{ width: 150, height: 150 }}
-                    />
+                        src={loading.value && loading.tipoArquivo === "PERFIL" ? '' : usuario.urlFotoPerfil}
+                        sx={{ width: 150, height: 150, backgroundColor: '#F5F5F5' }}
+                    >
+                        {loading.value && loading.tipoArquivo === "PERFIL" && <CircularProgress />}
+                    </Avatar>
+                    <div className={styles['banner__alterarImagem']}>
+                        <AlterarImagem
+                            setLoading={setLoading}
+                            loading={loading}
+                        />
+                    </div>
                 </div>
             </div>
             <div className={styles['content__descUsuario']}>
