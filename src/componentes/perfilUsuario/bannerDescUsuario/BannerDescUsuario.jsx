@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./bannerDescUsuario.module.css"
 import styled from "@emotion/styled";
-import { Avatar, Checkbox } from "@mui/material";
+import { Avatar, Checkbox, CircularProgress } from "@mui/material";
 import { Button } from "@mui/material";
 
 import LinkedinImg from "../../../assets/images/LinkedinImg.svg"
@@ -11,9 +11,17 @@ import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import AlterarImagem from "../AlterarImagem";
+import { set } from "react-hook-form";
 
 
 const BannerDescUsuario = (props) => {
+
+    const [showOptions, setShowOptions] = React.useState(null);
+    const [loading, setLoading] = React.useState({
+        value: false,
+        tipoArquivo: ""
+    });
 
     const usuario = props.usuario;
 
@@ -31,64 +39,137 @@ const BannerDescUsuario = (props) => {
         lineHeight: "1.3",
     });
 
-    // const isFreelancer = usuario.funcao;
-    const isFreelancer = sessionStorage.getItem("funcao") == "FREELANCER";
-    const isOwnProfile = usuario.isOwnProfile;
+    const usuarioConversa = {
+        nome: usuario.nome,
+        urlFotoPerfil: usuario.urlFotoPerfil,
+        id: usuario.idUsuario,
+        isFreelancer: usuario.isFreelancer
+    };
 
-    let showOptions;
+    const [isPerfilFreelancer, setPerfilFreelancer] = React.useState(false);
 
-    if (!isFreelancer && isOwnProfile) {
-        showOptions = (
-            <ButtonExplorarTalentos className={styles['botaoCondicional']}>Editar Perfil</ButtonExplorarTalentos>
-        )
-    } else if (isFreelancer && isOwnProfile) {
-        showOptions = (
-            <BlueBackgroundButton className={styles['botaoCondicional']}>Editar Perfil</BlueBackgroundButton>
-        )
-    } else if (!isFreelancer && !isOwnProfile) {
-        showOptions = (
-            <>
-                <Checkbox color="error" style={{ marginRight: '6px' }} icon={<FavoriteBorder sx={{ fontSize: 32 }} style={{ color: '#505050' }} />} checkedIcon={<Favorite sx={{ fontSize: 32 }} />} />
-                <Link to='/conversas'>
-                    <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
-                </Link>
-                <BlueBackgroundButton className={styles['botaoCondicional']}>Proposta</BlueBackgroundButton>
-            </>
-        )
-    }
+    React.useEffect(() => {
+        const isFreelancer = sessionStorage.getItem('funcao') === 'FREELANCER';
+        const isOwnProfile = usuario.isOwnProfile;
+        const isPerfilFreelancer = usuario.isPerfilFreelancer;
+
+        setPerfilFreelancer(isPerfilFreelancer)
+
+        if (!isFreelancer && isOwnProfile) {
+            setShowOptions(
+                <ButtonExplorarTalentos className={styles['botaoCondicional']}>Editar Perfil</ButtonExplorarTalentos>
+            )
+        } else if (isFreelancer && isOwnProfile) {
+            setShowOptions(
+                <BlueBackgroundButton className={styles['botaoCondicional']}>Editar Perfil</BlueBackgroundButton>
+            )
+        } else if (isFreelancer && !isOwnProfile && isPerfilFreelancer) {
+            setShowOptions(
+                <>
+                    <Link to='/conversas'
+                        state={{ usuario: usuarioConversa }}
+                    >
+                        <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
+                    </Link>
+                    <BlueBackgroundButton className={styles['botaoCondicional']}>Currículo</BlueBackgroundButton>
+                </>
+            )
+        } else if (isFreelancer && !isOwnProfile && !isPerfilFreelancer) {
+            setShowOptions(
+                <>
+                    <Link to='/conversas'
+                        state={{ usuario: usuarioConversa }}
+                    >
+                        <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
+                    </Link>
+                </>
+            )
+        } else if (!isFreelancer && !isOwnProfile && isPerfilFreelancer) {
+            setShowOptions(
+                <>
+                    <Checkbox color="error" style={{ marginRight: '6px' }} icon={<FavoriteBorder sx={{ fontSize: 32 }} style={{ color: '#505050' }} />} checkedIcon={<Favorite sx={{ fontSize: 32 }} />} />
+                    <Link to='/conversas'
+                        state={{ usuario: usuarioConversa }}
+                    >
+                        <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
+                    </Link>
+                    <BlueBackgroundButton className={styles['botaoCondicional']}>Currículo</BlueBackgroundButton>
+                </>
+            )
+        } else if (!isFreelancer && !isOwnProfile && !isPerfilFreelancer) {
+            setShowOptions(
+                <>
+                    <Link to='/conversas'
+                        state={{ usuario: usuarioConversa }}
+                    >
+                        <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
+                    </Link>
+                </>
+            )
+        }
+
+    }, [usuario])
 
     return (
         <>
-            <div className={styles['content__banner']} style={{backgroundImage: `url(${usuario.urlFotoWallpaper || ''})`}}>
-                <div>
-                    <Avatar className={styles['banner__imagemUsuario']}
+            <div className={styles['content__banner']} style={{ backgroundImage: `url(${usuario.urlFotoWallpaper || ''})` }}>
+                {
+                    loading.value && loading.tipoArquivo == "WALLPAPER" &&
+                    <div className={styles['content__banner-loading']} style={{ backgroundColor: '#F5F5F5' }}>
+                        <CircularProgress />
+                    </div>
+                }
+
+                <div className={styles['banner__imagemUsuario']}>
+                    <Avatar className={styles['banner__imagem']}
                         alt={'Imagem de perfil de ' + usuario.nomeUsuario}
-                        src={usuario.urlFotoPerfil}
-                        sx={{ width: 150, height: 150 }}
-                    />
+                        src={loading.value && loading.tipoArquivo === "PERFIL" ? '' : usuario.urlFotoPerfil}
+                        sx={{ width: 150, height: 150, backgroundColor: '#F5F5F5' }}
+                    >
+                        {loading.value && loading.tipoArquivo === "PERFIL" && <CircularProgress />}
+                    </Avatar>
+                    {
+                        usuario.isOwnProfile &&
+                        <div className={styles['banner__alterarImagem']}>
+                            <AlterarImagem
+                                setLoading={setLoading}
+                                loading={loading}
+                            />
+                        </div>
+                    }
                 </div>
             </div>
             <div className={styles['content__descUsuario']}>
                 <div className={styles['content__infoUsuario']}>
                     <div className={styles['infoUsuario__nome']}>
                         {/* Limitar a Length da input para até 50 caracteres */}
-                        <h1>{usuario?.nome || "Sem nome"}</h1>
+                        <h1>{usuario?.nome}</h1>
+                        {usuario?.pais &&
+                            <div className={styles['infoUsuario__nacionalidade']}>
+                                <ReactCountryFlag countryCode="BR" svg style={{
+                                    fontSize: '1.3em',
+                                    lineHeight: '1.3em',
+                                }} />
+                                <p>{usuario?.pais || ""}</p>
+                            </div>
+                        }
                         <div className={styles['infoUsuario__icones']}>
-                            <a href={usuario.linkLinkedin} target="_blank"><img src={LinkedinImg} alt="Ícone LinkedIn" /></a>
-                            <a href={usuario.linkGithub} target="_blank"><img src={GitHubImg} alt="Ícone GitHub" /></a>
+                            {usuario.linkLinkedin &&
+                                <a href={usuario.linkLinkedin} target="_blank"><img src={LinkedinImg} alt="Ícone LinkedIn" /></a>
+                            }
+                            {usuario.linkGithub &&
+                                <a href={usuario.linkGithub} target="_blank"><img src={GitHubImg} alt="Ícone GitHub" /></a>
+                            }
                         </div>
                     </div>
                     <div className={styles['infoUsuario__desc']}>
                         {/* Limitar a Length da input para até 80 caracteres */}
-                        <p>{usuario?.descricao || "Usuário sem descrição"}</p>
+                        <p>{usuario?.descricao || ""}</p>
                     </div>
-                    <div className={styles['infoUsuario__nacionalidade']}>
-                        {/* <a href=""><img src={LinkedinImg} alt={'Bandeira do ' + props.pais} /></a> */}
-                        <ReactCountryFlag countryCode="BR" svg style={{
-                            fontSize: '1.3em',
-                            lineHeight: '1.3em',
-                        }} />
-                        <p>{usuario.pais}</p>
+                    <div className={styles['precoUsuario']}>
+                        {isPerfilFreelancer &&
+                            <h4>{`R$ ${(usuario?.precoMedio)}` || ""}</h4>
+                        }
                     </div>
                 </div>
                 <div className={styles['descUsuario__button']}>
