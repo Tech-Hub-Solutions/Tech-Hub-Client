@@ -124,9 +124,12 @@ const BannerDescUsuario = (props) => {
                     <Avatar className={styles['banner__imagem']}
                         alt={'Imagem de perfil de ' + usuario.nomeUsuario}
                         src={loading.value && loading.tipoArquivo === "PERFIL" ? '' : usuario.urlFotoPerfil}
-                        sx={{ width: 150, height: 150, backgroundColor: '#F5F5F5' }}
+                        sx={{ width: 150, height: 150, backgroundColor: '#F5F5F5', color: 'var(--color-textos)', fontSize: '48px' }}
                     >
-                        {loading.value && loading.tipoArquivo === "PERFIL" && <CircularProgress />}
+                        {loading.value && loading.tipoArquivo === "PERFIL" ?
+                            <CircularProgress /> :
+                            usuario?.nome?.length > 0 && usuario?.nome[0]
+                        }
                     </Avatar>
                     {
                         usuario.isOwnProfile &&
