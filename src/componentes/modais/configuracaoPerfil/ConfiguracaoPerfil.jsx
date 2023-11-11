@@ -21,7 +21,6 @@ import axiosInstance from "../../../config/axiosInstance";
 import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
 
 const ConfiguracaoPerfilModal = ({
-  usuario,
   isConfiguracaoModalOpen,
   setIsConfiguracaoModalOpen,
 }) => {
@@ -32,10 +31,28 @@ const ConfiguracaoPerfilModal = ({
   const [nome, setNome] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [nacionalidade, setNacionalidade] = React.useState("");
+  const [usuario, setUsuario] = React.useState({});
 
   const handleClose = () => {
     setIsConfiguracaoModalOpen(false);
   };
+
+  React.useEffect(() => {
+    if (isConfiguracaoModalOpen) {
+      const usuarioId = sessionStorage.getItem("usuarioId");
+      console.log("usuarioId", usuarioId);
+
+      axiosInstance
+        .get(`/usuarios/simple/${usuarioId}`)
+        .then((res) => {
+          setUsuario(res.data);
+          console.log("USUARIO => ", usuario);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [isConfiguracaoModalOpen]);
 
   const stylesCSS = {
     dialogContainer: {
@@ -175,14 +192,6 @@ const ConfiguracaoPerfilModal = ({
     event.preventDefault();
   };
 
-  React.useEffect(() => {
-    setNome(usuario.usuario.nome);
-    setValue("nome", nome);
-
-    setEmail(usuario.usuario.email);
-    setValue("email", email);
-  }, []);
-
   return (
     <>
       <Dialog
@@ -207,7 +216,7 @@ const ConfiguracaoPerfilModal = ({
                 className={styles["form__control"]}
               >
                 <Grid item>
-                  {/* TODO - Add value p/ começar de acordo com o que vem na requisição em cada TextField */}
+                  {/* TODO FIX - Add possibilidade de editar value em cada TextField */}
                   <TextField
                     name="nome"
                     label={
@@ -223,7 +232,10 @@ const ConfiguracaoPerfilModal = ({
                       minWidth: "590px",
                       marginTop: "6px",
                     }}
-                    onChange={(e) => setNome(e.target.value)}
+                    value={usuario.nome ? usuario.nome : ""}
+                    onChange={(e) =>
+                      setUsuario({ ...usuario, nome: e.target.value })
+                    }
                     error={errors.nome?.message.length > 0}
                     helperText={errors.nome?.message}
                     placeholder="Insira seu nome completo"
@@ -243,6 +255,7 @@ const ConfiguracaoPerfilModal = ({
                       minWidth: "590px",
                       marginTop: "6px",
                     }}
+                    value={usuario.email ? usuario.email : ""}
                     onChange={(e) => setEmail(e.target.value)}
                     error={errors.email?.message.length > 0}
                     helperText={errors.email?.message}
@@ -264,6 +277,7 @@ const ConfiguracaoPerfilModal = ({
                       minWidth: "590px",
                       marginTop: "6px",
                     }}
+                    value={usuario.pais ? usuario.pais : ""}
                     onChange={(e) => setNacionalidade(e.target.value)}
                     error={errors.nacionalidade?.message.length > 0}
                     helperText={errors.nacionalidade?.message}

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 
-const Header = (props) => {
+const Header = () => {
 
     const verificaPagina = (pagina) => {
         if (window.location.pathname === pagina) {
@@ -53,7 +53,7 @@ const Header = (props) => {
                             {/* Ícone Mensagens */}
                             <MessageOutlinedIcon className={styles['icone__header']} sx={{ fontSize: 26 }} />
                         </Link>
-                        <AccountMenu usuario={props}/>
+                        <AccountMenu />
                     </div>
                 </div>
             </header>

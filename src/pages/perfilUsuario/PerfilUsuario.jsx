@@ -200,7 +200,7 @@ const PerfilUsuario = (props) => {
 
     return (
         <>
-            <Header usuario={usuario}/>
+            <Header />
             <div className={styles['perfil__usuario']}>
                 <div className={styles['content']}>
                     <BannerDescUsuario usuario={usuario} />

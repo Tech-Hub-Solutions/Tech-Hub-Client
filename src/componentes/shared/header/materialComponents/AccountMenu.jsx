@@ -115,7 +115,6 @@ export default function AccountMenu(props) {
       </Menu>
 
       <ConfiguracaoPerfilModal
-        usuario={props.usuario}
         isConfiguracaoModalOpen={isModalOpen}
         setIsConfiguracaoModalOpen={setIsModalOpen}
       ></ConfiguracaoPerfilModal>

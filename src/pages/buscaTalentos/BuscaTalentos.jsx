@@ -9,19 +9,11 @@ import Autocomplete from "@mui/material/Autocomplete";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import {
-  Divider,
-  IconButton,
-  InputBase,
-  TablePagination,
-  alpha,
-  styled,
-} from "@mui/material";
+import { Divider, IconButton, InputBase, TablePagination } from "@mui/material";
 import Slider from "@mui/material/Slider";
 import SelectOrdernar from "../../componentes/shared/SelectOrdernar";
 import axiosInstance from "../../config/axiosInstance";
 import CardPerfil from "../../componentes/shared/cardPerfil/CardPerfil";
-import { Search } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 
 function BuscaTalentos() {
@@ -212,17 +204,6 @@ function BuscaTalentos() {
         }
       })
       .catch((error) => {
-        const params = {
-          nome: searchText,
-          area: inputValueStacks === "" ? null : inputValueStacks,
-          tecnologiasIds:
-            tecnologiasSelecionadas.length <= 0
-              ? null
-              : tecnologiasSelecionadas,
-          precoMax: value1[1],
-          precoMin: value1[0],
-        };
-        console.log("AAAAAAAAAAAAAAAAAA => ", params);
         console.error(error);
       });
   };
