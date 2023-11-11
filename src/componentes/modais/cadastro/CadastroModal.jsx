@@ -128,18 +128,23 @@ function CadastroModal({
           email: data.email,
           senha: data.senha,
           numeroCadastroPessoa: numeroDocumento,
-          pais: "não tem",
+          pais: null,
           funcao: user,
         })
         .then((res) => {
           setIsLoading(!isLoading);
-          console.info(res);
+
           setSnackbarSuccess({
             open: true,
             isError: false,
             severity: "success",
             message: snackbarMessages.success,
           });
+
+          setTimeout(() => {
+            setIsLoginModalOpen(true);
+            setCadastroIsOpen(false);
+          }, 2300);
         })
         .catch((error) => {
           console.error(error);
@@ -165,11 +170,6 @@ function CadastroModal({
 
   const handleMouseDownSenha = (event) => {
     event.preventDefault();
-  };
-
-  const redictToBuscar = () => {
-    // TODO - Inserir roteamento p/ ir à página de buscar talentos ou de perfil
-    return null;
   };
 
   const imageCadastroUser =
@@ -304,7 +304,6 @@ function CadastroModal({
 
                 <CustomLoadingButton
                   isLoading={isLoading}
-                  onClick={redictToBuscar}
                   textButton={"Cadastre-se"}
                 ></CustomLoadingButton>
               </form>

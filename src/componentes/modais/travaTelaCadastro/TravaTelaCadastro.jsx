@@ -105,7 +105,7 @@ function TravaTelaCadastro({
           >
             <CardActionArea
               sx={stylesCSS.cardActionArea}
-              onClick={() => clickCard("freelancer")}
+              onClick={() => clickCard("FREELANCER")}
             >
               <CardMedia
                 component="img"
@@ -129,7 +129,7 @@ function TravaTelaCadastro({
           >
             <CardActionArea
               sx={stylesCSS.cardActionArea}
-              onClick={() => clickCard("empresa")}
+              onClick={() => clickCard("EMPRESA")}
             >
               <CardMedia
                 component="img"
