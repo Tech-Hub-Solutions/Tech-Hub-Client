@@ -182,7 +182,7 @@ const PerfilUsuario = (props) => {
             })
     }
 
-    // Seção de recomendações 
+    // Seção de recomendações
 
     const ButtonExplorarTalentos = styled(Button)({
         fontFamily: "Montserrat, sans-serif",
