@@ -5,11 +5,13 @@ import ReactCountryFlag from "react-country-flag";
 import { Avatar, Box, Rating, TextField } from "@mui/material";
 import BlueBackgroundButton from "../../../shared/BlueButton/BlueBackgroundButton";
 import axiosInstance from "../../../../config/axiosInstance";
+import SnackbarCustom from "../../../shared/snackbar/SnackbarCustom";
 
 const CampoComentario = (props) => {
 
     const [qtdEstrelas, setQtdEstrelas] = React.useState(2);
     const [comentarioUsuario, setComentarioUsuario] = React.useState("");
+    const [snackbarSuccess, setSnackbarSuccess] = React.useState({});
 
     const fazerComentario = () => {
         axiosInstance.post(`/perfis/avaliacao/${props.idRequisicao}`, {
@@ -17,18 +19,29 @@ const CampoComentario = (props) => {
             qtdEstrela: qtdEstrelas,
         })
             .then((response) => {
-                props.setComentario((prev) => {
-                    if (!prev) {
-                        return response.data
-                    }
-                    return [
-                        response.data,
-                        ...prev
-                    ]
-                })
+
+                props.carregarAvaliacaoGeral();
+                props.trazerComentarios(0, props.idRequisicao);
+
+
+                setSnackbarSuccess({
+                    open: true,
+                    isError: false,
+                    severity: "success",
+                    message: "Comentário enviado com sucesso!"
+                });
 
                 setComentarioUsuario('')
             })
+            .catch((error) => {
+                setSnackbarSuccess({
+                    open: true,
+                    isError: true,
+                    severity: "error",
+                    message: "Erro ao enviar comentário. Tente novamente."
+                });
+            });
+
     }
 
     return (
@@ -69,7 +82,7 @@ const CampoComentario = (props) => {
                         rows={4}
                         value={comentarioUsuario}
                         onChange={(e) => {
-                        setComentarioUsuario(e.target.value)
+                            setComentarioUsuario(e.target.value)
                         }}
                     />
                 </div>
@@ -77,6 +90,20 @@ const CampoComentario = (props) => {
                     <BlueBackgroundButton onClick={fazerComentario}>Comentar</BlueBackgroundButton>
                 </div>
             </div>
+
+
+            <SnackbarCustom
+                snackbarOpen={snackbarSuccess.open}
+                message={snackbarSuccess.message}
+                severity={snackbarSuccess.severity}
+                time={3000}
+                setSnackbarOpen={() => {
+                    setSnackbarSuccess((prevState) => ({
+                        ...prevState,
+                        open: false,
+                    }));
+                }}
+            ></SnackbarCustom>
         </div>
     );
 }

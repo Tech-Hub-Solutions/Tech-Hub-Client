@@ -22,27 +22,20 @@ const PerfilUsuario = (props) => {
     const [avaliacao, setAvaliacao] = React.useState([])
     const [totalAvaliacoes, setTotalAvaliacoes] = React.useState([]);
     const [mediaEstrelas, setMediaEstrelas] = React.useState(0);
-    const [idRequisicao, setIdRequisicao] = React.useState(0);
     const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const usuarioParamId = searchParams.get('id');
+    const usuarioLogadoId = sessionStorage.getItem('usuarioId');
+    const isOwnProfile = !usuarioParamId || (usuarioParamId == usuarioLogadoId)
+    const [idRequisicao, setIdRequisicao] = React.useState(0);
+
 
     React.useEffect(() => {
 
-        const searchParams = new URLSearchParams(location.search);
-        const usuarioParamId = searchParams.get('id');
+        setIdRequisicao(isOwnProfile ? usuarioLogadoId : usuarioParamId);
+    }, []);
 
-        const usuarioLogadoId = sessionStorage.getItem('usuarioId');
-
-        let idRequisicao;
-
-        const isOwnProfile = !usuarioParamId || (usuarioParamId == usuarioLogadoId)
-
-        if (isOwnProfile) {
-            idRequisicao = usuarioLogadoId;
-        } else {
-            idRequisicao = usuarioParamId;
-        }
-
-        setIdRequisicao(idRequisicao);
+    const carregarPerfil = () => {
 
         axiosInstance.get('/perfis/' + idRequisicao)
             .then((response) => {
@@ -52,51 +45,54 @@ const PerfilUsuario = (props) => {
                     usuarioPerfil.isPerfilFreelancer = usuarioPerfil.funcao == 'FREELANCER';
 
                     setUsuario(usuarioPerfil);
-                    console.log(usuarioPerfil)
-                    axiosInstance.get('/perfis/avaliacao/geral/' + idRequisicao)
-                        .then((response) => {
-                            if (response.status == 200) {
-                                const usuarioAvaliacao = response.data;
-
-                                // use reduce() method to find the sum
-                                let sum = usuarioAvaliacao.reduce((accumulator, currentValue) => {
-                                    return accumulator + currentValue.quantidade
-                                }, 0);
-
-                                setTotalAvaliacoes(sum);
-
-                                for (var i = 1; i <= 5; i++) {
-                                    if (!usuarioAvaliacao.some(avaliacao => avaliacao.qtdEstrela == i)) {
-                                        usuarioAvaliacao.push({ qtdEstrela: i, quantidade: 0 });
-                                    }
-                                }
-
-                                usuarioAvaliacao.forEach(usuario => {
-                                    usuario.porcentagem = ((usuario.quantidade / sum) * 100).toFixed(0)
-                                });
-
-                                usuarioAvaliacao.sort((a, b) => {
-                                    if (a.qtdEstrela > b.qtdEstrela) {
-                                        return -1
-                                    } else {
-                                        return 1
-                                    }
-                                })
-
-                                let media = 0;
-                                usuarioAvaliacao.forEach(usuario => {
-                                    media += (usuario.qtdEstrela * usuario.quantidade)
-                                });
-
-
-                                setMediaEstrelas(Math.round(media / sum))
-
-                                setAvaliacao(usuarioAvaliacao);
-                            }
-                        })
+                    carregarAvaliacaoGeral();
                 }
             })
-    }, []);
+    }
+
+    const carregarAvaliacaoGeral = () => {
+        axiosInstance.get('/perfis/avaliacao/geral/' + idRequisicao)
+            .then((response) => {
+                if (response.status == 200) {
+                    const usuarioAvaliacao = response.data;
+
+                    // use reduce() method to find the sum
+                    let sum = usuarioAvaliacao.reduce((accumulator, currentValue) => {
+                        return accumulator + currentValue.quantidade
+                    }, 0);
+
+                    setTotalAvaliacoes(sum);
+
+                    for (var i = 1; i <= 5; i++) {
+                        if (!usuarioAvaliacao.some(avaliacao => avaliacao.qtdEstrela == i)) {
+                            usuarioAvaliacao.push({ qtdEstrela: i, quantidade: 0 });
+                        }
+                    }
+
+                    usuarioAvaliacao.forEach(usuario => {
+                        usuario.porcentagem = ((usuario.quantidade / sum) * 100).toFixed(0)
+                    });
+
+                    usuarioAvaliacao.sort((a, b) => {
+                        if (a.qtdEstrela > b.qtdEstrela) {
+                            return -1
+                        } else {
+                            return 1
+                        }
+                    })
+
+                    let media = 0;
+                    usuarioAvaliacao.forEach(usuario => {
+                        media += (usuario.qtdEstrela * usuario.quantidade)
+                    });
+
+
+                    setMediaEstrelas(Math.round(media / sum))
+
+                    setAvaliacao(usuarioAvaliacao);
+                }
+            })
+    }
 
     const [flags, setFlags] = React.useState([]);
 
@@ -152,6 +148,8 @@ const PerfilUsuario = (props) => {
         if (idRequisicao == 0) {
             return
         }
+
+        carregarPerfil();
         trazerComentarios(0, idRequisicao);
 
     }, [idRequisicao])
@@ -166,12 +164,12 @@ const PerfilUsuario = (props) => {
     }
 
     const trazerComentarios = (paginas, idRequisicao) => {
-        axiosInstance.get(`/perfis/avaliacao/${idRequisicao}?page=${paginas}&size=3`)
+        axiosInstance.get(`/perfis/avaliacao/${idRequisicao}?page=${paginas}&size=3&sort=id,desc`)
             .then((response) => {
                 if (!response.data.content) return setComentariosFim(true);
 
                 setComentario(prev => {
-                    if (!prev) {
+                    if (!prev || paginas == 0) {
                         return response.data.content
                     }
                     return [
@@ -277,7 +275,14 @@ const PerfilUsuario = (props) => {
                                 <Button style={{ color: 'var(--color-cinza)', marginBottom: '32px', fontWeight: '500' }} onClick={verMais}>Ver mais</Button>
                             }
                             {!usuario.isOwnProfile &&
-                                <CampoComentario idRequisicao={idRequisicao} setComentario={setComentario} nomeUsuario='Você' />
+                                <CampoComentario
+                                    idRequisicao={idRequisicao}
+                                    carregarAvaliacaoGeral={carregarAvaliacaoGeral}
+                                    trazerComentarios={trazerComentarios}
+                                    setComentario={setComentario}
+                                    nomeUsuario='Você'
+
+                                />
                             }
                         </div>
                         <Divider orientation="vertical" flexItem style={{ margin: '0 36px' }}></Divider>
