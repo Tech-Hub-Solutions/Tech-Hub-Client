@@ -173,10 +173,10 @@ function CadastroModal({
   };
 
   const imageCadastroUser =
-    user === "freelancer" ? CadastroFreelancerImage : CadastroEmpresaImage;
+    user === "FREELANCER" ? CadastroFreelancerImage : CadastroEmpresaImage;
 
   const altImageCadastroUser =
-    user === "freelancer"
+    user === "FREELANCER"
       ? "Imagem de um homem freelancer"
       : "Imagem de homem empresário";
 
@@ -235,7 +235,7 @@ function CadastroModal({
                 <Grid item>
                   <InputMask
                     mask={
-                      user === "freelancer"
+                      user === "FREELANCER"
                         ? "999.999.999-99"
                         : "99.999.999/9999-99"
                     }
@@ -244,7 +244,7 @@ function CadastroModal({
                     {() => (
                       <TextField
                         name="documento"
-                        label={user === "freelancer" ? "CPF" : "CNPJ"}
+                        label={user === "FREELANCER" ? "CPF" : "CNPJ"}
                         sx={{ mb: 2, ...stylesCSS.input }}
                         variant="outlined"
                         color="primary"
