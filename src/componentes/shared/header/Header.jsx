@@ -8,14 +8,22 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 
 const Header = () => {
 
-    const isEmpresa = true;
-
     const verificaPagina = (pagina) => {
         if (window.location.pathname === pagina) {
             return styles['active']
         }
         return ''
     }
+
+    const [isFreelancer, setIsFreelancer] = React.useState(false);
+
+    React.useEffect(() => {
+        const token = sessionStorage.getItem('funcao');
+        if (token === 'FREELANCER') {
+            setIsFreelancer(true);
+        }
+    }, []);
+
     return (
         <div className={styles['abc']}>
             <header className={styles['header']}>
@@ -34,13 +42,8 @@ const Header = () => {
                                     Explorar Talentos
                                 </li>
                             </Link>
-                            <Link className={verificaPagina('/contratos')}>
-                                <li>
-                                    Contratos
-                                </li>
-                            </Link>
                         </ul>
-                        {isEmpresa ?
+                        {!isFreelancer ?
                             <Link to={'/favoritos'} className={verificaPagina('/favoritos')}>
                                 {/* Ícone Favoritos */}
                                 <FavoriteBorderOutlinedIcon aria-label='Ícone favoritos' role='button' className={styles['icone__header']} sx={{ fontSize: 26 }} />
