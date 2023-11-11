@@ -15,10 +15,10 @@ import styles from "./ConfiguracaoPerfil.module.css";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import CustomLoadingButton from "../../shared/customLoadingButton/CustomLoadingButton";
 import styled from "@emotion/styled";
 import { Button } from "@mui/base";
 import axiosInstance from "../../../config/axiosInstance";
+import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
 
 const ConfiguracaoPerfilModal = ({
   usuario,
@@ -126,6 +126,8 @@ const ConfiguracaoPerfilModal = ({
     resolver: yupResolver(schema),
   });
 
+  const funcaoUsuario = sessionStorage.getItem("funcao");
+
   const onSubmit = (data) => {
     if (!wasSubmitted) {
       setWasSubmitted(true);
@@ -209,7 +211,7 @@ const ConfiguracaoPerfilModal = ({
                   <TextField
                     name="nome"
                     label={
-                      usuario.usuario.funcao === "FREELANCER"
+                      funcaoUsuario === "FREELANCER"
                         ? "Nome completo"
                         : "Nome da empresa"
                     }
@@ -263,7 +265,7 @@ const ConfiguracaoPerfilModal = ({
                       marginTop: "6px",
                     }}
                     onChange={(e) => setNacionalidade(e.target.value)}
-                    error={errors.nacionalide?.message.length > 0}
+                    error={errors.nacionalidade?.message.length > 0}
                     helperText={errors.nacionalidade?.message}
                     fullWidth
                     placeholder="Sua nacionalidade"
@@ -313,11 +315,12 @@ const ConfiguracaoPerfilModal = ({
                     Cancelar
                   </ButtonExplorarTalentos>
 
-                  {/* TODO - Alterar tamanho do botão */}
-                  <CustomLoadingButton
-                    isLoading={isLoading}
-                    textButton={"Salvar"}
-                  ></CustomLoadingButton>
+                  <BlueBackgroundButton
+                    type="submit"
+                    style={{ width: "180px", height: "47.2px" }}
+                  >
+                    Salvar
+                  </BlueBackgroundButton>
                 </div>
               </form>
             </Grid>
