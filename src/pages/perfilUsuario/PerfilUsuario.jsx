@@ -260,7 +260,7 @@ const PerfilUsuario = (props) => {
                       <div id="lista-projetos" className={styles['content__listaProjetos']}>
                           <Carrossel />
                       </div> */}
-                            <Projetos />
+                            <Projetos nomeGitHub={usuario.nomeGitHub} />
                         </div>
                     }
                     <div className={styles['content__sectionComentariosAvaliacoes']}>
