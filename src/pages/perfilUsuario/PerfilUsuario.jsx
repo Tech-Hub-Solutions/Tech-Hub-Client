@@ -49,9 +49,10 @@ const PerfilUsuario = (props) => {
                 if (response.status == 200) {
                     const usuarioPerfil = response.data
                     usuarioPerfil.isOwnProfile = isOwnProfile;
+                    usuarioPerfil.isPerfilFreelancer = usuarioPerfil.funcao == 'FREELANCER';
 
                     setUsuario(usuarioPerfil);
-
+                    console.log(usuarioPerfil)
                     axiosInstance.get('/perfis/avaliacao/geral/' + idRequisicao)
                         .then((response) => {
                             if (response.status == 200) {
@@ -96,8 +97,6 @@ const PerfilUsuario = (props) => {
                 }
             })
     }, []);
-
-    // const totalAvaliacoes 
 
     const [flags, setFlags] = React.useState([]);
 
@@ -183,8 +182,6 @@ const PerfilUsuario = (props) => {
             })
     }
 
-    const isPerfilFreelancer = true;
-
     // Seção de recomendações 
 
     const ButtonExplorarTalentos = styled(Button)({
@@ -208,7 +205,7 @@ const PerfilUsuario = (props) => {
                 <div className={styles['content']}>
                     <BannerDescUsuario usuario={usuario} />
                     {
-                        isPerfilFreelancer ?
+                        usuario.isPerfilFreelancer ?
                             <div className={styles['content__sectionSkills']}>
                                 <div className={styles['sectionSkills__experiencia']}>
                                     <DescricaoUsuario titulo='Experiência' texto={usuario.experiencia} />
@@ -245,10 +242,10 @@ const PerfilUsuario = (props) => {
                             <div className={styles['content__sectionSkillsEmpresa']}>
                                 <div className={styles['sectionSkillsEmpresa__experiencia']}>
                                     <div className={styles['sectionSkills__sobreNos']}>
-                                        <DescricaoUsuario titulo='Experiência' texto={descExperiencia} />
+                                        <DescricaoUsuario titulo='Experiência' texto={usuario.experiencia} />
                                     </div>
                                     <div className={styles['sectionSkills__quemProcuramos']}>
-                                        <DescricaoUsuario titulo='Quem procuramos' texto={descSobreMim} />
+                                        <DescricaoUsuario titulo='Quem procuramos' texto={usuario.sobreMim} />
                                     </div>
                                 </div>
                                 <div className={styles['sectionSkills__softSkills']}>
@@ -257,7 +254,7 @@ const PerfilUsuario = (props) => {
                             </div>
                     }
                     {
-                        isPerfilFreelancer &&
+                        usuario.isPerfilFreelancer &&
                         <div className={styles['content__sectionProjetos']}>
                             {/* <h1>Projetos desenvolvidos</h1>
                       <div id="lista-projetos" className={styles['content__listaProjetos']}>
@@ -308,7 +305,7 @@ const PerfilUsuario = (props) => {
                             <div className={styles['sectionComentariosAvaliacoes__adicionais']}>
                                 <h1>Informações adicionais</h1>
                                 {
-                                    isPerfilFreelancer ?
+                                    usuario.isPerfilFreelancer ?
                                         <>
                                             <div className={styles['adicionais__informacoes']}>
                                                 <h4></h4>
