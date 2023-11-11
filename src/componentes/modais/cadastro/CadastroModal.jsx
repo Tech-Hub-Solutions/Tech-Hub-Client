@@ -1,13 +1,10 @@
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
 
 import styles from "./CadastroModal.module.css";
 import CadastroEmpresaImage from "../../../assets/images/CadastroEmpresa.svg";
 import CadastroFreelancerImage from "../../../assets/images/CadastroFreelancer.svg";
-import GoogleVetor from "../../../assets/images/GoogleVetor.svg";
-import Divider from "@mui/material/Divider";
 
 import React from "react";
 import { TextField } from "@mui/material";
@@ -75,7 +72,6 @@ function CadastroModal({
       maxWidth: "fit-content",
       borderRadius: "16px",
       overflow: "hidden",
-      height: "100%",
       width: "100%",
     },
     dialogContent: {
@@ -95,20 +91,7 @@ function CadastroModal({
       fontStyle: "normal",
       fontWeight: 600,
       lineHeight: "normal",
-      paddingBottom: "16px",
-    },
-    buttonGoogle: {
-      border: "1px solid #333",
-      color: "#333",
-      gap: "15px",
-      padding: "18px 36px",
-      borderRadius: "6px",
-      fontFamily: "Montserrat, sans-serif",
-      fontSize: "16px",
-      textTransform: "none",
-      fontStyle: "normal",
-      fontWeight: "600",
-      lineHeight: "1.3",
+      paddingBottom: "32px",
     },
     customDivider: {
       width: "100%",
@@ -231,18 +214,7 @@ function CadastroModal({
         <div className={styles["form__container"]}>
           <DialogTitle sx={stylesCSS.dialogTitle}>{"Cadastro"}</DialogTitle>
           <DialogContent sx={stylesCSS.dialogContent}>
-            <Button variant="outlined" sx={stylesCSS.buttonGoogle}>
-              <img
-                style={{ width: "23px" }}
-                src={GoogleVetor}
-                alt="Logo da Google"
-              />
-              Cadastre-se com Google
-            </Button>
-
-            <Divider sx={stylesCSS.customDivider}>OU</Divider>
-
-            <Grid container rowSpacing={1}>
+            <Grid container rowSpacing={1} sx={{ marginTop: "15px" }}>
               <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
                 <Grid item>
                   <TextField

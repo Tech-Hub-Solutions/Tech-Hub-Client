@@ -2,10 +2,8 @@ import React from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
 
 import styles from "../cadastro/CadastroModal.module.css";
-import Divider from "@mui/material/Divider";
 
 import { TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -14,12 +12,11 @@ import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import imageLogin from "../../../assets/images/LoginModal.svg";
-import GoogleVetor from "../../../assets/images/GoogleVetor.svg";
 import axiosInstance from "../../../config/axiosInstance";
 import SnackbarCustom from "../../shared/snackbar/SnackbarCustom.jsx";
 import CustomLoadingButton from "../../shared/customLoadingButton/CustomLoadingButton";
@@ -68,7 +65,6 @@ function LoginModal({
       maxWidth: "fit-content",
       borderRadius: "16px",
       overflow: "hidden",
-      height: "100%",
       width: "100%",
     },
     dialogContent: {
@@ -87,26 +83,7 @@ function LoginModal({
       fontStyle: "normal",
       fontWeight: 600,
       lineHeight: "normal",
-      paddingBottom: "24px",
-    },
-    buttonGoogle: {
-      border: "1px solid #333",
-      color: "#333",
-      gap: "15px",
-      padding: "18px 36px",
-      borderRadius: "6px",
-      fontFamily: "Montserrat, sans-serif",
-      fontSize: "16px",
-      textTransform: "none",
-      fontStyle: "normal",
-      fontWeight: "600",
-      lineHeight: "1.3",
-    },
-    customDivider: {
-      width: "100%",
-      color: "#666666",
-      fontWeight: 600,
-      padding: "24px 0 30px 0",
+      paddingBottom: "32px",
     },
     blueButton: {
       padding: "18px 125px",
@@ -199,21 +176,11 @@ function LoginModal({
       >
         <div className={styles["form__container"]}>
           <DialogTitle sx={stylesCSS.dialogTitle}>{"Login"}</DialogTitle>
+
           <DialogContent sx={stylesCSS.dialogContent}>
-            <Button variant="outlined" sx={stylesCSS.buttonGoogle}>
-              <img
-                style={{ width: "23px" }}
-                src={GoogleVetor}
-                alt="Logo da Google"
-              />
-              Continuar com Google
-            </Button>
-
-            <Divider sx={stylesCSS.customDivider}>OU</Divider>
-
             <Grid container rowSpacing={1}>
               <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-                <Grid item>
+                <Grid item sx={{ marginTop: "15px"}}>
                   <TextField
                     name="email"
                     label="E-mail"
@@ -269,7 +236,7 @@ function LoginModal({
 
           <div
             className={styles["possui-conta"]}
-            style={{ paddingTop: "32px" }}
+            style={{ paddingTop: "16px" }}
           >
             <p>
               Não tem conta?
