@@ -130,6 +130,7 @@ function LoginModal({
 
           sessionStorage.setItem("usuarioId", res.data.id);
           sessionStorage.setItem("token", res.data.token);
+          sessionStorage.setItem("funcao", res.data.funcao);
 
           setSnackbarSuccess({
             open: true,

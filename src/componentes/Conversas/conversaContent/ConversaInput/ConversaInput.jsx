@@ -3,7 +3,7 @@ import i18n from '@emoji-mart/data/i18n/pt.json'
 import React, { useState } from "react";
 import axiosInstance from "../../../../config/axiosInstance";
 import styles from './conversaInput.module.css'
-import Send from '../../../../assets/images/icons/send.svg'
+import Send from '../../../../assets/images/icons/Send.svg'
 import EmojiCinza from '../../../../assets/images/icons/emoji-cinza.svg'
 import EmojiAmarelo from '../../../../assets/images/icons/emoji-amarelo.svg'
 import MenuArquivo from "./MenuArquivo";

@@ -11,6 +11,7 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import { Link } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export default function AccountMenu(props) {
 
@@ -23,9 +24,11 @@ export default function AccountMenu(props) {
     setAnchorEl(null);
   };
 
+  const navigate = useNavigate();
+
   return (
-    <div className={styles['accountMenu']}>
-      <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+    <React.Fragment>
+      <Box>
         <Tooltip title="Configurações">
           <IconButton
             onClick={handleClick}
@@ -51,12 +54,6 @@ export default function AccountMenu(props) {
             overflow: 'visible',
             filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.1))',
             mt: 1.5,
-            '& .MuiAvatar-root': {
-              width: 28,
-              height: 28,
-              ml: -0.5,
-              mr: 1,
-            },
             '&:before': {
               content: '""',
               display: 'block',
@@ -83,11 +80,14 @@ export default function AccountMenu(props) {
         </MenuItem>
         <Divider variant="middle" />
 
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={() => {
+          sessionStorage.clear();
+          navigate('/')
+        }}>
           <LogoutRoundedIcon style={{ color: '858585', marginRight: '6px', width: '24px' }} />
           <p>Sair</p>
         </MenuItem>
       </Menu>
-    </div >
+    </React.Fragment >
   );
 }

@@ -1,11 +1,9 @@
 import axios from "axios";
+import adress from "./backEndAdress";
 
-const ipBackEnd = {
-    localhost: "localhost",
-}
 
 const axiosInstance = axios.create({
-    baseURL: `http://${ipBackEnd.localhost}:8080`,
+    baseURL: adress,
     timeout: 3000,
     headers: {
         "Content-Type": "application/json",

@@ -1,0 +1,64 @@
+.card__titulo {
+    color: var(--color-azul);
+    font-size: 20px;
+    font-weight: 600;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* Number of lines you want to display. */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card__descricao {
+    color: var(--color-textos);
+    text-align: left;
+    width: 100%;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    /* Number of lines you want to display. */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 32px;
+}
+
+.card__sem-descricao {
+    color: #848484
+}
+
+.card__linguagem-principal {
+    font-size: 1rem;
+}
+
+.card__linguagens {
+    display: flex;
+    justify-content: flex-start;
+    width: 85%;
+    gap: 1rem;
+    overflow-x: auto;
+    position: absolute;
+    bottom: 1.5rem;
+    padding: 0.5rem 0;
+}
+
+
+/* Se tiver scroll, dar efeito de sombra na esquerda na card e direita */
+.card__linguagens::-webkit-scrollbar-track {
+    border-radius: 0.5rem;
+    background-color: #00000013;
+}
+
+.card__linguagens::-webkit-scrollbar-thumb {
+    background-color: var(--color-azul);
+    border-radius: 0.5rem;
+}
+
+/* Personalizar scroll */
+.card__linguagens::-webkit-scrollbar {
+    height: 0.2rem;
+}
