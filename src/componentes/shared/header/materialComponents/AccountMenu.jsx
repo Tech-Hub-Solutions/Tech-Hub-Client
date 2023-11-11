@@ -11,6 +11,7 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import { Link } from '@mui/material';
+import axiosInstance from '../../../../config/axiosInstance'
 import { useNavigate } from 'react-router-dom';
 
 export default function AccountMenu(props) {
@@ -26,6 +27,9 @@ export default function AccountMenu(props) {
 
   const navigate = useNavigate();
 
+  const nome = sessionStorage.getItem('nome') || "";
+  const urlFotoPerfil = sessionStorage.getItem('urlFotoPerfil') || "";
+
   return (
     <React.Fragment>
       <Box>
@@ -38,7 +42,9 @@ export default function AccountMenu(props) {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 40, height: 40 }} alt="Imagem de perfil" src={props.image}>L</Avatar>
+            <Avatar sx={{ width: 40, height: 40 }} alt="Imagem de perfil" src={urlFotoPerfil}>
+              {nome[0]}
+            </Avatar>
           </IconButton>
         </Tooltip>
       </Box>
