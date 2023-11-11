@@ -20,6 +20,7 @@ import imageLogin from "../../../assets/images/LoginModal.svg";
 import axiosInstance from "../../../config/axiosInstance";
 import SnackbarCustom from "../../shared/snackbar/SnackbarCustom.jsx";
 import CustomLoadingButton from "../../shared/customLoadingButton/CustomLoadingButton";
+import { useNavigate } from "react-router";
 
 function LoginModal({
   isLoginModalOpen,
@@ -30,6 +31,8 @@ function LoginModal({
   const [isLoading, setIsLoading] = React.useState(false);
   const [showSenha, setShowSenha] = React.useState(false);
   const [wasSubmitted, setWasSubmitted] = React.useState(false);
+
+  const navigate = useNavigate();
 
   const inpValidator = {
     campoObrigatorio: "Campo obrigatório.",
@@ -117,6 +120,8 @@ function LoginModal({
           });
 
           setIsLoading(!isLoading);
+
+          redirectToPerfil();
         })
         .catch((error) => {
           console.error(error);
@@ -150,9 +155,10 @@ function LoginModal({
     setTravaTelaOpen(true);
   };
 
-  const redictToBuscar = () => {
-    // TODO - Inserir roteamento p/ ir à página de buscar talentos ou de perfil
-    return null;
+  const redirectToPerfil = () => {
+    navigate({
+      pathname: "/perfil",
+    });
   };
 
   const {
@@ -180,7 +186,7 @@ function LoginModal({
           <DialogContent sx={stylesCSS.dialogContent}>
             <Grid container rowSpacing={1}>
               <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-                <Grid item sx={{ marginTop: "15px"}}>
+                <Grid item sx={{ marginTop: "15px" }}>
                   <TextField
                     name="email"
                     label="E-mail"
@@ -227,7 +233,6 @@ function LoginModal({
 
                 <CustomLoadingButton
                   isLoading={isLoading}
-                  onClick={redictToBuscar}
                   textButton={"Entrar"}
                 ></CustomLoadingButton>
               </form>
