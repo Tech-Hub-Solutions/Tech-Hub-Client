@@ -252,6 +252,7 @@ function CadastroModal({
                         helperText={errors.documento?.message}
                         placeholder="Insira sem os pontos e traços"
                         fullWidth
+                        error={errors.documento?.message.length > 0}
                       />
                     )}
                   </InputMask>
