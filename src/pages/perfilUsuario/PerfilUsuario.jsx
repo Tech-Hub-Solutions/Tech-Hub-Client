@@ -267,7 +267,10 @@ const PerfilUsuario = (props) => {
                             {
                                 comentario.map((comentario, index) => {
                                     return (
-                                        <ComentarioPerfil key={`comentario${index}`} nomeUsuario='hahaha' comentario={comentario.comentario} value={comentario.qtdEstrela} />
+                                        <ComentarioPerfil
+                                            key={`comentario${index}`}
+                                            comentario={comentario}
+                                        />
                                     )
                                 })
                             }
@@ -281,7 +284,6 @@ const PerfilUsuario = (props) => {
                                     trazerComentarios={trazerComentarios}
                                     setComentario={setComentario}
                                     nomeUsuario='Você'
-
                                 />
                             }
                         </div>

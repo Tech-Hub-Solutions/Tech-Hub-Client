@@ -6,12 +6,16 @@ import { Avatar, Box, Rating, TextField } from "@mui/material";
 import BlueBackgroundButton from "../../../shared/BlueButton/BlueBackgroundButton";
 import axiosInstance from "../../../../config/axiosInstance";
 import SnackbarCustom from "../../../shared/snackbar/SnackbarCustom";
+import CountryInformation from "../../../shared/CountryInformation/CountryInformation";
 
 const CampoComentario = (props) => {
 
     const [qtdEstrelas, setQtdEstrelas] = React.useState(2);
     const [comentarioUsuario, setComentarioUsuario] = React.useState("");
     const [snackbarSuccess, setSnackbarSuccess] = React.useState({});
+    const pais = sessionStorage.getItem('pais');
+    const urlFotoPerfil = sessionStorage.getItem('urlFotoPerfil');
+    const nome = sessionStorage.getItem('nome');
 
     const fazerComentario = () => {
         axiosInstance.post(`/perfis/avaliacao/${props.idRequisicao}`, {
@@ -47,19 +51,14 @@ const CampoComentario = (props) => {
     return (
         <div className={styles['comentario']}>
             <div className={styles['comentario__fotoPerfil']}>
-                <Avatar />
+                <Avatar src={urlFotoPerfil} >
+                    {nome[0]}
+                </Avatar>
             </div>
             <div className={styles['comentario__content']}>
                 <h1>{props.nomeUsuario}</h1>
                 <div className={styles['infoUsuario__nacionalidade']}>
-                    {/* <a href=""><img src={LinkedinImg} alt={'Bandeira do ' + props.pais} /></a> */}
-                    <ReactCountryFlag countryCode="BR" svg style={{
-                        fontSize: '1.3em',
-                        lineHeight: '1.3em',
-                        marginRight: '8px',
-                        verticalAlign: 'middle',
-                    }} />
-                    <h4>Brasil</h4>
+                    <CountryInformation pais={pais} />
                 </div>
                 <Box
                     sx={{
