@@ -61,6 +61,7 @@
 }
 
 .content__infoUsuario .infoUsuario__icones {
+    align-items: center;
     display: flex;
     gap: 8px;
 }
@@ -78,7 +79,6 @@
 .infoUsuario__nacionalidade {
     display: flex;
     align-items: center;
-    margin-top: 8px;
 }
 
 .infoUsuario__nacionalidade img {
@@ -88,7 +88,7 @@
 
 .infoUsuario__nacionalidade p {
     color: var(--color-cinza);
-    font-size: 14px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
@@ -104,4 +104,11 @@
     margin-right: 16px;
     vertical-align: middle;
     color: #505050;
+}
+
+.precoUsuario h4{
+    margin-top: 8px;
+    font-size: 24px;
+    color: var(--color-cinza);
+    font-weight: 600;
 }

@@ -52,7 +52,7 @@ const PerfilUsuario = (props) => {
                     usuarioPerfil.isPerfilFreelancer = usuarioPerfil.funcao == 'FREELANCER';
 
                     setUsuario(usuarioPerfil);
-
+                    console.log(usuarioPerfil)
                     axiosInstance.get('/perfis/avaliacao/geral/' + idRequisicao)
                         .then((response) => {
                             if (response.status == 200) {
@@ -97,8 +97,6 @@ const PerfilUsuario = (props) => {
                 }
             })
     }, []);
-
-    // const totalAvaliacoes 
 
     const [flags, setFlags] = React.useState([]);
 
@@ -183,7 +181,6 @@ const PerfilUsuario = (props) => {
                 })
             })
     }
-
 
     // Seção de recomendações 
 
