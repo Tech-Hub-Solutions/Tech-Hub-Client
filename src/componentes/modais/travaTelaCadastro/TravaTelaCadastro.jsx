@@ -100,7 +100,7 @@ function TravaTelaCadastro({
             variant="outlined"
             sx={[
               stylesCSS.cardContainer,
-              { backgroundColor: user == "freelancer" ? "#0f9dea54" : "" },
+              { backgroundColor: user == "FREELANCER" ? "#0f9dea54" : "" },
             ]}
           >
             <CardActionArea
@@ -124,7 +124,7 @@ function TravaTelaCadastro({
             variant="outlined"
             sx={[
               stylesCSS.cardContainer,
-              { backgroundColor: user == "empresa" ? "#0f9dea54" : "" },
+              { backgroundColor: user == "EMPRESA" ? "#0f9dea54" : "" },
             ]}
           >
             <CardActionArea
