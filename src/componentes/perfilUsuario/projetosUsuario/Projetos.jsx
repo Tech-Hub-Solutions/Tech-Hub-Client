@@ -17,7 +17,6 @@ const Projetos = ({ nomeGitHub }) => {
         axios.get(`https://api.github.com/users/${nomeGitHub}/repos`)
             .then(response => {
                 if (response.status === 200) {
-                    alert("Pesquisando")
                     const repoPromises = response.data.map((repo) => {
                         const name = repo.name;
                         const description = repo.description;
