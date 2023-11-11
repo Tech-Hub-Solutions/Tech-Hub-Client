@@ -41,6 +41,9 @@ export default function AccountMenu(props) {
     });
   };
 
+  const nome = sessionStorage.getItem('nome') || "";
+  const urlFotoPerfil = sessionStorage.getItem('urlFotoPerfil') || "";
+
   return (
     <>
       <Box>
@@ -53,12 +56,8 @@ export default function AccountMenu(props) {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar
-              sx={{ width: 40, height: 40 }}
-              alt="Imagem de perfil"
-              src={props.image}
-            >
-              L
+            <Avatar sx={{ width: 40, height: 40 }} alt="Imagem de perfil" src={urlFotoPerfil}>
+              {nome[0]}
             </Avatar>
           </IconButton>
         </Tooltip>
