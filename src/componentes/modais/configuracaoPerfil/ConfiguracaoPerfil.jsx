@@ -1,67 +1,40 @@
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-
-import styles from "./CadastroModal.module.css";
-import CadastroEmpresaImage from "../../../assets/images/CadastroEmpresa.svg";
-import CadastroFreelancerImage from "../../../assets/images/CadastroFreelancer.svg";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  IconButton,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
 import React from "react";
-import { TextField } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import SnackbarCustom from "../../shared/snackbar/SnackbarCustom";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import styles from "./ConfiguracaoPerfil.module.css";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import InputMask from "react-input-mask";
-
+import CustomLoadingButton from "../../shared/customLoadingButton/CustomLoadingButton";
+import styled from "@emotion/styled";
+import { Button } from "@mui/base";
 import axiosInstance from "../../../config/axiosInstance";
-import SnackbarCustom from "../../shared/snackbar/SnackbarCustom.jsx";
-import CustomLoadingButton from "../../shared/customLoadingButton/CustomLoadingButton.jsx";
 
-function CadastroModal({
-  user,
-  isCadastroOpen,
-  setCadastroIsOpen,
-  setIsLoginModalOpen,
-}) {
+const ConfiguracaoPerfilModal = ({
+  usuario,
+  isConfiguracaoModalOpen,
+  setIsConfiguracaoModalOpen,
+}) => {
   const [snackbarSuccessOpen, setSnackbarSuccess] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
   const [showSenha, setShowSenha] = React.useState(false);
   const [wasSubmitted, setWasSubmitted] = React.useState(false);
 
-  const inpValidator = {
-    campoObrigatorio: "Campo obrigatório.",
-    apenasNumeros: "Apenas números.",
-    minimoCaracteres: "Mínimo de 8 caracteres.",
-    maximoCaracteres: "Máximo de 15 caracteres.",
-    emailInvalido: "E-mail inválido.",
-  };
+  console.log("PROOOOOOPPPSSSS => ", usuario);
 
-  const snackbarMessages = {
-    success: "Cadastro realizado com sucesso!",
-    error: "Erro ao realizar cadastro. Tente novamente.",
+  const handleClose = () => {
+    setIsConfiguracaoModalOpen(false);
   };
-
-  const schema = yup.object().shape({
-    nome: yup.string().required(inpValidator.campoObrigatorio),
-    documento: yup
-      .string(inpValidator.apenasNumeros)
-      .required(inpValidator.campoObrigatorio),
-    email: yup
-      .string()
-      .email(inpValidator.emailInvalido)
-      .required(inpValidator.campoObrigatorio),
-    senha: yup
-      .string()
-      .min(8, inpValidator.minimoCaracteres)
-      .max(15, inpValidator.maximoCaracteres)
-      .required(inpValidator.campoObrigatorio),
-  });
 
   const stylesCSS = {
     dialogContainer: {
@@ -80,33 +53,76 @@ function CadastroModal({
       alignItems: "center",
       flexDirection: "column",
       overflow: "hidden",
-      gap: "16px",
       padding: 0,
     },
     dialogTitle: {
       color: "#0f9eea",
       fontFamily: "Montserrat, sans-serif",
       textAlign: "center",
-      fontSize: "40px",
+      fontSize: "32px",
       fontStyle: "normal",
-      fontWeight: 600,
+      fontWeight: 700,
       lineHeight: "normal",
       paddingBottom: "32px",
+      marginTop: "62px",
+      marginBottom: "40px",
     },
-    input: {
-      "& input[type=number]": {
-        MozAppearance: "textfield",
-      },
-      "& input[type=number]::-webkit-outer-spin-button": {
-        WebkitAppearance: "none",
-        margin: 0,
-      },
-      "& input[type=number]::-webkit-inner-spin-button": {
-        WebkitAppearance: "none",
-        margin: 0,
-      },
+    gridContainer: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "column",
+      margin: "0 44px",
     },
   };
+
+  const ButtonExplorarTalentos = styled(Button)({
+    fontFamily: "Montserrat, sans-serif",
+    padding: "10px 16px",
+    width: 180,
+    borderRadius: "6px",
+    fontWeight: "600",
+    fontStyle: "normal",
+    fontSize: "16px",
+    textTransform: "none",
+    backgroundColor: "transparent",
+    color: "#0f9eea",
+    border: "2px solid #0F9EEA",
+  });
+
+  const inpValidator = {
+    campoObrigatorio: "Campo obrigatório.",
+    apenasNumeros: "Apenas números.",
+    minimoCaracteres: "Mínimo de 8 caracteres.",
+    maximoCaracteres: "Máximo de 15 caracteres.",
+    emailInvalido: "E-mail inválido.",
+  };
+
+  const snackbarMessages = {
+    success: "Dados atualizados com sucesso!",
+    error: "Erro ao realizar atualização de dados. Tente novamente.",
+  };
+
+  const schema = yup.object().shape({
+    nome: yup.string().required(inpValidator.campoObrigatorio),
+    email: yup
+      .string()
+      .email(inpValidator.emailInvalido)
+      .required(inpValidator.campoObrigatorio),
+    senha: yup
+      .string()
+      .min(8, inpValidator.minimoCaracteres)
+      .max(15, inpValidator.maximoCaracteres)
+      .required(inpValidator.campoObrigatorio),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const onSubmit = (data) => {
     if (!wasSubmitted) {
@@ -157,100 +173,56 @@ function CadastroModal({
     }
   };
 
-  const handleClose = () => {
-    setCadastroIsOpen(false);
-  };
-
   const handleClickShowSenha = () => setShowSenha((show) => !show);
-
   const handleMouseDownSenha = (event) => {
     event.preventDefault();
   };
-
-  const imageCadastroUser =
-    user === "FREELANCER" ? CadastroFreelancerImage : CadastroEmpresaImage;
-
-  const altImageCadastroUser =
-    user === "FREELANCER"
-      ? "Imagem de um homem freelancer"
-      : "Imagem de homem empresário";
-
-  const redictToLoginModal = () => {
-    setCadastroIsOpen(false);
-    setIsLoginModalOpen(true);
-  };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
 
   return (
     <>
       <Dialog
         fullWidth
-        open={isCadastroOpen}
+        open={isConfiguracaoModalOpen}
         onClose={handleClose}
         keepMounted
         PaperProps={{
           sx: stylesCSS.dialogContainer,
         }}
       >
-        <div style={{ height: "100%" }}>
-          <img
-            style={{ height: "100%" }}
-            src={imageCadastroUser}
-            alt={altImageCadastroUser}
-          />
-        </div>
         <div className={styles["form__container"]}>
-          <DialogTitle sx={stylesCSS.dialogTitle}>{"Cadastro"}</DialogTitle>
+          <DialogTitle sx={stylesCSS.dialogTitle}>
+            {"Editar configurações"}
+          </DialogTitle>
+
           <DialogContent sx={stylesCSS.dialogContent}>
-            <Grid container rowSpacing={1} sx={{ marginTop: "15px" }}>
-              <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+            <Grid container rowSpacing={1} sx={stylesCSS.gridContainer}>
+              <form
+                autoComplete="off"
+                onSubmit={handleSubmit(onSubmit)}
+                className={styles["form__control"]}
+              >
+                {/* TODO - Atualizar o onSubmit p/ PUT de infos usuário */}
                 <Grid item>
                   <TextField
                     name="nome"
+                    // TODO - Add lógica p/ label = "Nome completo" se user === "FREELANCER" ? "Nome completo" : "Nome da empresa"
+                    // TODO - Add value p/ começar de acordo com o que vem na requisição
                     label="Nome completo"
                     variant="outlined"
                     color="primary"
                     type="text"
-                    sx={{ mb: 2 }}
+                    sx={{
+                      marginBottom: "32px",
+                      minWidth: "590px",
+                      marginTop: "6px",
+                    }}
+                    // TODO - Não estou conseguindo editar as input
+                    value={usuario.usuario.nome}
                     error={errors.nome?.message.length > 0}
                     helperText={errors.nome?.message}
-                    fullWidth
                     placeholder="Insira seu nome completo"
                     {...register("nome")}
                   />
-                </Grid>
-
-                <Grid item>
-                  <InputMask
-                    mask={
-                      user === "FREELANCER"
-                        ? "999.999.999-99"
-                        : "99.999.999/9999-99"
-                    }
-                    {...register("documento")}
-                  >
-                    {() => (
-                      <TextField
-                        name="documento"
-                        label={user === "FREELANCER" ? "CPF" : "CNPJ"}
-                        sx={{ mb: 2, ...stylesCSS.input }}
-                        variant="outlined"
-                        color="primary"
-                        type="tel"
-                        helperText={errors.documento?.message}
-                        placeholder="Insira sem os pontos e traços"
-                        fullWidth
-                        error={errors.documento?.message.length > 0}
-                      />
-                    )}
-                  </InputMask>
                 </Grid>
 
                 <Grid item>
@@ -260,7 +232,13 @@ function CadastroModal({
                     variant="outlined"
                     color="primary"
                     type="email"
-                    sx={{ mb: 2 }}
+                    // TODO - Não estou conseguindo editar as input
+                    value={usuario.usuario.email}
+                    sx={{
+                      marginBottom: "32px",
+                      minWidth: "590px",
+                      marginTop: "6px",
+                    }}
                     error={errors.email?.message.length > 0}
                     helperText={errors.email?.message}
                     fullWidth
@@ -278,7 +256,11 @@ function CadastroModal({
                     type={showSenha ? "text" : "password"}
                     error={errors.senha?.message.length > 0}
                     helperText={errors.senha?.message}
-                    sx={{ mb: 2 }}
+                    sx={{
+                      marginBottom: "32px",
+                      minWidth: "590px",
+                      marginTop: "6px",
+                    }}
                     fullWidth
                     placeholder="Mínimo 8 caracteres"
                     {...register("senha")}
@@ -298,25 +280,24 @@ function CadastroModal({
                   />
                 </Grid>
 
-                <CustomLoadingButton
-                  isLoading={isLoading}
-                  textButton={"Cadastre-se"}
-                ></CustomLoadingButton>
+                <div className={styles["container__button"]}>
+                  <ButtonExplorarTalentos
+                    onClick={() =>
+                      setIsConfiguracaoModalOpen(!isConfiguracaoModalOpen)
+                    }
+                  >
+                    Cancelar
+                  </ButtonExplorarTalentos>
+
+                  {/* TODO - Alterar tamanho do botão */}
+                  <CustomLoadingButton
+                    isLoading={isLoading}
+                    textButton={"Salvar"}
+                  ></CustomLoadingButton>
+                </div>
               </form>
             </Grid>
           </DialogContent>
-
-          <div className={styles["possui-conta"]}>
-            <p>
-              Já tem conta?
-              <span
-                onClick={redictToLoginModal}
-                className={styles["link-login"]}
-              >
-                Acesse aqui.
-              </span>
-            </p>
-          </div>
         </div>
 
         <SnackbarCustom
@@ -333,6 +314,6 @@ function CadastroModal({
       </Dialog>
     </>
   );
-}
+};
 
-export default CadastroModal;
+export default ConfiguracaoPerfilModal;

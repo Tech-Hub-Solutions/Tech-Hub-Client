@@ -182,7 +182,7 @@ const PerfilUsuario = (props) => {
             })
     }
 
-    // Seção de recomendações 
+    // Seção de recomendações
 
     const ButtonExplorarTalentos = styled(Button)({
         fontFamily: "Montserrat, sans-serif",
@@ -200,7 +200,7 @@ const PerfilUsuario = (props) => {
 
     return (
         <>
-            <Header />
+            <Header usuario={usuario}/>
             <div className={styles['perfil__usuario']}>
                 <div className={styles['content']}>
                     <BannerDescUsuario usuario={usuario} />

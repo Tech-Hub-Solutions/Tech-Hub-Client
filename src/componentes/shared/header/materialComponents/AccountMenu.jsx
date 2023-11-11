@@ -10,9 +10,12 @@ import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import { useNavigate } from "react-router-dom";
+import ConfiguracaoPerfilModal from "../../../modais/configuracaoPerfil/ConfiguracaoPerfil";
 
 export default function AccountMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
 
@@ -94,7 +97,7 @@ export default function AccountMenu(props) {
           <AccountCircleRoundedIcon sx={stylesCSS.iconMenuItem} /> <p>Perfil</p>
         </MenuItem>
 
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={(handleClose, () => setIsModalOpen(!isModalOpen))}>
           <SettingsRoundedIcon sx={stylesCSS.iconMenuItem} />{" "}
           <p>Configurações</p>
         </MenuItem>
@@ -110,6 +113,12 @@ export default function AccountMenu(props) {
           <p>Sair</p>
         </MenuItem>
       </Menu>
+
+      <ConfiguracaoPerfilModal
+        usuario={props.usuario}
+        isConfiguracaoModalOpen={isModalOpen}
+        setIsConfiguracaoModalOpen={setIsModalOpen}
+      ></ConfiguracaoPerfilModal>
     </>
   );
 }
