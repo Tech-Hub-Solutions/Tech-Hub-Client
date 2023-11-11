@@ -29,8 +29,9 @@ const ConfiguracaoPerfilModal = ({
   const [isLoading, setIsLoading] = React.useState(false);
   const [showSenha, setShowSenha] = React.useState(false);
   const [wasSubmitted, setWasSubmitted] = React.useState(false);
-
-  console.log("PROOOOOOPPPSSSS => ", usuario);
+  const [nome, setNome] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [nacionalidade, setNacionalidade] = React.useState("");
 
   const handleClose = () => {
     setIsConfiguracaoModalOpen(false);
@@ -92,7 +93,6 @@ const ConfiguracaoPerfilModal = ({
 
   const inpValidator = {
     campoObrigatorio: "Campo obrigatório.",
-    apenasNumeros: "Apenas números.",
     minimoCaracteres: "Mínimo de 8 caracteres.",
     maximoCaracteres: "Máximo de 15 caracteres.",
     emailInvalido: "E-mail inválido.",
@@ -109,6 +109,7 @@ const ConfiguracaoPerfilModal = ({
       .string()
       .email(inpValidator.emailInvalido)
       .required(inpValidator.campoObrigatorio),
+    nacionalidade: yup.string().required(inpValidator.campoObrigatorio),
     senha: yup
       .string()
       .min(8, inpValidator.minimoCaracteres)
@@ -119,6 +120,7 @@ const ConfiguracaoPerfilModal = ({
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -129,18 +131,12 @@ const ConfiguracaoPerfilModal = ({
       setWasSubmitted(true);
       setIsLoading(true);
 
-      const numeroDocumento = data.documento
-        .replace(/[^0-9]/g, "")
-        .replace(/[-./]/g, "");
-
       axiosInstance
-        .post("/usuarios", {
+        .put("/usuarios", {
           nome: data.nome,
           email: data.email,
           senha: data.senha,
-          numeroCadastroPessoa: numeroDocumento,
-          pais: null,
-          funcao: user,
+          pais: data.nacionalidade,
         })
         .then((res) => {
           setIsLoading(!isLoading);
@@ -153,8 +149,7 @@ const ConfiguracaoPerfilModal = ({
           });
 
           setTimeout(() => {
-            setIsLoginModalOpen(true);
-            setCadastroIsOpen(false);
+            setIsConfiguracaoModalOpen(false);
           }, 2300);
         })
         .catch((error) => {
@@ -177,6 +172,14 @@ const ConfiguracaoPerfilModal = ({
   const handleMouseDownSenha = (event) => {
     event.preventDefault();
   };
+
+  React.useEffect(() => {
+    setNome(usuario.usuario.nome);
+    setValue("nome", nome);
+
+    setEmail(usuario.usuario.email);
+    setValue("email", email);
+  }, []);
 
   return (
     <>
@@ -201,13 +204,15 @@ const ConfiguracaoPerfilModal = ({
                 onSubmit={handleSubmit(onSubmit)}
                 className={styles["form__control"]}
               >
-                {/* TODO - Atualizar o onSubmit p/ PUT de infos usuário */}
                 <Grid item>
+                  {/* TODO - Add value p/ começar de acordo com o que vem na requisição em cada TextField */}
                   <TextField
                     name="nome"
-                    // TODO - Add lógica p/ label = "Nome completo" se user === "FREELANCER" ? "Nome completo" : "Nome da empresa"
-                    // TODO - Add value p/ começar de acordo com o que vem na requisição
-                    label="Nome completo"
+                    label={
+                      usuario.usuario.funcao === "FREELANCER"
+                        ? "Nome completo"
+                        : "Nome da empresa"
+                    }
                     variant="outlined"
                     color="primary"
                     type="text"
@@ -216,8 +221,7 @@ const ConfiguracaoPerfilModal = ({
                       minWidth: "590px",
                       marginTop: "6px",
                     }}
-                    // TODO - Não estou conseguindo editar as input
-                    value={usuario.usuario.nome}
+                    onChange={(e) => setNome(e.target.value)}
                     error={errors.nome?.message.length > 0}
                     helperText={errors.nome?.message}
                     placeholder="Insira seu nome completo"
@@ -232,18 +236,38 @@ const ConfiguracaoPerfilModal = ({
                     variant="outlined"
                     color="primary"
                     type="email"
-                    // TODO - Não estou conseguindo editar as input
-                    value={usuario.usuario.email}
                     sx={{
                       marginBottom: "32px",
                       minWidth: "590px",
                       marginTop: "6px",
                     }}
+                    onChange={(e) => setEmail(e.target.value)}
                     error={errors.email?.message.length > 0}
                     helperText={errors.email?.message}
                     fullWidth
                     placeholder="email@email.com"
                     {...register("email")}
+                  />
+                </Grid>
+
+                <Grid item>
+                  <TextField
+                    name="nacionalidade"
+                    label="Nacionalidade"
+                    variant="outlined"
+                    color="primary"
+                    type="text"
+                    sx={{
+                      marginBottom: "32px",
+                      minWidth: "590px",
+                      marginTop: "6px",
+                    }}
+                    onChange={(e) => setNacionalidade(e.target.value)}
+                    error={errors.nacionalide?.message.length > 0}
+                    helperText={errors.nacionalidade?.message}
+                    fullWidth
+                    placeholder="Sua nacionalidade"
+                    {...register("nacionalidade")}
                   />
                 </Grid>
 
