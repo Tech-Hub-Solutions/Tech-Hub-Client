@@ -14,20 +14,25 @@ import Projetos from "../../componentes/perfilUsuario/projetosUsuario/Projetos";
 import axiosInstance from "../../config/axiosInstance";
 import WidgetSoftSkill from "../../componentes/perfilUsuario/skillsUsuario/widgetSoftSkill/WidgetSoftSkill";
 import WidgetHardSkills from "../../componentes/perfilUsuario/skillsUsuario/widgetHardSkills/WidgetHardSkills";
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import NotFound from "../notFound/NotFound";
 
 const PerfilUsuario = (props) => {
+
+    const location = useLocation();
+    const [isNotFound, setIsNotFound] = React.useState(false);
 
     const [usuario, setUsuario] = React.useState([]);
     const [avaliacao, setAvaliacao] = React.useState([])
     const [totalAvaliacoes, setTotalAvaliacoes] = React.useState([]);
     const [mediaEstrelas, setMediaEstrelas] = React.useState(0);
-    const location = useLocation();
+
     const searchParams = new URLSearchParams(location.search);
     const usuarioParamId = searchParams.get('id');
     const usuarioLogadoId = sessionStorage.getItem('usuarioId');
     const isOwnProfile = !usuarioParamId || (usuarioParamId == usuarioLogadoId)
     const [idRequisicao, setIdRequisicao] = React.useState(0);
+
 
 
     React.useEffect(() => {
@@ -48,6 +53,11 @@ const PerfilUsuario = (props) => {
                     carregarAvaliacaoGeral();
                 }
             })
+            .catch((error) => {
+                if (error.response.status == 404) {
+                    setIsNotFound(true);
+                }
+            });
     }
 
     const carregarAvaliacaoGeral = () => {
@@ -198,158 +208,164 @@ const PerfilUsuario = (props) => {
 
     return (
         <>
-            <Header />
-            <div className={styles['perfil__usuario']}>
-                <div className={styles['content']}>
-                    <BannerDescUsuario usuario={usuario} />
-                    {
-                        usuario.isPerfilFreelancer ?
-                            <div className={styles['content__sectionSkills']}>
-                                <div className={styles['sectionSkills__experiencia']}>
-                                    <DescricaoUsuario titulo='Experiência' texto={usuario.experiencia} />
-                                    <Divider variant="middle" style={{ margin: '16px 0' }} />
-                                    <DescricaoUsuario titulo='Sobre mim' texto={usuario.sobreMim} />
-                                </div>
-                                <div className={styles['sectionSkills__experiencia']}>
-                                    <h1 className={styles['titulo']}>Soft Skills</h1>
-                                    <div className={styles['boxSkills']}>
-                                        {
-                                            flags?.filter(flags => flags.categoria === "soft-skill")?.map((flags) => {
-                                                return (
-                                                    <WidgetSoftSkill key={flags.nome} softSkill={flags.nome} />
-                                                )
-                                            })
-                                        }
+            {isNotFound ?
+                <NotFound />
+                :
+                <>
+                    <Header />
+                    <div className={styles['perfil__usuario']}>
+                        <div className={styles['content']}>
+                            <BannerDescUsuario usuario={usuario} />
+                            {
+                                usuario.isPerfilFreelancer ?
+                                    <div className={styles['content__sectionSkills']}>
+                                        <div className={styles['sectionSkills__experiencia']}>
+                                            <DescricaoUsuario titulo='Experiência' texto={usuario.experiencia} />
+                                            <Divider variant="middle" style={{ margin: '16px 0' }} />
+                                            <DescricaoUsuario titulo='Sobre mim' texto={usuario.sobreMim} />
+                                        </div>
+                                        <div className={styles['sectionSkills__experiencia']}>
+                                            <h1 className={styles['titulo']}>Soft Skills</h1>
+                                            <div className={styles['boxSkills']}>
+                                                {
+                                                    flags?.filter(flags => flags.categoria === "soft-skill")?.map((flags) => {
+                                                        return (
+                                                            <WidgetSoftSkill key={flags.nome} softSkill={flags.nome} />
+                                                        )
+                                                    })
+                                                }
+                                            </div>
+                                            {/* <BoxSoftSkills /> */}
+                                            <Divider variant="middle" style={{ margin: '16px 0' }} />
+                                            <h1 className={styles['titulo']}>Hard Skill</h1>
+                                            <div className={styles['boxSkills']}>
+                                                {
+                                                    flags?.filter(flags => flags.categoria === "hard-skill")?.map((flags) => {
+                                                        return (
+                                                            <WidgetHardSkills key={flags.nome} hardSkill={flags.nome} background={flags.background} />
+                                                        )
+                                                    })
+                                                }
+                                            </div>
+                                            {/* <BoxHardSkills /> */}
+                                        </div>
                                     </div>
-                                    {/* <BoxSoftSkills /> */}
-                                    <Divider variant="middle" style={{ margin: '16px 0' }} />
-                                    <h1 className={styles['titulo']}>Hard Skill</h1>
-                                    <div className={styles['boxSkills']}>
-                                        {
-                                            flags?.filter(flags => flags.categoria === "hard-skill")?.map((flags) => {
-                                                return (
-                                                    <WidgetHardSkills key={flags.nome} hardSkill={flags.nome} background={flags.background} />
-                                                )
-                                            })
-                                        }
+                                    :
+                                    <div className={styles['content__sectionSkillsEmpresa']}>
+                                        <div className={styles['sectionSkillsEmpresa__experiencia']}>
+                                            <div className={styles['sectionSkills__sobreNos']}>
+                                                <DescricaoUsuario titulo='Experiência' texto={usuario.experiencia} />
+                                            </div>
+                                            <div className={styles['sectionSkills__quemProcuramos']}>
+                                                <DescricaoUsuario titulo='Quem procuramos' texto={usuario.sobreMim} />
+                                            </div>
+                                        </div>
+                                        <div className={styles['sectionSkills__softSkills']}>
+                                            <BoxSoftSkills />
+                                        </div>
                                     </div>
-                                    {/* <BoxHardSkills /> */}
-                                </div>
-                            </div>
-                            :
-                            <div className={styles['content__sectionSkillsEmpresa']}>
-                                <div className={styles['sectionSkillsEmpresa__experiencia']}>
-                                    <div className={styles['sectionSkills__sobreNos']}>
-                                        <DescricaoUsuario titulo='Experiência' texto={usuario.experiencia} />
-                                    </div>
-                                    <div className={styles['sectionSkills__quemProcuramos']}>
-                                        <DescricaoUsuario titulo='Quem procuramos' texto={usuario.sobreMim} />
-                                    </div>
-                                </div>
-                                <div className={styles['sectionSkills__softSkills']}>
-                                    <BoxSoftSkills />
-                                </div>
-                            </div>
-                    }
-                    {
-                        usuario.isPerfilFreelancer &&
-                        <div className={styles['content__sectionProjetos']}>
-                            {/* <h1>Projetos desenvolvidos</h1>
+                            }
+                            {
+                                usuario.isPerfilFreelancer &&
+                                <div className={styles['content__sectionProjetos']}>
+                                    {/* <h1>Projetos desenvolvidos</h1>
                       <div id="lista-projetos" className={styles['content__listaProjetos']}>
                           <Carrossel />
                       </div> */}
-                            <Projetos nomeGitHub={usuario.nomeGitHub} />
-                        </div>
-                    }
-                    <div className={styles['content__sectionComentariosAvaliacoes']}>
-                        <div className={styles['sectionComentariosAvaliacoes__comentarios']}>
-                            <h1>Comentários</h1>
-                            {
-                                comentario.map((comentario, index) => {
-                                    return (
-                                        <ComentarioPerfil
-                                            key={`comentario${index}`}
-                                            comentario={comentario}
-                                        />
-                                    )
-                                })
-                            }
-                            {!comentariosFim && comentario.length >= 3 &&
-                                <Button style={{ color: 'var(--color-cinza)', marginBottom: '32px', fontWeight: '500' }} onClick={verMais}>Ver mais</Button>
-                            }
-                            {!usuario.isOwnProfile &&
-                                <CampoComentario
-                                    idRequisicao={idRequisicao}
-                                    carregarAvaliacaoGeral={carregarAvaliacaoGeral}
-                                    trazerComentarios={trazerComentarios}
-                                    setComentario={setComentario}
-                                    nomeUsuario='Você'
-                                />
-                            }
-                        </div>
-                        <Divider orientation="vertical" flexItem style={{ margin: '0 36px' }}></Divider>
-                        <div className={styles['sectionComentariosAvaliacoes__avaliacoes']}>
-                            <h1>Avaliações</h1>
-                            <div className={styles['avaliacoesUsuario']}>
-                                <div className={styles['avaliacoesUsuario__titulo']}>
-                                    <h2>{totalAvaliacoes} avaliações realizadas</h2>
-                                    <Box
-                                        sx={{
-                                            '& > legend': { mt: 2 },
-                                        }}
-                                    >
-                                        <Rating name="read-only" value={mediaEstrelas} readOnly />
-                                    </Box>
+                                    <Projetos nomeGitHub={usuario.nomeGitHub} />
                                 </div>
-                                {avaliacao.map((avaliacao) => {
-                                    return (
-                                        <AvaliacoesUsuario key={`qtdEstrelas${avaliacao.qtdEstrela}`} qtdEstrelas={avaliacao.qtdEstrela} numeroAvaliacoes={avaliacao.quantidade} value={avaliacao.porcentagem} />
-                                    )
-                                })
-                                }
-                            </div>
-                            <Divider variant="middle" style={{ width: '100%', margin: '40px 0' }} />
-                            <div className={styles['sectionComentariosAvaliacoes__adicionais']}>
-                                <h1>Informações adicionais</h1>
-                                {
-                                    usuario.isPerfilFreelancer ?
-                                        <>
-                                            <div className={styles['adicionais__informacoes']}>
-                                                <h4></h4>
-                                                <p>Projetos finalizados</p>
-                                            </div>
-                                            <div className={styles['adicionais__informacoes']}>
-                                                <h4>4</h4>
-                                                <p>Empresas interessadas</p>
-                                            </div>
-                                            <div className={styles['adicionais__informacoes']}>
-                                                <h4>44</h4>
-                                                <p>Recomendações</p>
-                                            </div>
-                                        </>
-                                        :
-                                        <>
-                                            <div className={styles['adicionais__informacoes']}>
-                                                <h4>7</h4>
-                                                <p>Projetos finalizados</p>
-                                            </div>
-                                            <div className={styles['adicionais__informacoes']}>
-                                                <h4>4</h4>
-                                                <p>Freelancers contratados</p>
-                                            </div>
-                                            <div className={styles['adicionais__informacoes']}>
-                                                <h4>44</h4>
-                                                <p>Recomendações</p>
-                                            </div>
-                                        </>
+                            }
+                            <div className={styles['content__sectionComentariosAvaliacoes']}>
+                                <div className={styles['sectionComentariosAvaliacoes__comentarios']}>
+                                    <h1>Comentários</h1>
+                                    {
+                                        comentario.map((comentario, index) => {
+                                            return (
+                                                <ComentarioPerfil
+                                                    key={`comentario${index}`}
+                                                    comentario={comentario}
+                                                />
+                                            )
+                                        })
+                                    }
+                                    {!comentariosFim && comentario.length >= 3 &&
+                                        <Button style={{ color: 'var(--color-cinza)', marginBottom: '32px', fontWeight: '500' }} onClick={verMais}>Ver mais</Button>
+                                    }
+                                    {!usuario.isOwnProfile &&
+                                        <CampoComentario
+                                            idRequisicao={idRequisicao}
+                                            carregarAvaliacaoGeral={carregarAvaliacaoGeral}
+                                            trazerComentarios={trazerComentarios}
+                                            setComentario={setComentario}
+                                            nomeUsuario='Você'
+                                        />
+                                    }
+                                </div>
+                                <Divider orientation="vertical" flexItem style={{ margin: '0 36px' }}></Divider>
+                                <div className={styles['sectionComentariosAvaliacoes__avaliacoes']}>
+                                    <h1>Avaliações</h1>
+                                    <div className={styles['avaliacoesUsuario']}>
+                                        <div className={styles['avaliacoesUsuario__titulo']}>
+                                            <h2>{totalAvaliacoes} avaliações realizadas</h2>
+                                            <Box
+                                                sx={{
+                                                    '& > legend': { mt: 2 },
+                                                }}
+                                            >
+                                                <Rating name="read-only" value={mediaEstrelas} readOnly />
+                                            </Box>
+                                        </div>
+                                        {avaliacao.map((avaliacao) => {
+                                            return (
+                                                <AvaliacoesUsuario key={`qtdEstrelas${avaliacao.qtdEstrela}`} qtdEstrelas={avaliacao.qtdEstrela} numeroAvaliacoes={avaliacao.quantidade} value={avaliacao.porcentagem} />
+                                            )
+                                        })
+                                        }
+                                    </div>
+                                    <Divider variant="middle" style={{ width: '100%', margin: '40px 0' }} />
+                                    <div className={styles['sectionComentariosAvaliacoes__adicionais']}>
+                                        <h1>Informações adicionais</h1>
+                                        {
+                                            usuario.isPerfilFreelancer ?
+                                                <>
+                                                    <div className={styles['adicionais__informacoes']}>
+                                                        <h4></h4>
+                                                        <p>Projetos finalizados</p>
+                                                    </div>
+                                                    <div className={styles['adicionais__informacoes']}>
+                                                        <h4>4</h4>
+                                                        <p>Empresas interessadas</p>
+                                                    </div>
+                                                    <div className={styles['adicionais__informacoes']}>
+                                                        <h4>44</h4>
+                                                        <p>Recomendações</p>
+                                                    </div>
+                                                </>
+                                                :
+                                                <>
+                                                    <div className={styles['adicionais__informacoes']}>
+                                                        <h4>7</h4>
+                                                        <p>Projetos finalizados</p>
+                                                    </div>
+                                                    <div className={styles['adicionais__informacoes']}>
+                                                        <h4>4</h4>
+                                                        <p>Freelancers contratados</p>
+                                                    </div>
+                                                    <div className={styles['adicionais__informacoes']}>
+                                                        <h4>44</h4>
+                                                        <p>Recomendações</p>
+                                                    </div>
+                                                </>
 
-                                }
-                                <ButtonExplorarTalentos>Recomendar</ButtonExplorarTalentos>
+                                        }
+                                        <ButtonExplorarTalentos>Recomendar</ButtonExplorarTalentos>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </>
+            }
         </>
     );
 }
