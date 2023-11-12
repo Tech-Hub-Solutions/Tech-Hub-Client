@@ -336,39 +336,24 @@ const PerfilUsuario = (props) => {
                                             <div className={styles['sectionComentariosAvaliacoes__adicionais']}>
                                                 <h1>Informações adicionais</h1>
                                                 {
-                                                    usuario.isPerfilFreelancer ?
-                                                        <>
-                                                            <div className={styles['adicionais__informacoes']}>
-                                                                <h4></h4>
-                                                                <p>Projetos finalizados</p>
-                                                            </div>
-                                                            <div className={styles['adicionais__informacoes']}>
-                                                                <h4>4</h4>
-                                                                <p>Empresas interessadas</p>
-                                                            </div>
-                                                            <div className={styles['adicionais__informacoes']}>
-                                                                <h4>44</h4>
-                                                                <p>Recomendações</p>
-                                                            </div>
-                                                        </>
-                                                        :
-                                                        <>
-                                                            <div className={styles['adicionais__informacoes']}>
-                                                                <h4>7</h4>
-                                                                <p>Projetos finalizados</p>
-                                                            </div>
-                                                            <div className={styles['adicionais__informacoes']}>
-                                                                <h4>4</h4>
-                                                                <p>Freelancers contratados</p>
-                                                            </div>
-                                                            <div className={styles['adicionais__informacoes']}>
-                                                                <h4>44</h4>
-                                                                <p>Recomendações</p>
-                                                            </div>
-                                                        </>
-
+                                                    usuario.isPerfilFreelancer &&
+                                                    <>
+                                                        <div className={styles['adicionais__informacoes']}>
+                                                            <h4>{usuario?.qtdRecomendacoes} </h4>
+                                                            <p>Empresas interessadas</p>
+                                                        </div>
+                                                    </>
                                                 }
-                                                <ButtonExplorarTalentos>Recomendar</ButtonExplorarTalentos>
+                                                <div className={styles['adicionais__informacoes']}>
+                                                    <h4>{usuario?.qtdRecomendacoes}</h4>
+                                                    <p>Recomendações</p>
+                                                </div>
+                                                <ButtonExplorarTalentos sx={{
+                                                    backgroundColor: usuario?.isRecomendado ? "var(--color-azul) !important" : "transparent",
+                                                    color: usuario?.isRecomendado ? "var(--color-branco) !important" : "#0f9eea !important",
+                                                }}>
+                                                    {usuario?.isRecomendado ? "Recomendado" : "Recomendar"}
+                                                </ButtonExplorarTalentos>
                                             </div>
                                         </div>
                                     </div>

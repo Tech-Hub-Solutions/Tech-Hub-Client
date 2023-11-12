@@ -87,7 +87,11 @@ const BannerDescUsuario = (props) => {
         } else if (!isFreelancer && !isOwnProfile && isPerfilFreelancer) {
             setShowOptions(
                 <>
-                    <Checkbox color="error" style={{ marginRight: '6px' }} icon={<FavoriteBorder sx={{ fontSize: 32 }} style={{ color: '#505050' }} />} checkedIcon={<Favorite sx={{ fontSize: 32 }} />} />
+                    <Checkbox color="error" style={{ marginRight: '6px' }} icon={
+                        <FavoriteBorder sx={{ fontSize: 32 }} style={{ color: '#505050' }} />
+                    }
+                    checked={usuario?.isFavorito}
+                        checkedIcon={<Favorite sx={{ fontSize: 32 }} />} />
                     <Link to='/conversas'
                         state={{ usuario: usuarioConversa }}
                     >
