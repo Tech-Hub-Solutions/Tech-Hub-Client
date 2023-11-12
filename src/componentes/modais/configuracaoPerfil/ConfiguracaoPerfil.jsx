@@ -19,6 +19,7 @@ import styled from "@emotion/styled";
 import { Button } from "@mui/base";
 import axiosInstance from "../../../config/axiosInstance";
 import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
+import { useNavigate } from "react-router-dom";
 
 const ConfiguracaoPerfilModal = ({
   isConfiguracaoModalOpen,
@@ -28,9 +29,6 @@ const ConfiguracaoPerfilModal = ({
   const [isLoading, setIsLoading] = React.useState(false);
   const [showSenha, setShowSenha] = React.useState(false);
   const [wasSubmitted, setWasSubmitted] = React.useState(false);
-  const [nome, setNome] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [nacionalidade, setNacionalidade] = React.useState("");
   const [usuario, setUsuario] = React.useState({});
 
   const handleClose = () => {
@@ -38,21 +36,18 @@ const ConfiguracaoPerfilModal = ({
   };
 
   React.useEffect(() => {
-    if (isConfiguracaoModalOpen) {
-      const usuarioId = sessionStorage.getItem("usuarioId");
-      console.log("usuarioId", usuarioId);
+    const usuarioId = sessionStorage.getItem("usuarioId");
+    console.log("usuarioId", usuarioId);
 
-      axiosInstance
-        .get(`/usuarios/simple/${usuarioId}`)
-        .then((res) => {
-          setUsuario(res.data);
-          console.log("USUARIO => ", usuario);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, [isConfiguracaoModalOpen]);
+    axiosInstance
+      .get(`/usuarios/simple/${usuarioId}`)
+      .then((res) => {
+        setUsuario(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   const stylesCSS = {
     dialogContainer: {
@@ -116,7 +111,7 @@ const ConfiguracaoPerfilModal = ({
   };
 
   const snackbarMessages = {
-    success: "Dados atualizados com sucesso!",
+    success: "Dados atualizados com sucesso! Entre novamente para continuar.",
     error: "Erro ao realizar atualização de dados. Tente novamente.",
   };
 
@@ -145,6 +140,8 @@ const ConfiguracaoPerfilModal = ({
 
   const funcaoUsuario = sessionStorage.getItem("funcao");
 
+  const navigate = useNavigate();
+
   const onSubmit = (data) => {
     if (!wasSubmitted) {
       setWasSubmitted(true);
@@ -169,6 +166,10 @@ const ConfiguracaoPerfilModal = ({
 
           setTimeout(() => {
             setIsConfiguracaoModalOpen(false);
+
+            sessionStorage.clear();
+
+            navigate("/");
           }, 2300);
         })
         .catch((error) => {
@@ -191,6 +192,12 @@ const ConfiguracaoPerfilModal = ({
   const handleMouseDownSenha = (event) => {
     event.preventDefault();
   };
+
+  React.useEffect(() => {
+    setValue("nome", usuario.nome);
+    setValue("email", usuario.email);
+    setValue("nacionalidade", usuario.pais);
+  }, [usuario]);
 
   return (
     <>
@@ -232,10 +239,7 @@ const ConfiguracaoPerfilModal = ({
                       minWidth: "590px",
                       marginTop: "6px",
                     }}
-                    value={usuario.nome ? usuario.nome : ""}
-                    onChange={(e) =>
-                      setUsuario({ ...usuario, nome: e.target.value })
-                    }
+                    defaultValue={"."}
                     error={errors.nome?.message.length > 0}
                     helperText={errors.nome?.message}
                     placeholder="Insira seu nome completo"
@@ -255,8 +259,7 @@ const ConfiguracaoPerfilModal = ({
                       minWidth: "590px",
                       marginTop: "6px",
                     }}
-                    value={usuario.email ? usuario.email : ""}
-                    onChange={(e) => setEmail(e.target.value)}
+                    defaultValue={"."}
                     error={errors.email?.message.length > 0}
                     helperText={errors.email?.message}
                     fullWidth
@@ -277,8 +280,7 @@ const ConfiguracaoPerfilModal = ({
                       minWidth: "590px",
                       marginTop: "6px",
                     }}
-                    value={usuario.pais ? usuario.pais : ""}
-                    onChange={(e) => setNacionalidade(e.target.value)}
+                    defaultValue={"."}
                     error={errors.nacionalidade?.message.length > 0}
                     helperText={errors.nacionalidade?.message}
                     fullWidth
