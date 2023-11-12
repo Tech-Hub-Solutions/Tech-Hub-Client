@@ -160,7 +160,7 @@ const ConfiguracaoPerfilModal = ({
           nome: data.nome,
           email: data.email,
           senha: data.senha,
-          pais: data.sigla,
+          pais: nacionalidades.find((pais) => pais.nome === data.nacionalidade)?.sigla,
         })
         .then((res) => {
           setIsLoading(!isLoading);
@@ -214,7 +214,6 @@ const ConfiguracaoPerfilModal = ({
     setValue("nacionalidade", nacionalidade);
   }, [usuario, isConfiguracaoModalOpen]);
 
-  const optionsPais = nacionalidades.map((pais) => pais.nome);
 
   return (
     <>
@@ -286,7 +285,6 @@ const ConfiguracaoPerfilModal = ({
 
                 <Grid item>
                   <Autocomplete
-                    defaultValue={"."}
                     id="controllable-states-demo"
                     options={nacionalidades}
                     autoHighlight
@@ -295,16 +293,20 @@ const ConfiguracaoPerfilModal = ({
                       marginBottom: "32px",
                       minWidth: "590px",
                     }}
-                    error={errors.nacionalidade?.message.length > 0}
-                    helperText={errors.nacionalidade?.message}
+                    defaultValue={"Brasil"}
                     renderInput={(params) => (
                       <TextField
-                      name="nacionalidade"
+                        defaultValue={"Brasil"}
+                        name="nacionalidade"
+                        {...register("nacionalidade")}
+                        error={errors.nacionalidade?.message.length > 0}
+                        helperText={errors.nacionalidade?.message}
                         {...params}
-                        label="Choose a country"
+                        label="Selecione um país"
                         inputProps={{
                           ...params.inputProps,
                           autoComplete: "new-password", // disable autocomplete and autofill
+
                         }}
                       />
                     )}
@@ -321,7 +323,6 @@ const ConfiguracaoPerfilModal = ({
                         />
                       </Box>
                     )}
-                    {...register("nacionalidade")}
                   />
                 </Grid>
 
