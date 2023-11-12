@@ -15,12 +15,19 @@ const BlueStyledButton = styled(Button)({
   lineHeight: "1.3",
 });
 
-const BlueBackgroundButton = ({ onClick, children, style, type }) => {
+const BlueBackgroundButton = ({
+  onClick,
+  children,
+  style,
+  type,
+  valueDisabled,
+}) => {
   return (
     <BlueStyledButton
       onClick={onClick}
       variant="contained"
       style={style}
+      disabled={valueDisabled}
       type={type}
     >
       {children}

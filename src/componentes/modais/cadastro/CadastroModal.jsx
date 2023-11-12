@@ -93,11 +93,6 @@ function CadastroModal({
       lineHeight: "normal",
       paddingBottom: "32px",
     },
-    customDivider: {
-      width: "100%",
-      color: "#666666",
-      fontWeight: 600,
-    },
     input: {
       "& input[type=number]": {
         MozAppearance: "textfield",

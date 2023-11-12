@@ -85,7 +85,7 @@ const CardPerfil = (props) => {
           <CardMedia sx={{ height: 187, width:'100%' }} title="Foto de perfil de freelancer">
             <Avatar
               variant="square"
-              sx={{ height: "100%", width: "100%" }}
+              sx={{ height: 187, width: "100%" }}
               src={usuario?.urlFotoPerfil}
               title="Foto de perfil de freelancer"
             >

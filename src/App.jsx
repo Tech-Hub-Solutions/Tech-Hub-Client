@@ -5,6 +5,7 @@ import Teste from "./pages/conversas/Teste";
 import PerfilUsuario from "./pages/perfilUsuario/PerfilUsuario";
 import BuscaTalentos from "./pages/buscaTalentos/BuscaTalentos";
 import Favoritos from "./pages/favoritos/Favoritos";
+import NotFound from "./pages/notFound/NotFound";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/perfil" element={<PerfilUsuario />} />
           <Route path="/busca-talentos" element={<BuscaTalentos />} />
           <Route path="/favoritos" element={<Favoritos />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </>

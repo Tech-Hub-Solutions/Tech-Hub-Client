@@ -9,12 +9,16 @@ import Tooltip from "@mui/material/Tooltip";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import ConfiguracaoPerfilModal from "../../../modais/configuracaoPerfil/ConfiguracaoPerfil";
 
 export default function AccountMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -33,10 +37,15 @@ export default function AccountMenu(props) {
   };
 
   const redirectToPerfil = () => {
-    navigate({
-      pathname: "/perfil",
-    });
+    navigate("/perfil");
+
+    if (location.pathname == "/perfil" && location.search.includes("id")) {
+      navigate(0);
+    }
   };
+
+  const nome = sessionStorage.getItem('nome') || "";
+  const urlFotoPerfil = sessionStorage.getItem('urlFotoPerfil') || "";
 
   return (
     <>
@@ -50,12 +59,8 @@ export default function AccountMenu(props) {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar
-              sx={{ width: 40, height: 40 }}
-              alt="Imagem de perfil"
-              src={props.image}
-            >
-              L
+            <Avatar sx={{ width: 40, height: 40 }} alt="Imagem de perfil" src={urlFotoPerfil}>
+              {nome[0]}
             </Avatar>
           </IconButton>
         </Tooltip>
@@ -94,7 +99,7 @@ export default function AccountMenu(props) {
           <AccountCircleRoundedIcon sx={stylesCSS.iconMenuItem} /> <p>Perfil</p>
         </MenuItem>
 
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={(handleClose, () => setIsModalOpen(!isModalOpen))}>
           <SettingsRoundedIcon sx={stylesCSS.iconMenuItem} />{" "}
           <p>Configurações</p>
         </MenuItem>
@@ -110,6 +115,11 @@ export default function AccountMenu(props) {
           <p>Sair</p>
         </MenuItem>
       </Menu>
+
+      <ConfiguracaoPerfilModal
+        isConfiguracaoModalOpen={isModalOpen}
+        setIsConfiguracaoModalOpen={setIsModalOpen}
+      ></ConfiguracaoPerfilModal>
     </>
   );
 }

@@ -2,12 +2,12 @@ import React from "react";
 
 import { Alert, Snackbar } from "@mui/material";
 
-function SnackbarCustom({ snackbarOpen, setSnackbarOpen, severity, message }) {
+function SnackbarCustom({ snackbarOpen, setSnackbarOpen, severity, message, time }) {
   React.useEffect(() => {
     if (snackbarOpen) {
       setTimeout(() => {
         setSnackbarOpen(false);
-      }, 5000);
+      }, time || 5000);
     }
   }, [snackbarOpen]);
 
