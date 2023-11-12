@@ -30,12 +30,9 @@ const ConfiguracaoPerfilModal = ({
   setIsConfiguracaoModalOpen,
 }) => {
   const [snackbarSuccessOpen, setSnackbarSuccess] = React.useState({});
-  const [isLoading, setIsLoading] = React.useState(false);
   const [showSenha, setShowSenha] = React.useState(false);
   const [wasSubmitted, setWasSubmitted] = React.useState(false);
   const [usuario, setUsuario] = React.useState({});
-
-  const [valuePais, setValuePais] = React.useState();
 
   React.useState("");
 
@@ -153,7 +150,6 @@ const ConfiguracaoPerfilModal = ({
   const onSubmit = (data) => {
     if (!wasSubmitted) {
       setWasSubmitted(true);
-      setIsLoading(true);
 
       axiosInstance
         .put("/usuarios", {
@@ -163,8 +159,6 @@ const ConfiguracaoPerfilModal = ({
           pais: nacionalidades.find((pais) => pais.nome === data.nacionalidade)?.sigla,
         })
         .then((res) => {
-          setIsLoading(!isLoading);
-
           setSnackbarSuccess({
             open: true,
             isError: false,
@@ -191,7 +185,6 @@ const ConfiguracaoPerfilModal = ({
         })
         .finally(() => {
           setWasSubmitted(false);
-          setIsLoading(false);
         });
     }
   };
