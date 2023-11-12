@@ -1,4 +1,6 @@
 import {
+  Autocomplete,
+  Box,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -19,6 +21,9 @@ import styled from "@emotion/styled";
 import { Button } from "@mui/base";
 import axiosInstance from "../../../config/axiosInstance";
 import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
+import { useNavigate } from "react-router-dom";
+import nacionalidades from "../../shared/CountryInformation/perfil-usuario.json";
+import CountryInformation from "../../shared/CountryInformation/CountryInformation";
 
 const ConfiguracaoPerfilModal = ({
   isConfiguracaoModalOpen,
@@ -28,31 +33,29 @@ const ConfiguracaoPerfilModal = ({
   const [isLoading, setIsLoading] = React.useState(false);
   const [showSenha, setShowSenha] = React.useState(false);
   const [wasSubmitted, setWasSubmitted] = React.useState(false);
-  const [nome, setNome] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [nacionalidade, setNacionalidade] = React.useState("");
   const [usuario, setUsuario] = React.useState({});
+
+  const [valuePais, setValuePais] = React.useState();
+
+  React.useState("");
 
   const handleClose = () => {
     setIsConfiguracaoModalOpen(false);
   };
 
   React.useEffect(() => {
-    if (isConfiguracaoModalOpen) {
-      const usuarioId = sessionStorage.getItem("usuarioId");
-      console.log("usuarioId", usuarioId);
+    const usuarioId = sessionStorage.getItem("usuarioId");
+    console.log("usuarioId", usuarioId);
 
-      axiosInstance
-        .get(`/usuarios/simple/${usuarioId}`)
-        .then((res) => {
-          setUsuario(res.data);
-          console.log("USUARIO => ", usuario);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, [isConfiguracaoModalOpen]);
+    axiosInstance
+      .get(`/usuarios/simple/${usuarioId}`)
+      .then((res) => {
+        setUsuario(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   const stylesCSS = {
     dialogContainer: {
@@ -116,7 +119,7 @@ const ConfiguracaoPerfilModal = ({
   };
 
   const snackbarMessages = {
-    success: "Dados atualizados com sucesso!",
+    success: "Dados atualizados com sucesso! Entre novamente para continuar.",
     error: "Erro ao realizar atualização de dados. Tente novamente.",
   };
 
@@ -145,6 +148,8 @@ const ConfiguracaoPerfilModal = ({
 
   const funcaoUsuario = sessionStorage.getItem("funcao");
 
+  const navigate = useNavigate();
+
   const onSubmit = (data) => {
     if (!wasSubmitted) {
       setWasSubmitted(true);
@@ -155,7 +160,7 @@ const ConfiguracaoPerfilModal = ({
           nome: data.nome,
           email: data.email,
           senha: data.senha,
-          pais: data.nacionalidade,
+          pais: nacionalidades.find((pais) => pais.nome === data.nacionalidade)?.sigla,
         })
         .then((res) => {
           setIsLoading(!isLoading);
@@ -169,6 +174,10 @@ const ConfiguracaoPerfilModal = ({
 
           setTimeout(() => {
             setIsConfiguracaoModalOpen(false);
+
+            sessionStorage.clear();
+
+            navigate("/");
           }, 2300);
         })
         .catch((error) => {
@@ -191,6 +200,20 @@ const ConfiguracaoPerfilModal = ({
   const handleMouseDownSenha = (event) => {
     event.preventDefault();
   };
+
+  React.useEffect(() => {
+    if (!usuario) {
+      return;
+    }
+    setValue("nome", usuario.nome);
+    setValue("email", usuario.email);
+    const nacionalidade = nacionalidades.find(
+      (pais) => pais.sigla === usuario.pais
+    )?.nome;
+
+    setValue("nacionalidade", nacionalidade);
+  }, [usuario, isConfiguracaoModalOpen]);
+
 
   return (
     <>
@@ -216,7 +239,6 @@ const ConfiguracaoPerfilModal = ({
                 className={styles["form__control"]}
               >
                 <Grid item>
-                  {/* TODO FIX - Add possibilidade de editar value em cada TextField */}
                   <TextField
                     name="nome"
                     label={
@@ -232,10 +254,7 @@ const ConfiguracaoPerfilModal = ({
                       minWidth: "590px",
                       marginTop: "6px",
                     }}
-                    value={usuario.nome ? usuario.nome : ""}
-                    onChange={(e) =>
-                      setUsuario({ ...usuario, nome: e.target.value })
-                    }
+                    defaultValue={"."}
                     error={errors.nome?.message.length > 0}
                     helperText={errors.nome?.message}
                     placeholder="Insira seu nome completo"
@@ -255,8 +274,7 @@ const ConfiguracaoPerfilModal = ({
                       minWidth: "590px",
                       marginTop: "6px",
                     }}
-                    value={usuario.email ? usuario.email : ""}
-                    onChange={(e) => setEmail(e.target.value)}
+                    defaultValue={"."}
                     error={errors.email?.message.length > 0}
                     helperText={errors.email?.message}
                     fullWidth
@@ -266,24 +284,45 @@ const ConfiguracaoPerfilModal = ({
                 </Grid>
 
                 <Grid item>
-                  <TextField
-                    name="nacionalidade"
-                    label="Nacionalidade"
-                    variant="outlined"
-                    color="primary"
-                    type="text"
+                  <Autocomplete
+                    id="controllable-states-demo"
+                    options={nacionalidades}
+                    autoHighlight
+                    getOptionLabel={(option) => option.nome}
                     sx={{
                       marginBottom: "32px",
                       minWidth: "590px",
-                      marginTop: "6px",
                     }}
-                    value={usuario.pais ? usuario.pais : ""}
-                    onChange={(e) => setNacionalidade(e.target.value)}
-                    error={errors.nacionalidade?.message.length > 0}
-                    helperText={errors.nacionalidade?.message}
-                    fullWidth
-                    placeholder="Sua nacionalidade"
-                    {...register("nacionalidade")}
+                    defaultValue={"Brasil"}
+                    renderInput={(params) => (
+                      <TextField
+                        defaultValue={"Brasil"}
+                        name="nacionalidade"
+                        {...register("nacionalidade")}
+                        error={errors.nacionalidade?.message.length > 0}
+                        helperText={errors.nacionalidade?.message}
+                        {...params}
+                        label="Selecione um país"
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: "new-password", // disable autocomplete and autofill
+
+                        }}
+                      />
+                    )}
+                    renderOption={(props, option) => (
+                      <Box
+                        component="li"
+                        sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                        {...props}
+                      >
+                        <CountryInformation
+                          pais={
+                            option.sigla
+                          }
+                        />
+                      </Box>
+                    )}
                   />
                 </Grid>
 
