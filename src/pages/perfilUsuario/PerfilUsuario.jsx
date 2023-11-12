@@ -271,6 +271,12 @@ const PerfilUsuario = (props) => {
                                         <div className={styles['sectionComentariosAvaliacoes__comentarios']}>
                                             <h1>Comentários</h1>
                                             {
+                                                comentario.length == 0 &&
+                                                <p
+                                                style={{color: '#B4B4B4', marginTop: '24px',marginBottom: '24px',  fontWeight: '500'}}
+                                                >Este usuário ainda não possui comentários.</p>
+                                            }
+                                            {
                                                 comentario.map((comentario, index) => {
                                                     return (
                                                         <ComentarioPerfil
