@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import AlterarImagem from "../AlterarImagem";
 import { set } from "react-hook-form";
 import CountryInformation from "../../shared/CountryInformation/CountryInformation";
+import axiosInstance from "../../../config/axiosInstance";
 
 
 const BannerDescUsuario = (props) => {
@@ -47,6 +48,21 @@ const BannerDescUsuario = (props) => {
     };
 
     const [isPerfilFreelancer, setPerfilFreelancer] = React.useState(false);
+
+    const favoritar = () => {
+        axiosInstance.put(`/perfis/favoritar/${usuario?.idUsuario}`)
+            .then((res) => {
+                props.setUsuario({
+                    ...usuario,
+                    isFavorito: !usuario?.isFavorito,
+                    qtdFavoritos: usuario?.isFavorito ? usuario?.qtdFavoritos - 1 : usuario?.qtdFavoritos + 1
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }
+
 
     React.useEffect(() => {
         const isFreelancer = sessionStorage.getItem('funcao') === 'FREELANCER';
@@ -87,11 +103,14 @@ const BannerDescUsuario = (props) => {
         } else if (!isFreelancer && !isOwnProfile && isPerfilFreelancer) {
             setShowOptions(
                 <>
-                    <Checkbox color="error" style={{ marginRight: '6px' }} icon={
-                        <FavoriteBorder sx={{ fontSize: 32 }} style={{ color: '#505050' }} />
-                    }
-                    checked={usuario?.isFavorito}
-                        checkedIcon={<Favorite sx={{ fontSize: 32 }} />} />
+                    <Checkbox
+                        onChange={favoritar}
+                        color="error"
+                        style={{ marginRight: '6px' }}
+                        icon={<FavoriteBorder sx={{ fontSize: 32 }} style={{ color: '#505050' }} />}
+                        checked={usuario?.isFavorito}
+                        checkedIcon={<Favorite sx={{ fontSize: 32 }} />}
+                    />
                     <Link to='/conversas'
                         state={{ usuario: usuarioConversa }}
                     >

@@ -17,6 +17,7 @@ import WidgetHardSkills from "../../componentes/perfilUsuario/skillsUsuario/widg
 import { useLocation, useNavigate } from 'react-router-dom'
 import NotFound from "../notFound/NotFound";
 import PerfilSkeleton from "../../componentes/perfilUsuario/PerfilSkeleton/PerfilSkeleton";
+import InfoAdicional from "../../componentes/perfilUsuario/infoAdicional/InfoAdicional";
 
 const PerfilUsuario = (props) => {
 
@@ -196,21 +197,6 @@ const PerfilUsuario = (props) => {
             })
     }
 
-    // Seção de recomendações
-
-    const ButtonExplorarTalentos = styled(Button)({
-        fontFamily: "Montserrat, sans-serif",
-        padding: "4px 16px",
-        borderRadius: "6px",
-        fontWeight: "600",
-        fontStyle: "normal",
-        fontSize: "16px",
-        textTransform: "none",
-        backgroundColor: "transparent",
-        color: "#0f9eea",
-        border: "2px solid #0F9EEA",
-        marginTop: "8px"
-    });
 
     return (
         <>
@@ -225,7 +211,7 @@ const PerfilUsuario = (props) => {
                             <Header />
                             <div className={styles['perfil__usuario']}>
                                 <div className={styles['content']}>
-                                    <BannerDescUsuario usuario={usuario} />
+                                    <BannerDescUsuario usuario={usuario} setUsuario={setUsuario} />
                                     {
                                         usuario.isPerfilFreelancer ?
                                             <div className={styles['content__sectionSkills']}>
@@ -278,10 +264,6 @@ const PerfilUsuario = (props) => {
                                     {
                                         usuario.isPerfilFreelancer &&
                                         <div className={styles['content__sectionProjetos']}>
-                                            {/* <h1>Projetos desenvolvidos</h1>
-                      <div id="lista-projetos" className={styles['content__listaProjetos']}>
-                          <Carrossel />
-                      </div> */}
                                             <Projetos nomeGitHub={usuario.nomeGitHub} />
                                         </div>
                                     }
@@ -313,48 +295,13 @@ const PerfilUsuario = (props) => {
                                         </div>
                                         <Divider orientation="vertical" flexItem style={{ margin: '0 36px' }}></Divider>
                                         <div className={styles['sectionComentariosAvaliacoes__avaliacoes']}>
-                                            <h1>Avaliações</h1>
-                                            <div className={styles['avaliacoesUsuario']}>
-                                                <div className={styles['avaliacoesUsuario__titulo']}>
-                                                    <h2>{totalAvaliacoes} avaliações realizadas</h2>
-                                                    <Box
-                                                        sx={{
-                                                            '& > legend': { mt: 2 },
-                                                        }}
-                                                    >
-                                                        <Rating name="read-only" value={mediaEstrelas} readOnly />
-                                                    </Box>
-                                                </div>
-                                                {avaliacao.map((avaliacao) => {
-                                                    return (
-                                                        <AvaliacoesUsuario key={`qtdEstrelas${avaliacao.qtdEstrela}`} qtdEstrelas={avaliacao.qtdEstrela} numeroAvaliacoes={avaliacao.quantidade} value={avaliacao.porcentagem} />
-                                                    )
-                                                })
-                                                }
-                                            </div>
+                                            <AvaliacoesUsuario
+                                                avaliacao={avaliacao}
+                                                totalAvaliacoes={totalAvaliacoes}
+                                                mediaEstrelas={mediaEstrelas}
+                                            />
                                             <Divider variant="middle" style={{ width: '100%', margin: '40px 0' }} />
-                                            <div className={styles['sectionComentariosAvaliacoes__adicionais']}>
-                                                <h1>Informações adicionais</h1>
-                                                {
-                                                    usuario.isPerfilFreelancer &&
-                                                    <>
-                                                        <div className={styles['adicionais__informacoes']}>
-                                                            <h4>{usuario?.qtdRecomendacoes} </h4>
-                                                            <p>Empresas interessadas</p>
-                                                        </div>
-                                                    </>
-                                                }
-                                                <div className={styles['adicionais__informacoes']}>
-                                                    <h4>{usuario?.qtdRecomendacoes}</h4>
-                                                    <p>Recomendações</p>
-                                                </div>
-                                                <ButtonExplorarTalentos sx={{
-                                                    backgroundColor: usuario?.isRecomendado ? "var(--color-azul) !important" : "transparent",
-                                                    color: usuario?.isRecomendado ? "var(--color-branco) !important" : "#0f9eea !important",
-                                                }}>
-                                                    {usuario?.isRecomendado ? "Recomendado" : "Recomendar"}
-                                                </ButtonExplorarTalentos>
-                                            </div>
+                                            <InfoAdicional usuario={usuario} setUsuario={setUsuario} />
                                         </div>
                                     </div>
                                 </div>
