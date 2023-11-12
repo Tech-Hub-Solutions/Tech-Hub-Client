@@ -25,7 +25,14 @@
     font-weight: 600;
     line-height: normal;
     margin-bottom: 8px;
+    cursor: pointer;
+    transition: 0.2s;
 }
+
+.comentario__content h1:hover {
+    color: var(--color-azul);
+}
+
 
 .comentario__content h4 {
     color: var(--color-cinza);
@@ -41,13 +48,3 @@
     margin-bottom: 16px;
 }
 
-.comentario__content p {
-    color: var(--color-textos);
-    font-family: Montserrat;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    text-align: left;
-    margin-top: 8px;
-}

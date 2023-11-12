@@ -35,13 +35,14 @@ function PrimeiraSecao() {
   const [user, setUser] = useState({});
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  const redirectToCadastro = () => {
+  const redirectToCadastro = (user) => {
     setIsTravaTelaCadastroOpen(true);
+    setUser(user);
   };
 
   const redirectToLogin = () => {
     setIsLoginModalOpen(true);
-    setIsTravaTelaCadastroOpen(false)
+    setIsTravaTelaCadastroOpen(false);
   };
 
   return (
@@ -59,11 +60,15 @@ function PrimeiraSecao() {
           </p>
 
           <StackButtons direction={"row"}>
-            <BlueBackgroundButton onClick={redirectToCadastro}>
+            <BlueBackgroundButton
+              onClick={() => redirectToCadastro("FREELANCER")}
+            >
               Quero ser um freelancer
             </BlueBackgroundButton>
 
-            <ButtonExplorarTalentos onClick={redirectToLogin}>
+            <ButtonExplorarTalentos
+              onClick={() => redirectToCadastro("EMPRESA")}
+            >
               Explorar talentos
             </ButtonExplorarTalentos>
           </StackButtons>

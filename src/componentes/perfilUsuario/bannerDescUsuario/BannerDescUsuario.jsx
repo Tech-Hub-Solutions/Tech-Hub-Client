@@ -1,48 +1,26 @@
 import React from "react";
 import styles from "./bannerDescUsuario.module.css"
-import styled from "@emotion/styled";
 import { Avatar, Checkbox, CircularProgress } from "@mui/material";
-import { Button } from "@mui/material";
 
 import LinkedinImg from "../../../assets/images/LinkedinImg.svg"
 import GitHubImg from "../../../assets/images/GithubImg.svg"
-import ReactCountryFlag from "react-country-flag";
 import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import AlterarImagem from "../AlterarImagem";
-import ModalPerfil from "../modalPerfil/ModalPerfil";
+import CountryInformation from "../../shared/CountryInformation/CountryInformation";
+import AlterarCurriculo from "./AlterarCurriculo";
 
 
 const BannerDescUsuario = (props) => {
 
     const [showOptions, setShowOptions] = React.useState(null);
-    const [loading, setLoading] = React.useState({
-        value: false,
-        tipoArquivo: ""
-    });
-    const [openModalEdicao, setOpenModalEdicao] = React.useState(false);
+    const [isPerfilFreelancer, setPerfilFreelancer] = React.useState(false);
 
-    const handleClickOpen = () => {
-        setOpenModalEdicao(true);
-    };
+    const [loading, setLoading] = React.useState({ value: false, tipoArquivo: "" });
 
     const usuario = props.usuario;
-
-    const ButtonExplorarTalentos = styled(Button)({
-        fontFamily: "Montserrat, sans-serif",
-        padding: "10px 16px",
-        borderRadius: "6px",
-        fontWeight: "600",
-        fontStyle: "normal",
-        fontSize: "16px",
-        textTransform: "none",
-        backgroundColor: "transparent",
-        color: "#0f9eea",
-        border: "2px solid #0F9EEA",
-        lineHeight: "1.3",
-    });
 
     const usuarioConversa = {
         nome: usuario.nome,
@@ -51,66 +29,86 @@ const BannerDescUsuario = (props) => {
         isFreelancer: usuario.isFreelancer
     };
 
-    const [isPerfilFreelancer, setPerfilFreelancer] = React.useState(false);
+    const favoritar = () => {
+        axiosInstance.put(`/perfis/favoritar/${usuario?.idUsuario}`)
+            .then((res) => {
+                props.setUsuario({
+                    ...usuario,
+                    isFavorito: !usuario?.isFavorito,
+                    qtdFavoritos: usuario?.isFavorito ? usuario?.qtdFavoritos - 1 : usuario?.qtdFavoritos + 1
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }
+
 
     React.useEffect(() => {
         const isFreelancer = sessionStorage.getItem('funcao') === 'FREELANCER';
         const isOwnProfile = usuario.isOwnProfile;
         const isPerfilFreelancer = usuario.isPerfilFreelancer;
 
+        const curriculoBaixarButton = (
+            <BlueBackgroundButton className={styles['botaoCondicional']} valueDisabled={!usuario?.curriculo}>
+                <a href={usuario?.curriculo} download>
+                    currículo
+                </a>
+            </BlueBackgroundButton>
+        )
+        const curriculoUploadButton = (
+            <AlterarCurriculo curriculo={usuario?.curriculo} />
+        );
+        const editarPerfilButton = (
+            <BlueBackgroundButton className={styles['botaoCondicional']}>Editar Perfil</BlueBackgroundButton>
+        );
+        const conversasButton = (
+            <Link to='/conversas' state={{ usuario: usuarioConversa }}>
+                <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
+            </Link>
+        );
+
         setPerfilFreelancer(isPerfilFreelancer)
 
         if (!isFreelancer && isOwnProfile) {
             setShowOptions(
-                <ButtonExplorarTalentos onClick={handleClickOpen} className={styles['botaoCondicional']}>Editar Perfil</ButtonExplorarTalentos>
+                editarPerfilButton
             )
         } else if (isFreelancer && isOwnProfile) {
             setShowOptions(
-                <BlueBackgroundButton onClick={handleClickOpen} className={styles['botaoCondicional']}>Editar Perfil</BlueBackgroundButton>
+                <>
+                    {curriculoUploadButton}
+                    {editarPerfilButton}
+                </>
             )
         } else if (isFreelancer && !isOwnProfile && isPerfilFreelancer) {
             setShowOptions(
                 <>
-                    <Link to='/conversas'
-                        state={{ usuario: usuarioConversa }}
-                    >
-                        <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
-                    </Link>
-                    <BlueBackgroundButton className={styles['botaoCondicional']}>Currículo</BlueBackgroundButton>
+                    {conversasButton}
+                    {curriculoBaixarButton}
                 </>
             )
         } else if (isFreelancer && !isOwnProfile && !isPerfilFreelancer) {
             setShowOptions(
-                <>
-                    <Link to='/conversas'
-                        state={{ usuario: usuarioConversa }}
-                    >
-                        <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
-                    </Link>
-                </>
+                conversasButton
             )
         } else if (!isFreelancer && !isOwnProfile && isPerfilFreelancer) {
             setShowOptions(
                 <>
-                    <Checkbox color="error" style={{ marginRight: '6px' }} icon={<FavoriteBorder sx={{ fontSize: 32 }} style={{ color: '#505050' }} />} checkedIcon={<Favorite sx={{ fontSize: 32 }} />} />
-                    <Link to='/conversas'
-                        state={{ usuario: usuarioConversa }}
-                    >
-                        <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
-                    </Link>
-                    <BlueBackgroundButton className={styles['botaoCondicional']}>Currículo</BlueBackgroundButton>
+                    <Checkbox
+                        onChange={favoritar}
+                        color="error"
+                        style={{ marginRight: '6px' }}
+                        icon={<FavoriteBorder sx={{ fontSize: 32 }} style={{ color: '#505050' }} />}
+                        checked={usuario?.isFavorito}
+                        checkedIcon={<Favorite sx={{ fontSize: 32 }} />}
+                    />
+                    {conversasButton}
+                    {curriculoBaixarButton}
                 </>
             )
         } else if (!isFreelancer && !isOwnProfile && !isPerfilFreelancer) {
-            setShowOptions(
-                <>
-                    <Link to='/conversas'
-                        state={{ usuario: usuarioConversa }}
-                    >
-                        <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
-                    </Link>
-                </>
-            )
+            setShowOptions(conversasButton)
         }
 
     }, [usuario])
@@ -129,9 +127,12 @@ const BannerDescUsuario = (props) => {
                     <Avatar className={styles['banner__imagem']}
                         alt={'Imagem de perfil de ' + usuario.nomeUsuario}
                         src={loading.value && loading.tipoArquivo === "PERFIL" ? '' : usuario.urlFotoPerfil}
-                        sx={{ width: 150, height: 150, backgroundColor: '#F5F5F5' }}
+                        sx={{ width: 150, height: 150, backgroundColor: '#F5F5F5', color: 'var(--color-textos)', fontSize: '48px' }}
                     >
-                        {loading.value && loading.tipoArquivo === "PERFIL" && <CircularProgress />}
+                        {loading.value && loading.tipoArquivo === "PERFIL" ?
+                            <CircularProgress /> :
+                            usuario?.nome?.length > 0 && usuario?.nome[0]
+                        }
                     </Avatar>
                     {
                         usuario.isOwnProfile &&
@@ -150,13 +151,7 @@ const BannerDescUsuario = (props) => {
                         {/* Limitar a Length da input para até 50 caracteres */}
                         <h1>{usuario?.nome}</h1>
                         {usuario?.pais &&
-                            <div className={styles['infoUsuario__nacionalidade']}>
-                                <ReactCountryFlag countryCode="BR" svg style={{
-                                    fontSize: '1.3em',
-                                    lineHeight: '1.3em',
-                                }} />
-                                <p>{usuario?.pais || ""}</p>
-                            </div>
+                            <CountryInformation pais={usuario?.pais} />
                         }
                         <div className={styles['infoUsuario__icones']}>
                             {usuario.linkLinkedin &&

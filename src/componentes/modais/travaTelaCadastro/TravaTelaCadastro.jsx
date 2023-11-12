@@ -100,12 +100,12 @@ function TravaTelaCadastro({
             variant="outlined"
             sx={[
               stylesCSS.cardContainer,
-              { backgroundColor: user == "freelancer" ? "#0f9dea54" : "" },
+              { backgroundColor: user == "FREELANCER" ? "#0f9dea54" : "" },
             ]}
           >
             <CardActionArea
               sx={stylesCSS.cardActionArea}
-              onClick={() => clickCard("freelancer")}
+              onClick={() => clickCard("FREELANCER")}
             >
               <CardMedia
                 component="img"
@@ -124,12 +124,12 @@ function TravaTelaCadastro({
             variant="outlined"
             sx={[
               stylesCSS.cardContainer,
-              { backgroundColor: user == "empresa" ? "#0f9dea54" : "" },
+              { backgroundColor: user == "EMPRESA" ? "#0f9dea54" : "" },
             ]}
           >
             <CardActionArea
               sx={stylesCSS.cardActionArea}
-              onClick={() => clickCard("empresa")}
+              onClick={() => clickCard("EMPRESA")}
             >
               <CardMedia
                 component="img"

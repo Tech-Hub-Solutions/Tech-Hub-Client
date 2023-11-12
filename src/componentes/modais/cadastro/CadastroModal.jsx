@@ -1,13 +1,10 @@
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
 
 import styles from "./CadastroModal.module.css";
 import CadastroEmpresaImage from "../../../assets/images/CadastroEmpresa.svg";
 import CadastroFreelancerImage from "../../../assets/images/CadastroFreelancer.svg";
-import GoogleVetor from "../../../assets/images/GoogleVetor.svg";
-import Divider from "@mui/material/Divider";
 
 import React from "react";
 import { TextField } from "@mui/material";
@@ -75,7 +72,6 @@ function CadastroModal({
       maxWidth: "fit-content",
       borderRadius: "16px",
       overflow: "hidden",
-      height: "100%",
       width: "100%",
     },
     dialogContent: {
@@ -95,25 +91,7 @@ function CadastroModal({
       fontStyle: "normal",
       fontWeight: 600,
       lineHeight: "normal",
-      paddingBottom: "16px",
-    },
-    buttonGoogle: {
-      border: "1px solid #333",
-      color: "#333",
-      gap: "15px",
-      padding: "18px 36px",
-      borderRadius: "6px",
-      fontFamily: "Montserrat, sans-serif",
-      fontSize: "16px",
-      textTransform: "none",
-      fontStyle: "normal",
-      fontWeight: "600",
-      lineHeight: "1.3",
-    },
-    customDivider: {
-      width: "100%",
-      color: "#666666",
-      fontWeight: 600,
+      paddingBottom: "32px",
     },
     input: {
       "& input[type=number]": {
@@ -145,18 +123,23 @@ function CadastroModal({
           email: data.email,
           senha: data.senha,
           numeroCadastroPessoa: numeroDocumento,
-          pais: "não tem",
+          pais: null,
           funcao: user,
         })
         .then((res) => {
           setIsLoading(!isLoading);
-          console.info(res);
+
           setSnackbarSuccess({
             open: true,
             isError: false,
             severity: "success",
             message: snackbarMessages.success,
           });
+
+          setTimeout(() => {
+            setIsLoginModalOpen(true);
+            setCadastroIsOpen(false);
+          }, 2300);
         })
         .catch((error) => {
           console.error(error);
@@ -184,16 +167,11 @@ function CadastroModal({
     event.preventDefault();
   };
 
-  const redictToBuscar = () => {
-    // TODO - Inserir roteamento p/ ir à página de buscar talentos ou de perfil
-    return null;
-  };
-
   const imageCadastroUser =
-    user === "freelancer" ? CadastroFreelancerImage : CadastroEmpresaImage;
+    user === "FREELANCER" ? CadastroFreelancerImage : CadastroEmpresaImage;
 
   const altImageCadastroUser =
-    user === "freelancer"
+    user === "FREELANCER"
       ? "Imagem de um homem freelancer"
       : "Imagem de homem empresário";
 
@@ -231,18 +209,7 @@ function CadastroModal({
         <div className={styles["form__container"]}>
           <DialogTitle sx={stylesCSS.dialogTitle}>{"Cadastro"}</DialogTitle>
           <DialogContent sx={stylesCSS.dialogContent}>
-            <Button variant="outlined" sx={stylesCSS.buttonGoogle}>
-              <img
-                style={{ width: "23px" }}
-                src={GoogleVetor}
-                alt="Logo da Google"
-              />
-              Cadastre-se com Google
-            </Button>
-
-            <Divider sx={stylesCSS.customDivider}>OU</Divider>
-
-            <Grid container rowSpacing={1}>
+            <Grid container rowSpacing={1} sx={{ marginTop: "15px" }}>
               <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
                 <Grid item>
                   <TextField
@@ -263,7 +230,7 @@ function CadastroModal({
                 <Grid item>
                   <InputMask
                     mask={
-                      user === "freelancer"
+                      user === "FREELANCER"
                         ? "999.999.999-99"
                         : "99.999.999/9999-99"
                     }
@@ -272,7 +239,7 @@ function CadastroModal({
                     {() => (
                       <TextField
                         name="documento"
-                        label={user === "freelancer" ? "CPF" : "CNPJ"}
+                        label={user === "FREELANCER" ? "CPF" : "CNPJ"}
                         sx={{ mb: 2, ...stylesCSS.input }}
                         variant="outlined"
                         color="primary"
@@ -280,6 +247,7 @@ function CadastroModal({
                         helperText={errors.documento?.message}
                         placeholder="Insira sem os pontos e traços"
                         fullWidth
+                        error={errors.documento?.message.length > 0}
                       />
                     )}
                   </InputMask>
@@ -332,7 +300,6 @@ function CadastroModal({
 
                 <CustomLoadingButton
                   isLoading={isLoading}
-                  onClick={redictToBuscar}
                   textButton={"Cadastre-se"}
                 ></CustomLoadingButton>
               </form>

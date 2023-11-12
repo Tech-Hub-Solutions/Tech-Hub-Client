@@ -10,10 +10,12 @@ const axiosInstance = axios.create({
     },
 });
 
+
 axiosInstance.interceptors.request.use((config) => {
     const tokenUsuario = sessionStorage.getItem('token');
+    const location = window.location.pathname;
 
-    if (tokenUsuario) {
+    if (tokenUsuario && location !== "/") {
         config.headers['authorization'] = `Bearer ${tokenUsuario}`;
     }
 
