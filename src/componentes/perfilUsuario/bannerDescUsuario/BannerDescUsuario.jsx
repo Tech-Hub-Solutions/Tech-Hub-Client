@@ -1,8 +1,6 @@
 import React from "react";
 import styles from "./bannerDescUsuario.module.css"
-import styled from "@emotion/styled";
 import { Avatar, Checkbox, CircularProgress } from "@mui/material";
-import { Button } from "@mui/material";
 
 import LinkedinImg from "../../../assets/images/LinkedinImg.svg"
 import GitHubImg from "../../../assets/images/GithubImg.svg"
@@ -11,34 +9,18 @@ import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import AlterarImagem from "../AlterarImagem";
-import { set } from "react-hook-form";
 import CountryInformation from "../../shared/CountryInformation/CountryInformation";
-import axiosInstance from "../../../config/axiosInstance";
+import AlterarCurriculo from "./AlterarCurriculo";
 
 
 const BannerDescUsuario = (props) => {
 
     const [showOptions, setShowOptions] = React.useState(null);
-    const [loading, setLoading] = React.useState({
-        value: false,
-        tipoArquivo: ""
-    });
+    const [isPerfilFreelancer, setPerfilFreelancer] = React.useState(false);
+
+    const [loading, setLoading] = React.useState({ value: false, tipoArquivo: "" });
 
     const usuario = props.usuario;
-
-    const ButtonExplorarTalentos = styled(Button)({
-        fontFamily: "Montserrat, sans-serif",
-        padding: "10px 16px",
-        borderRadius: "6px",
-        fontWeight: "600",
-        fontStyle: "normal",
-        fontSize: "16px",
-        textTransform: "none",
-        backgroundColor: "transparent",
-        color: "#0f9eea",
-        border: "2px solid #0F9EEA",
-        lineHeight: "1.3",
-    });
 
     const usuarioConversa = {
         nome: usuario.nome,
@@ -46,8 +28,6 @@ const BannerDescUsuario = (props) => {
         id: usuario.idUsuario,
         isFreelancer: usuario.isFreelancer
     };
-
-    const [isPerfilFreelancer, setPerfilFreelancer] = React.useState(false);
 
     const favoritar = () => {
         axiosInstance.put(`/perfis/favoritar/${usuario?.idUsuario}`)
@@ -69,36 +49,48 @@ const BannerDescUsuario = (props) => {
         const isOwnProfile = usuario.isOwnProfile;
         const isPerfilFreelancer = usuario.isPerfilFreelancer;
 
+        const curriculoBaixarButton = (
+            <BlueBackgroundButton className={styles['botaoCondicional']} valueDisabled={!usuario?.curriculo}>
+                <a href={usuario?.curriculo} download>
+                    currículo
+                </a>
+            </BlueBackgroundButton>
+        )
+        const curriculoUploadButton = (
+            <AlterarCurriculo curriculo={usuario?.curriculo} />
+        );
+        const editarPerfilButton = (
+            <BlueBackgroundButton className={styles['botaoCondicional']}>Editar Perfil</BlueBackgroundButton>
+        );
+        const conversasButton = (
+            <Link to='/conversas' state={{ usuario: usuarioConversa }}>
+                <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
+            </Link>
+        );
+
         setPerfilFreelancer(isPerfilFreelancer)
 
         if (!isFreelancer && isOwnProfile) {
             setShowOptions(
-                <ButtonExplorarTalentos className={styles['botaoCondicional']}>Editar Perfil</ButtonExplorarTalentos>
+                editarPerfilButton
             )
         } else if (isFreelancer && isOwnProfile) {
             setShowOptions(
-                <BlueBackgroundButton className={styles['botaoCondicional']}>Editar Perfil</BlueBackgroundButton>
+                <>
+                    {curriculoUploadButton}
+                    {editarPerfilButton}
+                </>
             )
         } else if (isFreelancer && !isOwnProfile && isPerfilFreelancer) {
             setShowOptions(
                 <>
-                    <Link to='/conversas'
-                        state={{ usuario: usuarioConversa }}
-                    >
-                        <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
-                    </Link>
-                    <BlueBackgroundButton className={styles['botaoCondicional']}>Currículo</BlueBackgroundButton>
+                    {conversasButton}
+                    {curriculoBaixarButton}
                 </>
             )
         } else if (isFreelancer && !isOwnProfile && !isPerfilFreelancer) {
             setShowOptions(
-                <>
-                    <Link to='/conversas'
-                        state={{ usuario: usuarioConversa }}
-                    >
-                        <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
-                    </Link>
-                </>
+                conversasButton
             )
         } else if (!isFreelancer && !isOwnProfile && isPerfilFreelancer) {
             setShowOptions(
@@ -111,24 +103,12 @@ const BannerDescUsuario = (props) => {
                         checked={usuario?.isFavorito}
                         checkedIcon={<Favorite sx={{ fontSize: 32 }} />}
                     />
-                    <Link to='/conversas'
-                        state={{ usuario: usuarioConversa }}
-                    >
-                        <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
-                    </Link>
-                    <BlueBackgroundButton className={styles['botaoCondicional']}>Currículo</BlueBackgroundButton>
+                    {conversasButton}
+                    {curriculoBaixarButton}
                 </>
             )
         } else if (!isFreelancer && !isOwnProfile && !isPerfilFreelancer) {
-            setShowOptions(
-                <>
-                    <Link to='/conversas'
-                        state={{ usuario: usuarioConversa }}
-                    >
-                        <EmailOutlinedIcon className={styles['icons']} sx={{ fontSize: 32 }} />
-                    </Link>
-                </>
-            )
+            setShowOptions(conversasButton)
         }
 
     }, [usuario])
