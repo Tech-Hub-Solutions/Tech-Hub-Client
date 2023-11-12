@@ -55,6 +55,10 @@ function BuscaTalentos() {
     handleApplyFilters();
   }, [rowsPerPage, page]);
 
+  React.useEffect(() => {
+    handleApplyFilters();
+  }, [valueOrdenar]);
+
   function getAllUsers() {
     axiosInstance
       .post(`usuarios/filtro?page=${page}&size=${rowsPerPage}`, {
@@ -163,13 +167,16 @@ function BuscaTalentos() {
 
   const handleApplyFilters = () => {
     axiosInstance
-      .post(`usuarios/filtro?page=${page}&size=${rowsPerPage}`, {
-        nome: null,
-        area: inputValueStacks,
-        tecnologiasIds: tecnologiasSelecionadas,
-        precoMax: value1[1],
-        precoMin: value1[0],
-      })
+      .post(
+        `usuarios/filtro?page=${page}&size=${rowsPerPage}&ordem=${valueOrdenar}`,
+        {
+          nome: null,
+          area: inputValueStacks,
+          tecnologiasIds: tecnologiasSelecionadas,
+          precoMax: value1[1],
+          precoMin: value1[0],
+        }
+      )
       .then((response) => {
         if (response.status == 200) {
           setUsuarios(response.data.content);
