@@ -1,4 +1,6 @@
 import {
+  Autocomplete,
+  Box,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -20,6 +22,8 @@ import { Button } from "@mui/base";
 import axiosInstance from "../../../config/axiosInstance";
 import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
 import { useNavigate } from "react-router-dom";
+import nacionalidades from "../../shared/CountryInformation/perfil-usuario.json";
+import CountryInformation from "../../shared/CountryInformation/CountryInformation";
 
 const ConfiguracaoPerfilModal = ({
   isConfiguracaoModalOpen,
@@ -30,6 +34,10 @@ const ConfiguracaoPerfilModal = ({
   const [showSenha, setShowSenha] = React.useState(false);
   const [wasSubmitted, setWasSubmitted] = React.useState(false);
   const [usuario, setUsuario] = React.useState({});
+
+  const [valuePais, setValuePais] = React.useState();
+
+  React.useState("");
 
   const handleClose = () => {
     setIsConfiguracaoModalOpen(false);
@@ -152,7 +160,7 @@ const ConfiguracaoPerfilModal = ({
           nome: data.nome,
           email: data.email,
           senha: data.senha,
-          pais: data.nacionalidade,
+          pais: data.sigla,
         })
         .then((res) => {
           setIsLoading(!isLoading);
@@ -194,10 +202,19 @@ const ConfiguracaoPerfilModal = ({
   };
 
   React.useEffect(() => {
+    if (!usuario) {
+      return;
+    }
     setValue("nome", usuario.nome);
     setValue("email", usuario.email);
-    setValue("nacionalidade", usuario.pais);
-  }, [usuario]);
+    const nacionalidade = nacionalidades.find(
+      (pais) => pais.sigla === usuario.pais
+    )?.nome;
+
+    setValue("nacionalidade", nacionalidade);
+  }, [usuario, isConfiguracaoModalOpen]);
+
+  const optionsPais = nacionalidades.map((pais) => pais.nome);
 
   return (
     <>
@@ -223,7 +240,6 @@ const ConfiguracaoPerfilModal = ({
                 className={styles["form__control"]}
               >
                 <Grid item>
-                  {/* TODO FIX - Add possibilidade de editar value em cada TextField */}
                   <TextField
                     name="nome"
                     label={
@@ -269,22 +285,42 @@ const ConfiguracaoPerfilModal = ({
                 </Grid>
 
                 <Grid item>
-                  <TextField
-                    name="nacionalidade"
-                    label="Nacionalidade"
-                    variant="outlined"
-                    color="primary"
-                    type="text"
+                  <Autocomplete
+                    defaultValue={"."}
+                    id="controllable-states-demo"
+                    options={nacionalidades}
+                    autoHighlight
+                    getOptionLabel={(option) => option.nome}
                     sx={{
                       marginBottom: "32px",
                       minWidth: "590px",
-                      marginTop: "6px",
                     }}
-                    defaultValue={"."}
                     error={errors.nacionalidade?.message.length > 0}
                     helperText={errors.nacionalidade?.message}
-                    fullWidth
-                    placeholder="Sua nacionalidade"
+                    renderInput={(params) => (
+                      <TextField
+                      name="nacionalidade"
+                        {...params}
+                        label="Choose a country"
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: "new-password", // disable autocomplete and autofill
+                        }}
+                      />
+                    )}
+                    renderOption={(props, option) => (
+                      <Box
+                        component="li"
+                        sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                        {...props}
+                      >
+                        <CountryInformation
+                          pais={
+                            option.sigla
+                          }
+                        />
+                      </Box>
+                    )}
                     {...register("nacionalidade")}
                   />
                 </Grid>
