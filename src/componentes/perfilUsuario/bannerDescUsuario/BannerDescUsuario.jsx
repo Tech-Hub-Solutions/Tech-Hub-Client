@@ -6,13 +6,13 @@ import { Button } from "@mui/material";
 
 import LinkedinImg from "../../../assets/images/LinkedinImg.svg"
 import GitHubImg from "../../../assets/images/GithubImg.svg"
-import ReactCountryFlag from "react-country-flag";
 import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import AlterarImagem from "../AlterarImagem";
 import { set } from "react-hook-form";
+import CountryInformation from "../../shared/CountryInformation/CountryInformation";
 
 
 const BannerDescUsuario = (props) => {
@@ -124,9 +124,12 @@ const BannerDescUsuario = (props) => {
                     <Avatar className={styles['banner__imagem']}
                         alt={'Imagem de perfil de ' + usuario.nomeUsuario}
                         src={loading.value && loading.tipoArquivo === "PERFIL" ? '' : usuario.urlFotoPerfil}
-                        sx={{ width: 150, height: 150, backgroundColor: '#F5F5F5' }}
+                        sx={{ width: 150, height: 150, backgroundColor: '#F5F5F5', color: 'var(--color-textos)', fontSize: '48px' }}
                     >
-                        {loading.value && loading.tipoArquivo === "PERFIL" && <CircularProgress />}
+                        {loading.value && loading.tipoArquivo === "PERFIL" ?
+                            <CircularProgress /> :
+                            usuario?.nome?.length > 0 && usuario?.nome[0]
+                        }
                     </Avatar>
                     {
                         usuario.isOwnProfile &&
@@ -145,13 +148,7 @@ const BannerDescUsuario = (props) => {
                         {/* Limitar a Length da input para até 50 caracteres */}
                         <h1>{usuario?.nome}</h1>
                         {usuario?.pais &&
-                            <div className={styles['infoUsuario__nacionalidade']}>
-                                <ReactCountryFlag countryCode="BR" svg style={{
-                                    fontSize: '1.3em',
-                                    lineHeight: '1.3em',
-                                }} />
-                                <p>{usuario?.pais || ""}</p>
-                            </div>
+                            <CountryInformation pais={usuario?.pais} />
                         }
                         <div className={styles['infoUsuario__icones']}>
                             {usuario.linkLinkedin &&

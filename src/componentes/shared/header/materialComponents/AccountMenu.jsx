@@ -9,7 +9,7 @@ import Tooltip from "@mui/material/Tooltip";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ConfiguracaoPerfilModal from "../../../modais/configuracaoPerfil/ConfiguracaoPerfil";
 
 export default function AccountMenu(props) {
@@ -18,6 +18,7 @@ export default function AccountMenu(props) {
 
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -36,9 +37,11 @@ export default function AccountMenu(props) {
   };
 
   const redirectToPerfil = () => {
-    navigate({
-      pathname: "/perfil",
-    });
+    navigate("/perfil");
+
+    if (location.pathname == "/perfil" && location.search.includes("id")) {
+      navigate(0);
+    }
   };
 
   const nome = sessionStorage.getItem('nome') || "";

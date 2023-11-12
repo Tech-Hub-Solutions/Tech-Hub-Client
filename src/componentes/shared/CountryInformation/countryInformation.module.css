@@ -1,0 +1,18 @@
+.infoUsuario__nacionalidade {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.infoUsuario__nacionalidade img {
+    padding-right: 4px;
+    width: 20px;
+}
+
+.infoUsuario__nacionalidade p {
+    color: var(--color-textos);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}

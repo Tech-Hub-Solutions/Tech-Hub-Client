@@ -76,23 +76,6 @@
     line-height: normal;
 }
 
-.infoUsuario__nacionalidade {
-    display: flex;
-    align-items: center;
-}
-
-.infoUsuario__nacionalidade img {
-    padding-right: 4px;
-    width: 20px;
-}
-
-.infoUsuario__nacionalidade p {
-    color: var(--color-cinza);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-}
 
 .content__descUsuario .descUsuario__button {
     margin-top: 12px;
