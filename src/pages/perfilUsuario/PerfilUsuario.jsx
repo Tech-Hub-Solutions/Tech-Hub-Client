@@ -269,7 +269,7 @@ const PerfilUsuario = (props) => {
                             {
                                 comentario.map((comentario, index) => {
                                     return (
-                                        <ComentarioPerfil key={`comentario${index}`} nomeUsuario='hahaha' comentario={comentario.comentario} value={comentario.qtdEstrela} />
+                                        <ComentarioPerfil key={`comentario${index}`} nomeUsuario={comentario.avaliador} comentario={comentario.comentario} value={comentario.qtdEstrela} />
                                     )
                                 })
                             }
@@ -285,7 +285,11 @@ const PerfilUsuario = (props) => {
                             <h1>Avaliações</h1>
                             <div className={styles['avaliacoesUsuario']}>
                                 <div className={styles['avaliacoesUsuario__titulo']}>
-                                    <h2>{totalAvaliacoes} avaliações realizadas</h2>
+                                    {totalAvaliacoes == 1 ?
+                                        <h2>{totalAvaliacoes} avaliação realizada</h2>
+                                        :
+                                        <h2>{totalAvaliacoes} avaliações realizadas</h2>
+                                    }
                                     <Box
                                         sx={{
                                             '& > legend': { mt: 2 },
@@ -308,10 +312,6 @@ const PerfilUsuario = (props) => {
                                     usuario.isPerfilFreelancer ?
                                         <>
                                             <div className={styles['adicionais__informacoes']}>
-                                                <h4></h4>
-                                                <p>Projetos finalizados</p>
-                                            </div>
-                                            <div className={styles['adicionais__informacoes']}>
                                                 <h4>4</h4>
                                                 <p>Empresas interessadas</p>
                                             </div>
@@ -323,10 +323,6 @@ const PerfilUsuario = (props) => {
                                         :
                                         <>
                                             <div className={styles['adicionais__informacoes']}>
-                                                <h4>7</h4>
-                                                <p>Projetos finalizados</p>
-                                            </div>
-                                            <div className={styles['adicionais__informacoes']}>
                                                 <h4>4</h4>
                                                 <p>Freelancers contratados</p>
                                             </div>
@@ -337,7 +333,9 @@ const PerfilUsuario = (props) => {
                                         </>
 
                                 }
-                                <ButtonExplorarTalentos>Recomendar</ButtonExplorarTalentos>
+                                {!usuario.isOwnProfile &&
+                                    <ButtonExplorarTalentos>Recomendar</ButtonExplorarTalentos>
+                                }
                             </div>
                         </div>
                     </div>

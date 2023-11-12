@@ -12,7 +12,7 @@ import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import AlterarImagem from "../AlterarImagem";
-import { set } from "react-hook-form";
+import ModalPerfil from "../modalPerfil/ModalPerfil";
 
 
 const BannerDescUsuario = (props) => {
@@ -22,6 +22,11 @@ const BannerDescUsuario = (props) => {
         value: false,
         tipoArquivo: ""
     });
+    const [openModalEdicao, setOpenModalEdicao] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpenModalEdicao(true);
+    };
 
     const usuario = props.usuario;
 
@@ -57,11 +62,11 @@ const BannerDescUsuario = (props) => {
 
         if (!isFreelancer && isOwnProfile) {
             setShowOptions(
-                <ButtonExplorarTalentos className={styles['botaoCondicional']}>Editar Perfil</ButtonExplorarTalentos>
+                <ButtonExplorarTalentos onClick={handleClickOpen} className={styles['botaoCondicional']}>Editar Perfil</ButtonExplorarTalentos>
             )
         } else if (isFreelancer && isOwnProfile) {
             setShowOptions(
-                <BlueBackgroundButton className={styles['botaoCondicional']}>Editar Perfil</BlueBackgroundButton>
+                <BlueBackgroundButton onClick={handleClickOpen} className={styles['botaoCondicional']}>Editar Perfil</BlueBackgroundButton>
             )
         } else if (isFreelancer && !isOwnProfile && isPerfilFreelancer) {
             setShowOptions(
@@ -176,6 +181,7 @@ const BannerDescUsuario = (props) => {
                     {showOptions}
                 </div>
             </div>
+            <ModalPerfil isModalEdicaoOpen={openModalEdicao} setModalEdicaoOpen={setOpenModalEdicao} />
         </>
     );
 }
