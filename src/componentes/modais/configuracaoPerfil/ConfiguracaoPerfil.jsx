@@ -156,7 +156,8 @@ const ConfiguracaoPerfilModal = ({
           nome: data.nome,
           email: data.email,
           senha: data.senha,
-          pais: nacionalidades.find((pais) => pais.nome === data.nacionalidade)?.sigla,
+          pais: nacionalidades.find((pais) => pais.nome === data.nacionalidade)
+            ?.sigla,
         })
         .then((res) => {
           setSnackbarSuccess({
@@ -206,7 +207,6 @@ const ConfiguracaoPerfilModal = ({
 
     setValue("nacionalidade", nacionalidade);
   }, [usuario, isConfiguracaoModalOpen]);
-
 
   return (
     <>
@@ -286,10 +286,10 @@ const ConfiguracaoPerfilModal = ({
                       marginBottom: "32px",
                       minWidth: "590px",
                     }}
-                    defaultValue={"Brasil"}
+                    defaultValue={nacionalidades[0]}
                     renderInput={(params) => (
                       <TextField
-                        defaultValue={"Brasil"}
+                        defaultValue={nacionalidades[0]}
                         name="nacionalidade"
                         {...register("nacionalidade")}
                         error={errors.nacionalidade?.message.length > 0}
@@ -299,7 +299,6 @@ const ConfiguracaoPerfilModal = ({
                         inputProps={{
                           ...params.inputProps,
                           autoComplete: "new-password", // disable autocomplete and autofill
-
                         }}
                       />
                     )}
@@ -309,11 +308,7 @@ const ConfiguracaoPerfilModal = ({
                         sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
                         {...props}
                       >
-                        <CountryInformation
-                          pais={
-                            option.sigla
-                          }
-                        />
+                        <CountryInformation pais={option.sigla} />
                       </Box>
                     )}
                   />
