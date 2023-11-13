@@ -1,11 +1,11 @@
 import React, { useRef } from "react";
 import Header from "../../componentes/shared/header/Header";
-import styles from "./Favoritos.module.css";
+import styles from "./favoritos.module.css";
 import CardPerfil from "../../componentes/shared/cardPerfil/CardPerfil";
 import SelectOrdernar from "../../componentes/shared/SelectOrdernar";
 import axiosInstance from '../../config/axiosInstance'
 
-import CompararUsuarios from "../../componentes/favoritos/compararUsuarios";
+import CompararUsuarios from "../../componentes/favoritos/compararUsuarios.module.css";
 import { Button } from "@mui/material";
 import CardPerfilSketon from "../../componentes/shared/cardPerfil/CardPerfilSkeleton";
 

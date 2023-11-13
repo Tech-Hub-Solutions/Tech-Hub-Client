@@ -1,6 +1,6 @@
 import { Box, Divider, Skeleton } from "@mui/material";
 import React from "react";
-import styles from '../../../pages/perfilUsuario/PerfilUsuario.module.css';
+// import styles from '../../../pages/perfilUsuario/PerfilUsuario.module.css';
 
 const PerfilSkeleton = () => {
     return (
