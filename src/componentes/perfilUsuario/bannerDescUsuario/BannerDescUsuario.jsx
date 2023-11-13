@@ -11,6 +11,8 @@ import { Link } from "react-router-dom";
 import AlterarImagem from "../AlterarImagem";
 import CountryInformation from "../../shared/CountryInformation/CountryInformation";
 import AlterarCurriculo from "./AlterarCurriculo";
+import ModalPerfil from "../modalPerfil/ModalPerfil";
+import axiosInstance from "../../../config/axiosInstance";
 
 
 const BannerDescUsuario = (props) => {
@@ -27,6 +29,12 @@ const BannerDescUsuario = (props) => {
         urlFotoPerfil: usuario.urlFotoPerfil,
         id: usuario.idUsuario,
         isFreelancer: usuario.isFreelancer
+    };
+
+    const [openModalEdicao, setOpenModalEdicao] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpenModalEdicao(true);
     };
 
     const favoritar = () => {
@@ -52,7 +60,7 @@ const BannerDescUsuario = (props) => {
         const curriculoBaixarButton = (
             <BlueBackgroundButton className={styles['botaoCondicional']} valueDisabled={!usuario?.curriculo}>
                 <a href={usuario?.curriculo} download>
-                    currículo
+                    Currículo
                 </a>
             </BlueBackgroundButton>
         )
@@ -60,7 +68,7 @@ const BannerDescUsuario = (props) => {
             <AlterarCurriculo curriculo={usuario?.curriculo} />
         );
         const editarPerfilButton = (
-            <BlueBackgroundButton className={styles['botaoCondicional']}>Editar Perfil</BlueBackgroundButton>
+            <BlueBackgroundButton onClick={handleClickOpen} className={styles['botaoCondicional']}>Editar Perfil</BlueBackgroundButton>
         );
         const conversasButton = (
             <Link to='/conversas' state={{ usuario: usuarioConversa }}>
