@@ -195,24 +195,35 @@ function BuscaTalentos() {
     return `${value} reais`;
   }
 
-  const handleSearch = () => {
-    axiosInstance
-      .post(`usuarios/filtro?page=${page}&size=${rowsPerPage}`, {
-        nome: searchText[0],
-        area: inputValueStacks === "" ? null : inputValueStacks,
-        tecnologiasIds:
-          tecnologiasSelecionadas.length <= 0 ? null : tecnologiasSelecionadas,
-        precoMax: value1[1],
-        precoMin: value1[0],
-      })
-      .then((response) => {
-        if (response.status == 200) {
-          setUsuarios(response.data.content);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const handleSearch = (nomePesquisa) => {
+    if (
+      nomePesquisa != "" ||
+      nomePesquisa != undefined ||
+      nomePesquisa != null
+    ) {
+      axiosInstance
+        .post(`usuarios/filtro?page=${page}&size=${rowsPerPage}`, {
+          nome: nomePesquisa,
+          area: inputValueStacks === "" ? null : inputValueStacks,
+          tecnologiasIds:
+            tecnologiasSelecionadas.length <= 0
+              ? null
+              : tecnologiasSelecionadas,
+          precoMax: value1[1],
+          precoMin: value1[0],
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            setUsuarios(response.data.content);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      getAllUsers();
+      return;
+    }
   };
 
   return (
@@ -344,7 +355,7 @@ function BuscaTalentos() {
                 inputProps={{ "aria-label": "Pesquisar por nome de talento" }}
                 value={searchText}
                 onChange={(e) => (
-                  setSearchText(e.target.value), console.log(searchText)
+                  setSearchText(e.target.value), handleSearch(e.target.value)
                 )}
               />
             </div>
