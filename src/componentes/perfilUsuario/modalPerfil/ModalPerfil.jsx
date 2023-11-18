@@ -107,7 +107,7 @@ const ModalPerfil = ({ isModalEdicaoOpen, setModalEdicaoOpen }) => {
     };
 
     const snackbarMessages = {
-        success: "Dados atualizados com sucesso! Entre novamente para continuar.",
+        success: "Dados atualizados com sucesso!",
         error: "Erro ao realizar atualização de dados. Tente novamente.",
     };
 
@@ -119,54 +119,55 @@ const ModalPerfil = ({ isModalEdicaoOpen, setModalEdicaoOpen }) => {
     } = useForm();
 
     const funcaoUsuario = sessionStorage.getItem("funcao");
-
     const navigate = useNavigate();
 
     const onSubmit = (data) => {
-        alert(JSON.stringify(data, null, 2));
-        // if (!wasSubmitted) {
-        //     setWasSubmitted(true);
-        //     setIsLoading(true);
+        if (!wasSubmitted) {
+            setWasSubmitted(true);
+            setIsLoading(true);
 
-        //     axiosInstance
-        //         .put("/usuarios", {
-        //             nome: data.nome,
-        //             email: data.email,
-        //             senha: data.senha,
-        //             pais: nacionalidades.find((pais) => pais.nome === data.nacionalidade)?.sigla,
-        //         })
-        //         .then((res) => {
-        //             setIsLoading(!isLoading);
+            axiosInstance
+                .put("/perfis", {
+                    sobreMim: data.sobreMim,
+                    experiencia: data.experiencia,
+                    descricao: data.descricao,
+                    precoMedio: data.precoMedio,
+                    linkGithub: data.linkGithub,
+                    linkLinkedin: data.linkLinkedin,
+                    // softSkills: data.softSkills,
+                    // hardSkills: data.hardSkills,
+                })
+                .then((res) => {
+                    setIsLoading(!isLoading);
 
-        //             setSnackbarSuccess({
-        //                 open: true,
-        //                 isError: false,
-        //                 severity: "success",
-        //                 message: snackbarMessages.success,
-        //             });
+                    console.log("sucesso");
+                    setSnackbarSuccess({
+                        open: true,
+                        isError: false,
+                        severity: "success",
+                        message: snackbarMessages.success,
+                    });
 
-        //             setTimeout(() => {
-        //                 isModalEdicaoOpen(false);
-
-        //                 sessionStorage.clear();
-
-        //                 navigate("/");
-        //             }, 2300);
-        //         })
-        //         .catch((error) => {
-        //             console.error(error);
-        //             setSnackbarSuccess({
-        //                 open: true,
-        //                 isError: true,
-        //                 severity: "error",
-        //                 message: snackbarMessages.error,
-        //             });
-        //         })
-        //         .finally(() => {
-        //             setWasSubmitted(false);
-        //             setIsLoading(false);
-        //         });
-        // }
+                    setTimeout(() => {
+                        setModalEdicaoOpen(false);
+                        
+                        navigate("/perfil");
+                      }, 1000);
+                })
+                .catch((error) => {
+                    console.error(error);
+                    setSnackbarSuccess({
+                        open: true,
+                        isError: true,
+                        severity: "error",
+                        message: snackbarMessages.error,
+                    });
+                })
+                .finally(() => {
+                    setWasSubmitted(false);
+                    setIsLoading(false);
+                });
+        }
     };
 
     React.useEffect(() => {
@@ -526,8 +527,19 @@ const ModalPerfil = ({ isModalEdicaoOpen, setModalEdicaoOpen }) => {
                         </form>
                     </Grid>
                 </DialogContent>
-
             </div >
+
+            <SnackbarCustom
+                snackbarOpen={snackbarSuccessOpen.open}
+                message={snackbarSuccessOpen.message}
+                severity={snackbarSuccessOpen.severity}
+                setSnackbarOpen={() => {
+                    setSnackbarSuccess((prevState) => ({
+                        ...prevState,
+                        open: false,
+                    }));
+                }}
+            ></SnackbarCustom>
         </Dialog >
     );
 };
