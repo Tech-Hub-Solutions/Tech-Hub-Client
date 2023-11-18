@@ -124,7 +124,7 @@ function LoginModal({
 
           setIsLoading(!isLoading);
 
-          redirectToPerfil();
+          redirectToPerfil(res.data.funcao);
         })
         .catch((error) => {
           console.error(error);
@@ -158,9 +158,9 @@ function LoginModal({
     setTravaTelaOpen(true);
   };
 
-  const redirectToPerfil = () => {
+  const redirectToPerfil = (funcao) => {
     navigate({
-      pathname: "/perfil",
+      pathname: funcao == "ADMIN" ? "/admin" : "/perfil",
     });
   };
 

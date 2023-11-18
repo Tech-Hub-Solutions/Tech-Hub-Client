@@ -15,13 +15,11 @@ const Header = () => {
         return ''
     }
 
-    const [isFreelancer, setIsFreelancer] = React.useState(false);
+    const [funcao, setFuncao] = React.useState("");
 
     React.useEffect(() => {
         const token = sessionStorage.getItem('funcao');
-        if (token === 'FREELANCER') {
-            setIsFreelancer(true);
-        }
+        setFuncao(token);
     }, []);
 
     return (
@@ -34,25 +32,32 @@ const Header = () => {
                         </Link>
                     </div>
                     <div className={styles['right__content']}>
-                        <ul>
-                            <Link
-                                className={verificaPagina('/busca-talentos')}
-                                to={'/busca-talentos'}>
-                                <li>
-                                    Explorar Talentos
-                                </li>
-                            </Link>
-                        </ul>
-                        {!isFreelancer ?
+                        {
+                            funcao != "ADMIN" &&
+                            <ul>
+                                <Link
+                                    className={verificaPagina('/busca-talentos')}
+                                    to={'/busca-talentos'}>
+                                    <li>
+                                        Explorar Talentos
+                                    </li>
+                                </Link>
+                            </ul>
+                        }
+
+                        {funcao == "EMPRESA" ?
                             <Link to={'/favoritos'} className={verificaPagina('/favoritos')}>
                                 {/* Ícone Favoritos */}
                                 <FavoriteBorderOutlinedIcon aria-label='Ícone favoritos' role='button' className={styles['icone__header']} sx={{ fontSize: 26 }} />
                             </Link>
                             : ''}
-                        <Link to={'/conversas'} className={verificaPagina('/conversas')}>
-                            {/* Ícone Mensagens */}
-                            <MessageOutlinedIcon className={styles['icone__header']} sx={{ fontSize: 26 }} />
-                        </Link>
+                        {
+                            funcao != "ADMIN" &&
+                            <Link to={'/conversas'} className={verificaPagina('/conversas')}>
+                                {/* Ícone Mensagens */}
+                                <MessageOutlinedIcon className={styles['icone__header']} sx={{ fontSize: 26 }} />
+                            </Link>
+                        }
                         <AccountMenu />
                     </div>
                 </div>

@@ -1,34 +1,36 @@
 import React from "react";
-import styles from "./avaliacoesUsuario.module.css"
-
-import { LinearProgress } from "@mui/material";
+import styles from "../../../pages/perfilUsuario/PerfilUsuario.module.css"
 import { Box } from "@mui/system";
+import BarraEstrelas from "./BarraEstrelas/BarraEstrelas";
+import { Rating } from "@mui/material";
 
 const AvaliacoesUsuario = (props) => {
 
+    const { avaliacao, totalAvaliacoes, mediaEstrelas } = props;
+
     return (
         <>
-            <div className={styles['avaliacoesUsuario__barra']}>
-                <div className={styles['numeroEstrelas']}>
-                    <h5>{props.qtdEstrelas} estrelas</h5>
-                </div>
-                <div className={styles['barra__progresso']}>
-                    <Box sx={{ width: '100%' }}>
-                        <LinearProgress variant="determinate" sx={{ height: '12px', borderRadius: '6px' }} value={Number(props.value)} />
+            <h1>Avaliações</h1>
+            <div className={styles['avaliacoesUsuario']}>
+                <div className={styles['avaliacoesUsuario__titulo']}>
+                    <h2>{totalAvaliacoes} avaliações realizadas</h2>
+                    <Box
+                        sx={{
+                            '& > legend': { mt: 2 },
+                        }}
+                    >
+                        <Rating name="read-only" value={mediaEstrelas} readOnly />
                     </Box>
-                    <p>({props.numeroAvaliacoes})</p>
                 </div>
+                {avaliacao.map((avaliacao) => {
+                    return (
+                        <BarraEstrelas key={`qtdEstrelas${avaliacao.qtdEstrela}`} qtdEstrelas={avaliacao.qtdEstrela} numeroAvaliacoes={avaliacao.quantidade} value={avaliacao.porcentagem} />
+                    )
+                })
+                }
             </div>
-        </>
+        </  >
     );
 }
 
 export default AvaliacoesUsuario;
-
-// comentario.map((comentario, index) => {
-//     if (index < 3) {
-//         return (
-//             <ComentarioPerfil key={`comentario${index}`} nomeUsuario={comentario.nomeUsuario} comentario={comentario.comentario} value={comentario.value} />
-//         )
-//     }
-// })
