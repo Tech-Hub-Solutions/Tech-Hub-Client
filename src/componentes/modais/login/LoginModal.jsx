@@ -98,7 +98,6 @@ function LoginModal({
     if (!wasSubmitted) {
       setWasSubmitted(true);
       setIsLoading(true);
-      console.log(data);
 
       axiosInstance
         .post("/usuarios/login", {
@@ -106,7 +105,6 @@ function LoginModal({
           senha: data.senha,
         })
         .then((res) => {
-          console.info(res);
 
           sessionStorage.setItem("usuarioId", res.data.id);
           sessionStorage.setItem("nome", res.data.nome);
@@ -124,9 +122,8 @@ function LoginModal({
 
           setIsLoading(!isLoading);
 
-          redirectToPerfil(res.data.funcao);
           setTimeout(() => {
-            redirectToPerfil();
+            redirectToPerfil(res.data.funcao);
           }, 2300);
         })
         .catch((error) => {
