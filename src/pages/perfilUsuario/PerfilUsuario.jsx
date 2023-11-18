@@ -53,6 +53,22 @@ const PerfilUsuario = (props) => {
                     usuarioPerfil.isOwnProfile = isOwnProfile;
                     usuarioPerfil.isPerfilFreelancer = usuarioPerfil.funcao == 'FREELANCER';
 
+                    let softSkillsUsuario = [];
+                    let hardSkillsUsuario = [];
+            
+                    const usuarioFlags = usuarioPerfil.flags;
+            
+                    for (let i = 0; i < usuarioFlags.length; i++) {
+                        if (usuarioFlags[i].categoria === "soft-skill") {
+                            softSkillsUsuario.push(usuarioFlags[i]);
+                        } else if (usuarioFlags[i].categoria === "hard-skill") {
+                            hardSkillsUsuario.push(usuarioFlags[i]);
+                        }
+                    }
+
+                    usuarioPerfil.softSkills = softSkillsUsuario;
+                    usuarioPerfil.hardSkills = hardSkillsUsuario;
+
                     setUsuario(usuarioPerfil);
                     carregarAvaliacaoGeral();
                 }
@@ -115,12 +131,12 @@ const PerfilUsuario = (props) => {
 
     React.useEffect(() => {
 
-        const newSkills = usuario?.flags?.map((flags) => {
+        const newSkills = usuario?.flags?.map((flag) => {
             // map varre a lista e transforma o json antigo em um novo
 
             let background;
 
-            switch (flags.area) {
+            switch (flag.area) {
 
                 case 'front-end':
                     background = "var(--color-frontend)"
@@ -153,7 +169,7 @@ const PerfilUsuario = (props) => {
 
 
             return {
-                ...flags, // Pega todos os atributos do json que já existem.
+                ...flag, // Pega todos os atributos do json que já existem.
                 background // adiciona novo atributo com base na variável background
             }
         })
@@ -211,7 +227,7 @@ const PerfilUsuario = (props) => {
                             <Header />
                             <div className={styles['perfil__usuario']}>
                                 <div className={styles['content']}>
-                                    <BannerDescUsuario usuario={usuario} setUsuario={setUsuario} />
+                                    <BannerDescUsuario usuario={usuario} setUsuario={setUsuario} carregarPerfil={carregarPerfil} />
                                     {
                                         usuario.isPerfilFreelancer ?
                                             <div className={styles['content__sectionSkills']}>
@@ -257,7 +273,7 @@ const PerfilUsuario = (props) => {
                                                     </div>
                                                 </div>
                                                 <div className={styles['sectionSkills__softSkills']}>
-                                                    <BoxSoftSkills />
+                                                    <BoxSoftSkills skills={ flags?.filter(flag => flag.categoria === "soft-skill") } />
                                                 </div>
                                             </div>
                                     }

@@ -184,7 +184,7 @@ const BannerDescUsuario = (props) => {
                     {showOptions}
                 </div>
             </div>
-            <ModalPerfil isModalEdicaoOpen={openModalEdicao} setModalEdicaoOpen={setOpenModalEdicao} />
+            <ModalPerfil usuario={usuario} isModalEdicaoOpen={openModalEdicao} setModalEdicaoOpen={setOpenModalEdicao} carregarPerfil={props.carregarPerfil} />
         </>
     );
 }

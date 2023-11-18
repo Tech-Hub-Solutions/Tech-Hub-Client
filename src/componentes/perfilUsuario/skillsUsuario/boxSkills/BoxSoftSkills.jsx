@@ -2,18 +2,16 @@ import React from "react";
 import styles from "./boxSoftSkills.module.css"
 import WidgetSoftSkill from "../widgetSoftSkill/WidgetSoftSkill";
 
-const BoxSoftSkills = () => {
+const BoxSoftSkills = (props) => {
 
-    const skills = ['Responsabilidade', 'Confiança', 'Comprometimento', 'Inovação', 'Comunicação', 'Paciência'];
-    const listSkills = skills.map((skill) =>
-        <WidgetSoftSkill key={skill} softSkill={skill} />
-    );
 
     return (
         <>
-            <h1 className={styles['titulo']}>Soft Skills</h1>
+            <h1 className={styles['titulo']}>Valores</h1>
             <div className={styles['boxSkills']}>
-                {listSkills}
+                {props.skills?.map((skill) =>
+                    <WidgetSoftSkill key={skill.nome} softSkill={skill.nome} />
+                )}
             </div>
         </>
     );

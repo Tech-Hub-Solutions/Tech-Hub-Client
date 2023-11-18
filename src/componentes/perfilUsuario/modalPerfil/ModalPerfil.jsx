@@ -29,7 +29,7 @@ import styles from "./modalPerfil.module.css";
 import React from 'react';
 import CustomizedHook from "../../shared/customizedHook/CustomizedHook";
 
-const ModalPerfil = ({ isModalEdicaoOpen, setModalEdicaoOpen }) => {
+const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarPerfil }) => {
 
     const handleClose = () => {
         setModalEdicaoOpen(false);
@@ -38,9 +38,10 @@ const ModalPerfil = ({ isModalEdicaoOpen, setModalEdicaoOpen }) => {
     const [snackbarSuccessOpen, setSnackbarSuccess] = React.useState({});
     const [isLoading, setIsLoading] = React.useState(false);
     const [wasSubmitted, setWasSubmitted] = React.useState(false);
-    const [usuario, setUsuario] = React.useState({});
     const [softSkills, setSoftSkills] = React.useState([]);
+    const [softSkillsUsuario, setSoftSkillsUsuario] = React.useState([]);
     const [hardSkills, setHardSkills] = React.useState([]);
+    const [hardSkillsUsuario, setHardSkillsUsuario] = React.useState([]);
 
 
     React.useState("");
@@ -100,10 +101,7 @@ const ModalPerfil = ({ isModalEdicaoOpen, setModalEdicaoOpen }) => {
     };
 
     const inpValidator = {
-        campoObrigatorio: "Campo obrigatório.",
-        minimoCaracteres: "Mínimo de 8 caracteres.",
-        maximoCaracteres: "Máximo de 200 caracteres.",
-        emailInvalido: "E-mail inválido.",
+        maximoSkills: "Máximo de 10 skills.",
     };
 
     const snackbarMessages = {
@@ -111,12 +109,20 @@ const ModalPerfil = ({ isModalEdicaoOpen, setModalEdicaoOpen }) => {
         error: "Erro ao realizar atualização de dados. Tente novamente.",
     };
 
+    const schema = yup.object().shape({
+        // limitar 10 de length do array
+        softSkills: yup
+            .array().length(10, inpValidator.maximoSkills)
+    });
+
     const {
         register,
         handleSubmit,
         setValue,
         formState: { errors },
-    } = useForm();
+    } = useForm({
+        resolver: yupResolver(schema),
+    });
 
     const funcaoUsuario = sessionStorage.getItem("funcao");
     const navigate = useNavigate();
@@ -126,6 +132,16 @@ const ModalPerfil = ({ isModalEdicaoOpen, setModalEdicaoOpen }) => {
             setWasSubmitted(true);
             setIsLoading(true);
 
+            const flagsId = [];
+
+            for (let i = 0; i < data.softSkills.length; i++) {
+                flagsId.push(data.softSkills[i].id);
+            }
+
+            for (let i = 0; i < data.hardSkills.length; i++) {
+                flagsId.push(data.hardSkills[i].id);
+            }
+
             axiosInstance
                 .put("/perfis", {
                     sobreMim: data.sobreMim,
@@ -134,8 +150,7 @@ const ModalPerfil = ({ isModalEdicaoOpen, setModalEdicaoOpen }) => {
                     precoMedio: data.precoMedio,
                     linkGithub: data.linkGithub,
                     linkLinkedin: data.linkLinkedin,
-                    // softSkills: data.softSkills,
-                    // hardSkills: data.hardSkills,
+                    flagsId: flagsId,
                 })
                 .then((res) => {
                     setIsLoading(!isLoading);
@@ -150,9 +165,9 @@ const ModalPerfil = ({ isModalEdicaoOpen, setModalEdicaoOpen }) => {
 
                     setTimeout(() => {
                         setModalEdicaoOpen(false);
-                        
-                        navigate("/perfil");
-                      }, 1000);
+
+                        carregarPerfil()
+                    }, 1000);
                 })
                 .catch((error) => {
                     console.error(error);
@@ -175,24 +190,19 @@ const ModalPerfil = ({ isModalEdicaoOpen, setModalEdicaoOpen }) => {
             return;
         }
 
-        const usuarioId = sessionStorage.getItem("usuarioId");
+        carregarFlags();
+        setValue("descricao", usuario?.descricao);
+        setValue("experiencia", usuario?.experiencia);
+        setValue("sobreMim", usuario?.sobreMim);
+        setValue("precoMedio", usuario?.precoMedio);
+        setValue("linkGithub", usuario?.linkGithub);
+        setValue("linkLinkedin", usuario?.linkLinkedin);
 
-        axiosInstance.get('/perfis/' + usuarioId)
-            .then((response) => {
-                if (response.status == 200) {
-                    setUsuario(response.data)
-                }
-            })
-            .catch((error) => {
-                if (error.response.status == 404) {
-                    setIsNotFound(true);
-                }
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
 
-        axiosInstance.get('/flags')
+    }, [isModalEdicaoOpen]);
+
+    const carregarFlags = async () => {
+        await axiosInstance.get('/flags')
             .then((response) => {
                 if (response.status == 200) {
 
@@ -212,17 +222,12 @@ const ModalPerfil = ({ isModalEdicaoOpen, setModalEdicaoOpen }) => {
                     setSoftSkills(softSkills);
                     setHardSkills(hardSkills);
 
+                    setValue("softSkills", usuario?.softSkills);
+                    setValue("hardSkills", usuario?.hardSkills);
+
                 }
             })
-
-        setValue("descricao", usuario.descricao);
-        setValue("experiencia", usuario.experiencia);
-        setValue("sobreMim", usuario.sobreMim);
-        setValue("precoMedio", usuario.precoMedio);
-        setValue("linkGithub", usuario.linkGithub);
-        setValue("linkLinkedin", usuario.linkLinkedin);
-
-    }, [isModalEdicaoOpen]);
+    }
 
     return (
         <Dialog
@@ -386,56 +391,10 @@ const ModalPerfil = ({ isModalEdicaoOpen, setModalEdicaoOpen }) => {
 
                                     }}
                                     defaultValue={""}
-                                    // error={errors.nome?.message.length > 0}
-                                    // helperText={errors.nome?.message}
                                     placeholder="https://www.github.com/usuario"
                                     {...register("linkGithub")}
                                 />
                             </Grid>
-                            {/* <Grid item sx={{
-                                marginTop: "24px",
-                                padding: "0 40px",
-                                height: "8%"
-                            }}>
-                                <Autocomplete
-                                    id="controllable-states-demo"
-                                    options={softSkills}
-                                    autoHighlight
-                                    getOptionLabel={(option) => option.nome}
-                                    sx={{
-                                        marginBottom: "32px",
-                                        minWidth: "590px",
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            name="softSkills"
-                                            sx={{
-                                                marginBottom: "32px",
-                                                minWidth: "600px",
-                                                marginTop: "6px",
-                                            }}
-                                            {...params}
-                                            label={funcaoUsuario === "EMPRESA" ? "Valores" :
-                                                "Soft Skill"}
-                                            inputProps={{
-                                                ...params.inputProps,
-                                                autoComplete: "new-password", // disable autocomplete and autofill
-
-                                            }}
-                                        />
-                                    )}
-                                    renderOption={(props, option) => (
-                                        <Box
-                                            component="li"
-                                            {...props}
-                                        >
-                                            {
-                                                <p>{option.nome}</p>
-                                            }
-                                        </Box>
-                                    )}
-                                />
-                            </Grid> */}
                             <Grid item sx={{
                                 marginTop: "32px",
                                 padding: "0 40px",
@@ -445,12 +404,14 @@ const ModalPerfil = ({ isModalEdicaoOpen, setModalEdicaoOpen }) => {
                                     id="tags-outlined"
                                     options={softSkills}
                                     getOptionLabel={(option) => option.nome}
-                                    defaultValue={[]}
                                     filterSelectedOptions
                                     {...register("softSkills")}
+                                    defaultValue={usuario?.softSkills}
+                                    onChange={(e, values) => setValue("softSkills", values)}
                                     renderInput={(params) => (
                                         <TextField sx={{ width: 600 }}
                                             {...params}
+                                            defaultValue={usuario?.softSkills}
                                             label="Soft Skills"
                                             placeholder="Profissionalismo..."
                                         />
@@ -460,53 +421,34 @@ const ModalPerfil = ({ isModalEdicaoOpen, setModalEdicaoOpen }) => {
                             {funcaoUsuario === "FREELANCER" &&
                                 <>
                                     <Grid item sx={{
-                                        marginTop: "24px",
+                                        marginTop: "32px",
                                         padding: "0 40px",
-                                        height: "8%"
                                     }}>
                                         <Autocomplete
-                                            id="controllable-states-demo"
+                                            multiple
+                                            id="tags-outlined-2"
                                             options={hardSkills}
-                                            autoHighlight
                                             getOptionLabel={(option) => option.nome}
-                                            sx={{
-                                                marginBottom: "32px",
-                                                minWidth: "590px",
+                                            {...register("hardSkills")}
+                                            error={errors.hardSkills?.message.length > 0}
+                                            helperText={errors.hardSkills?.message}
+                                            defaultValue={usuario?.hardSkills}
+                                            onChange={(e, values) => {
+                                                setValue("hardSkills", values);
                                             }}
+                                            getOptionDisabled={(options) => (options.length > 10 ? true : false)}
+                                            filterSelectedOptions
                                             renderInput={(params) => (
-                                                <TextField
-                                                    name="hardSkills"
-                                                    sx={{
-                                                        marginBottom: "32px",
-                                                        minWidth: "600px",
-                                                        marginTop: "6px",
-                                                    }}
-                                                    // error={errors.nacionalidade?.message.length > 0}
-                                                    // helperText={errors.nacionalidade?.message}
+                                                <TextField sx={{ width: 600 }}
                                                     {...params}
-                                                    label="Hard Skill"
-                                                    inputProps={{
-                                                        ...params.inputProps,
-                                                        autoComplete: "new-password", // disable autocomplete and autofill
-
-                                                    }}
+                                                    label="Hard Skills"
+                                                    placeholder="Angular..."
                                                 />
-                                            )}
-                                            renderOption={(props, option) => (
-                                                <Box
-                                                    component="li"
-                                                    {...props}
-                                                >
-                                                    {
-                                                        <p>{option.nome}</p>
-                                                    }
-                                                </Box>
                                             )}
                                         />
                                     </Grid>
                                 </>
                             }
-
 
                             <div className={styles["container__button"]}>
                                 <ButtonExplorarTalentos
