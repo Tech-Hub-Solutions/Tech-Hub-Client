@@ -288,7 +288,6 @@ const ConfiguracaoPerfilModal = ({
                     defaultValue={nacionalidades[0]}
                     renderInput={(params) => (
                       <TextField
-                        defaultValue={nacionalidades[0]}
                         name="nacionalidade"
                         {...register("nacionalidade")}
                         error={errors.nacionalidade?.message.length > 0}
