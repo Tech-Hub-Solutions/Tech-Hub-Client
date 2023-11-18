@@ -42,7 +42,6 @@ const ConfiguracaoPerfilModal = ({
 
   React.useEffect(() => {
     const usuarioId = sessionStorage.getItem("usuarioId");
-    console.log("usuarioId", usuarioId);
 
     axiosInstance
       .get(`/usuarios/simple/${usuarioId}`)
@@ -289,6 +288,7 @@ const ConfiguracaoPerfilModal = ({
                     defaultValue={nacionalidades[0]}
                     renderInput={(params) => (
                       <TextField
+                        defaultValue={nacionalidades[0]}
                         name="nacionalidade"
                         {...register("nacionalidade")}
                         error={errors.nacionalidade?.message.length > 0}
