@@ -277,7 +277,6 @@ const ConfiguracaoPerfilModal = ({
 
                 <Grid item>
                   <Autocomplete
-                    id="controllable-states-demo"
                     options={nacionalidades}
                     autoHighlight
                     getOptionLabel={(option) => option.nome}

@@ -14,25 +14,24 @@ import Slider from "@mui/material/Slider";
 import SelectOrdernar from "../../componentes/shared/SelectOrdernar";
 import axiosInstance from "../../config/axiosInstance";
 import CardPerfil from "../../componentes/shared/cardPerfil/CardPerfil";
+import CardPerfilSkeleton from "../../componentes/shared/cardPerfil/CardPerfilSkeleton";
 import SearchIcon from "@mui/icons-material/Search";
 
 function BuscaTalentos() {
   const [valueStacks, setValueStacks] = React.useState();
-  const [inputValueStacks, setInputValueStacks] = React.useState("");
   const [valueOrdenar, setValueOrdenar] = React.useState("");
   const [value1, setValue1] = React.useState([0, 5000]);
   const [usuarios, setUsuarios] = React.useState([]);
   const [todosUsuarios, setTodosUsuarios] = React.useState(0);
   const [optionsStacks, setOptionsStacks] = React.useState([]);
   const [tecnologias, setTecnologias] = React.useState([]);
-  const [tecnologiasSelecionadas, setTecnologiasSelecionadas] = React.useState(
-    []
-  );
+  const [tecnologiasSelecionadas, setTecnologiasSelecionadas] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [precoMedioMin, setPrecoMedioMin] = React.useState(0);
   const [precoMedioMax, setPrecoMedioMax] = React.useState(0);
   const [searchText, setSearchText] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -46,20 +45,16 @@ function BuscaTalentos() {
   React.useEffect(() => {
     getAllUsers();
 
-    getAllFlags();
 
     getAllTechnologies();
   }, []);
 
   React.useEffect(() => {
-    handleApplyFilters();
-  }, [rowsPerPage, page]);
-
-  React.useEffect(() => {
-    handleApplyFilters();
-  }, [valueOrdenar]);
+    handleSearch();
+  }, [rowsPerPage, page, valueOrdenar]);
 
   function getAllUsers() {
+    setIsLoading(true);
     axiosInstance
       .post(`usuarios/filtro?page=${page}&size=${rowsPerPage}`, {
         nome: null,
@@ -87,29 +82,9 @@ function BuscaTalentos() {
       })
       .catch((error) => {
         console.error(error);
-      });
-  }
-
-  function getAllFlags() {
-    axiosInstance
-      .get("flags")
-      .then((response) => {
-        if (response.status === 200) {
-          const responseFlags = response.data;
-          const uniqueAreasSet = new Set();
-
-          responseFlags.forEach((item) => {
-            if (item.area !== null) {
-              uniqueAreasSet.add(item.area.toLowerCase());
-            }
-          });
-
-          const uniqueAreas = Array.from(uniqueAreasSet);
-          setOptionsStacks(uniqueAreas);
-        }
       })
-      .catch((error) => {
-        console.error(error);
+      .finally(() => {
+        setIsLoading(false);
       });
   }
 
@@ -119,10 +94,15 @@ function BuscaTalentos() {
       .then((response) => {
         if (response.status === 200) {
           const responseTecnologia = response.data;
+          const uniqueAreasSet = new Set();
+
           const tecnologiasPorArea = [];
 
           responseTecnologia.forEach((item) => {
+            if (item.area == "Soft-skills") return;
             if (item.area !== null) {
+              uniqueAreasSet.add(item.area.toLowerCase());
+
               const areaLowerCase = item.area.toLowerCase();
               if (!tecnologiasPorArea[areaLowerCase]) {
                 tecnologiasPorArea[areaLowerCase] = [];
@@ -137,6 +117,9 @@ function BuscaTalentos() {
             }
           });
 
+          const uniqueAreas = Array.from(uniqueAreasSet);
+
+          setOptionsStacks(uniqueAreas);
           setTecnologias(tecnologiasPorArea);
         }
       })
@@ -144,6 +127,7 @@ function BuscaTalentos() {
         console.error(error);
       });
   }
+
 
   const onChangeValue = (value, type) => {
     if (type === "min") {
@@ -165,66 +149,56 @@ function BuscaTalentos() {
     }
   };
 
-  const handleApplyFilters = () => {
-    axiosInstance
-      .post(
-        `usuarios/filtro?page=${page}&size=${rowsPerPage}&ordem=${valueOrdenar}`,
-        {
-          nome: null,
-          area: inputValueStacks,
-          tecnologiasIds: tecnologiasSelecionadas,
-          precoMax: value1[1],
-          precoMin: value1[0],
-        }
-      )
-      .then((response) => {
-        if (response.status == 200) {
-          setUsuarios(response.data.content);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
   const handleSetTecnologiasSelecionadas = (tecnologiaID) => {
-    setTecnologiasSelecionadas([...tecnologiasSelecionadas, tecnologiaID]);
+    setTecnologiasSelecionadas((prevState) => {
+      if (prevState.includes(tecnologiaID)) {
+        return prevState.filter((id) => id !== tecnologiaID);
+      } else {
+        return [...prevState, tecnologiaID];
+      }
+    })
   };
 
   function valueText(value) {
     return `${value} reais`;
   }
 
-  const handleSearch = (nomePesquisa) => {
-    if (
-      nomePesquisa != "" ||
-      nomePesquisa != undefined ||
-      nomePesquisa != null
-    ) {
-      axiosInstance
-        .post(`usuarios/filtro?page=${page}&size=${rowsPerPage}`, {
-          nome: nomePesquisa,
-          area: inputValueStacks === "" ? null : inputValueStacks,
-          tecnologiasIds:
-            tecnologiasSelecionadas.length <= 0
-              ? null
-              : tecnologiasSelecionadas,
-          precoMax: value1[1],
-          precoMin: value1[0],
-        })
-        .then((response) => {
-          if (response.status == 200) {
-            setUsuarios(response.data.content);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    } else {
-      getAllUsers();
-      return;
-    }
+  const handleSearch = () => {
+    setIsLoading(true);
+
+    axiosInstance
+      .post(`usuarios/filtro?page=${page}&size=${rowsPerPage}`, {
+        nome: searchText || null,
+        area: valueStacks || null,
+        tecnologiasIds:
+          tecnologiasSelecionadas.length <= 0
+            ? null
+            : tecnologiasSelecionadas,
+        precoMax: value1[1],
+        precoMin: value1[0],
+      })
+      .then((response) => {
+        if (response.status == 200) {
+          setUsuarios(response.data.content);
+          setTodosUsuarios(response.data.totalElements);
+          setPage(0);
+        } else {
+          setUsuarios([]);
+          setTodosUsuarios(0);
+
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
+
+  React.useEffect(() => {
+    handleSearch();
+  }, [searchText]);
 
   return (
     <>
@@ -246,11 +220,9 @@ function BuscaTalentos() {
               value={valueStacks}
               onChange={(event, newValueStacks) => {
                 setValueStacks(newValueStacks);
+                setTecnologiasSelecionadas([]);
               }}
-              inputValue={inputValueStacks}
-              onInputChange={(event, newInputValueStacks) => {
-                setInputValueStacks(newInputValueStacks);
-              }}
+
               id="controllable-states-demo"
               options={optionsStacks}
               sx={{ width: 252 }}
@@ -265,7 +237,8 @@ function BuscaTalentos() {
                       key={tecnologia.id}
                       control={<Checkbox />}
                       label={tecnologia.nome}
-                      onClick={() =>
+                      labelPlacement="end"
+                      onChange={() =>
                         handleSetTecnologiasSelecionadas(tecnologia.id)
                       }
                     />
@@ -283,7 +256,7 @@ function BuscaTalentos() {
 
             <div className={styles["container__slider__textfield"]}>
               <TextField
-                id="outlined-basic"
+                id="outlined-basic-minimo"
                 label="Mínimo"
                 variant="outlined"
                 type="number"
@@ -294,7 +267,7 @@ function BuscaTalentos() {
               />
 
               <TextField
-                id="outlined-basic"
+                id="outlined-basic-maximo"
                 label="Máximo"
                 variant="outlined"
                 type="number"
@@ -355,7 +328,7 @@ function BuscaTalentos() {
                 inputProps={{ "aria-label": "Pesquisar por nome de talento" }}
                 value={searchText}
                 onChange={(e) => (
-                  setSearchText(e.target.value), handleSearch(e.target.value)
+                  setSearchText(e.target.value)
                 )}
               />
             </div>
@@ -369,13 +342,20 @@ function BuscaTalentos() {
           </div>
 
           <div className={styles["container__usuarios"]}>
-            {usuarios.map((usuario) => {
-              return (
-                <div className={styles["card_usuario"]} key={usuario.id}>
-                  <CardPerfil key={usuario.id} usuario={usuario} />
-                </div>
-              );
-            })}
+            {
+              isLoading ?
+                Array.from(Array(6).keys()).map((index) => (
+                  <CardPerfilSkeleton key={index} />
+                ))
+                :
+                usuarios.map((usuario) => {
+                  return (
+                    <div className={styles["card_usuario"]} key={usuario.id}>
+                      <CardPerfil key={usuario.id} usuario={usuario} />
+                    </div>
+                  );
+                })
+            }
           </div>
 
           <div className={styles["container__paginator"]}>

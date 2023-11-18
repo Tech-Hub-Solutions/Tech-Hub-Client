@@ -43,7 +43,6 @@ const SelectOrdernar = (props) => {
             onChange={(event, newValueOrdenar) => {
                 setSelectedValue(newValueOrdenar);
             }}
-            id="controllable-states-demo"
             options={
                 optionsOrdernar.map((option) => option.nome)
             }
