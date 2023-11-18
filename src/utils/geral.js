@@ -23,3 +23,44 @@ export const resizeImage = (file, callBack) => {
         'blob' // Tipo de saída, 'blob' retorna um objeto Blob
     );
 }
+
+export const verificarCorflag = (flag) => {
+    let background;
+
+    switch (flag.area) {
+
+        case 'front-end':
+            background = "var(--color-frontend)"
+            break;
+        case 'back-end':
+            background = "var(--color-backend)"
+            break;
+        case 'mobile':
+            background = "var(--color-mobile)";
+            break;
+        case 'banco de dados':
+            background = "var(--color-database)";
+            break;
+        case 'testes':
+            background = "var(--color-testes)";
+            break;
+        case 'análise de dados':
+            background = "var(--color-analiseDados)";
+            break;
+        case 'devops':
+            background = "var(--color-devops)";
+            break;
+        case 'I.A.':
+            background = "var(--color-ia)";
+            break;
+        case 'Segurança':
+            background = "var(--color-seguranca)";
+            break;
+        case 'Soft-skills':
+            background = "var(--color-softSkills)";
+            break;
+
+    }
+
+    return background;
+}

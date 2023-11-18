@@ -18,6 +18,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import NotFound from "../notFound/NotFound";
 import PerfilSkeleton from "../../componentes/perfilUsuario/PerfilSkeleton/PerfilSkeleton";
 import InfoAdicional from "../../componentes/perfilUsuario/infoAdicional/InfoAdicional";
+import { verificarCorflag } from "../../utils/geral";
 
 const PerfilUsuario = (props) => {
 
@@ -134,39 +135,7 @@ const PerfilUsuario = (props) => {
         const newSkills = usuario?.flags?.map((flag) => {
             // map varre a lista e transforma o json antigo em um novo
 
-            let background;
-
-            switch (flag.area) {
-
-                case 'front-end':
-                    background = "var(--color-frontend)"
-                    break;
-                case 'back-end':
-                    background = "var(--color-backend)"
-                    break;
-                case 'mobile':
-                    background = "var(--color-mobile)";
-                    break;
-                case 'banco de dados':
-                    background = "var(--color-database)";
-                    break;
-                case 'testes':
-                    background = "var(--color-testes)";
-                    break;
-                case 'análise de dados':
-                    background = "var(--color-analiseDados)";
-                    break;
-                case 'devops':
-                    background = "var(--color-devops)";
-                    break;
-                case 'I.A.':
-                    background = "var(--color-ia)";
-                    break;
-                case 'segurança':
-                    background = "var(--color-seguranca)";
-                    break;
-            }
-
+            const background = verificarCorflag(flag);
 
             return {
                 ...flag, // Pega todos os atributos do json que já existem.

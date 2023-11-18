@@ -6,28 +6,24 @@ import {
     DialogTitle,
     Grid,
     TextField,
-    createFilterOptions,
+    Button,
+    Chip
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import styled from "@emotion/styled";
-import { Button } from "@mui/base";
 import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
-import { useNavigate } from "react-router-dom";
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
-import nacionalidades from "../../shared/CountryInformation/perfil-usuario.json";
-import teste from "../../shared/CountryInformation/teste.json";
-import CountryInformation from "../../shared/CountryInformation/CountryInformation";
 import axiosInstance from "../../../config/axiosInstance";
 import SnackbarCustom from "../../shared/snackbar/SnackbarCustom";
-import { Label, Visibility, VisibilityOff } from "@mui/icons-material";
 
 import styles from "./modalPerfil.module.css";
 import React from 'react';
-import CustomizedHook from "../../shared/customizedHook/CustomizedHook";
+import { verificarCorflag } from "../../../utils/geral";
+
 
 const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarPerfil }) => {
 
@@ -39,9 +35,7 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
     const [isLoading, setIsLoading] = React.useState(false);
     const [wasSubmitted, setWasSubmitted] = React.useState(false);
     const [softSkills, setSoftSkills] = React.useState([]);
-    const [softSkillsUsuario, setSoftSkillsUsuario] = React.useState([]);
     const [hardSkills, setHardSkills] = React.useState([]);
-    const [hardSkillsUsuario, setHardSkillsUsuario] = React.useState([]);
 
 
     React.useState("");
@@ -100,20 +94,37 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
         },
     };
 
-    const inpValidator = {
-        maximoSkills: "Máximo de 10 skills.",
-    };
 
     const snackbarMessages = {
         success: "Dados atualizados com sucesso!",
         error: "Erro ao realizar atualização de dados. Tente novamente.",
+        maximoSkills: "Máximo de 10 skills.",
     };
 
     const schema = yup.object().shape({
-        // limitar 10 de length do array
         softSkills: yup
-            .array().length(10, inpValidator.maximoSkills)
+            .array()
+            .transform((value, originalValue) => {
+                // original value é o valor que vem do input
+                // value é o valor que o yup usa para fazer as validações
+                if (originalValue === "") {
+                    return [];
+                }
+                return value;
+            })
+            .max(10, snackbarMessages.maximoSkills),
+
+        hardSkills: yup
+            .array()
+            .transform((value, originalValue) => {
+                if (originalValue === "") {
+                    return [];
+                }
+                return value;
+            })
+            .max(10, snackbarMessages.maximoSkills),
     });
+
 
     const {
         register,
@@ -125,7 +136,6 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
     });
 
     const funcaoUsuario = sessionStorage.getItem("funcao");
-    const navigate = useNavigate();
 
     const onSubmit = (data) => {
         if (!wasSubmitted) {
@@ -155,7 +165,6 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
                 .then((res) => {
                     setIsLoading(!isLoading);
 
-                    console.log("sucesso");
                     setSnackbarSuccess({
                         open: true,
                         isError: false,
@@ -191,13 +200,6 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
         }
 
         carregarFlags();
-        setValue("descricao", usuario?.descricao);
-        setValue("experiencia", usuario?.experiencia);
-        setValue("sobreMim", usuario?.sobreMim);
-        setValue("precoMedio", usuario?.precoMedio);
-        setValue("linkGithub", usuario?.linkGithub);
-        setValue("linkLinkedin", usuario?.linkLinkedin);
-
 
     }, [isModalEdicaoOpen]);
 
@@ -222,9 +224,15 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
                     setSoftSkills(softSkills);
                     setHardSkills(hardSkills);
 
+
+                    setValue("descricao", usuario?.descricao);
+                    setValue("experiencia", usuario?.experiencia);
+                    setValue("sobreMim", usuario?.sobreMim);
+                    setValue("precoMedio", usuario?.precoMedio);
+                    setValue("linkGithub", usuario?.linkGithub);
+                    setValue("linkLinkedin", usuario?.linkLinkedin);
                     setValue("softSkills", usuario?.softSkills);
                     setValue("hardSkills", usuario?.hardSkills);
-
                 }
             })
     }
@@ -370,8 +378,6 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
                                         marginTop: "6px",
                                     }}
                                     defaultValue={""}
-                                    // error={errors.nome?.message.length > 0}
-                                    // helperText={errors.nome?.message}
                                     placeholder="https://www.linkedin.com/in/usuario"
                                     {...register("linkLinkedin")}
                                 />
@@ -400,22 +406,56 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
                                 padding: "0 40px",
                             }}>
                                 <Autocomplete
+                                    {...register("softSkills")}
                                     multiple
                                     id="tags-outlined"
                                     options={softSkills}
                                     getOptionLabel={(option) => option.nome}
+                                    isOptionEqualToValue={(option, value) => option.id === value.id}
                                     filterSelectedOptions
-                                    {...register("softSkills")}
                                     defaultValue={usuario?.softSkills}
-                                    onChange={(e, values) => setValue("softSkills", values)}
+                                    onChange={(e, values) => {
+                                        setValue("softSkills", values);
+                                    }}
                                     renderInput={(params) => (
                                         <TextField sx={{ width: 600 }}
                                             {...params}
-                                            defaultValue={usuario?.softSkills}
-                                            label="Soft Skills"
+                                            label="Soft Skills (máximo 10)"
                                             placeholder="Profissionalismo..."
+                                            error={errors.softSkills?.message.length > 0}
+                                            helperText={errors.softSkills?.message}
                                         />
                                     )}
+
+                                    renderOption={(props, option) => (
+                                        <li {...props} style={{
+                                            ...props.style,
+                                            backgroundColor: "#F5F5F5",
+                                            color: "#000",
+                                            // cinza mais escuro: #E5E5E5
+                                            // mais que o de cima: #F5F5F5
+                                            border: "1px solid #ffff"
+                                        }}>
+                                            {option.nome}
+                                        </li>
+                                    )}
+
+                                    renderTags={(value, getTagProps) =>
+                                        value.map((option, index) => (
+                                            <Chip
+                                                variant="outlined"
+                                                {...getTagProps({ index })}
+                                                label={option.nome}
+                                                style={{
+                                                    ...getTagProps({ index }).style,
+                                                    backgroundColor: verificarCorflag(option),
+                                                    color: "#000",
+                                                    border: "none"
+                                                }}
+                                            />
+                                        ))
+                                    }
+                                    
                                 />
                             </Grid>
                             {funcaoUsuario === "FREELANCER" &&
@@ -425,27 +465,59 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
                                         padding: "0 40px",
                                     }}>
                                         <Autocomplete
+                                            {...register("hardSkills")}
                                             multiple
                                             id="tags-outlined-2"
                                             options={hardSkills}
                                             getOptionLabel={(option) => option.nome}
-                                            {...register("hardSkills")}
-                                            error={errors.hardSkills?.message.length > 0}
-                                            helperText={errors.hardSkills?.message}
+                                            isOptionEqualToValue={(option, value) => option.id === value.id}
                                             defaultValue={usuario?.hardSkills}
                                             onChange={(e, values) => {
                                                 setValue("hardSkills", values);
                                             }}
-                                            getOptionDisabled={(options) => (options.length > 10 ? true : false)}
                                             filterSelectedOptions
                                             renderInput={(params) => (
                                                 <TextField sx={{ width: 600 }}
                                                     {...params}
-                                                    label="Hard Skills"
+                                                    label="Hard Skills (máximo 10)"
                                                     placeholder="Angular..."
+                                                    error={errors.hardSkills?.message.length > 0}
+                                                    helperText={errors.hardSkills?.message}
                                                 />
                                             )}
+                                            // adicionar regrar de cor na hardSkill
+                                            renderOption={(props, option) => (
+                                                <li {...props} style={{
+                                                    ...props.style,
+                                                    backgroundColor: "#F5F5F5",
+                                                    color: "#000",
+                                                    // cinza mais escuro: #E5E5E5
+                                                    // mais que o de cima: #F5F5F5
+                                                    border: "1px solid #ffff"
+                                                }}>
+                                                    {option.nome}
+                                                </li>
+                                            )}
+
+                                            renderTags={(value, getTagProps) =>
+                                                value.map((option, index) => (
+                                                    <Chip
+                                                        variant="outlined"
+                                                        {...getTagProps({ index })}
+                                                        label={option.nome}
+                                                        style={{
+                                                            ...getTagProps({ index }).style,
+                                                            backgroundColor: verificarCorflag(option),
+                                                            color: "#000",
+                                                            border: "none"
+                                                        }}
+                                                    />
+                                                ))
+                                            }
+
+
                                         />
+
                                     </Grid>
                                 </>
                             }
