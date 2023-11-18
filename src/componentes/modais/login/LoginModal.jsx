@@ -125,6 +125,9 @@ function LoginModal({
           setIsLoading(!isLoading);
 
           redirectToPerfil(res.data.funcao);
+          setTimeout(() => {
+            redirectToPerfil();
+          }, 2300);
         })
         .catch((error) => {
           console.error(error);
