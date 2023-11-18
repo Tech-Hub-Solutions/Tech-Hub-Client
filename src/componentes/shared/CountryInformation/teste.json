@@ -1,0 +1,78 @@
+[
+    {
+        "time_ms": 15100, 
+        "response": "1"
+    }, 
+    {
+        "time_ms": 15200, 
+        "response": "10"
+    }, 
+    {
+        "time_ms": 15399, 
+        "response": "100"
+    }, 
+    {
+        "time_ms": 15599, 
+        "response": "100\n"
+    }, 
+    {
+        "time_ms": 17207, 
+        "response": "100\n2"
+    }, 
+    {
+        "time_ms": 17335, 
+        "response": "100\n25"
+    }, 
+    {
+        "time_ms": 17415, 
+        "response": "100\n250"
+    }, 
+    {
+        "time_ms": 17519, 
+        "response": "100\n250\n"
+    }, 
+    {
+        "time_ms": 17815, 
+        "response": "100\n250\n5"
+    }, 
+    {
+        "time_ms": 17919, 
+        "response": "100\n250\n50"
+    }, 
+    {
+        "time_ms": 18015, 
+        "response": "100\n250\n500"
+    }, 
+    {
+        "time_ms": 18119, 
+        "response": "100\n250\n500\n"
+    }, 
+    {
+        "time_ms": 18415, 
+        "response": "100\n250\n500\n1"
+    }, 
+    {
+        "time_ms": 18519, 
+        "response": "100\n250\n500\n10"
+    }, 
+    {
+        "time_ms": 18615, 
+        "response": "100\n250\n500\n100"
+    }, 
+    {
+        "time_ms": 18719, 
+        "response": "100\n250\n500\n100\n"
+    }, 
+    {
+        "time_ms": 19015, 
+        "response": "100\n250\n500\n100\n2"
+    }, 
+    {
+        "time_ms": 19119, 
+        "response": "100\n250\n500\n100\n25"
+    }, 
+    {
+        "time_ms": 19215, 
+        "response": "100\n250\n500\n100\n250"
+    }
+]

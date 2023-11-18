@@ -12,5 +12,30 @@
     justify-content: flex-start;
     align-items: flex-start;
     overflow-y: scroll;
-    height: 500px;
+    height: 520px;
 }
+
+.contatos {
+    display: flex;
+    gap: 8px;
+    height: 70px;
+    padding: 0 40px;
+}
+
+.softSkills {
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid rgba(180, 180, 180, 0.50);
+    background: transparent;
+    height: 120px;
+}
+
+.container__button {
+    margin-top: 32px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 20px;
+  }

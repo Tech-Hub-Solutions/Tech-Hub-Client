@@ -293,10 +293,8 @@ const ConfiguracaoPerfilModal = ({
                       marginBottom: "32px",
                       minWidth: "590px",
                     }}
-                    defaultValue={"Brasil"}
                     renderInput={(params) => (
                       <TextField
-                        defaultValue={"Brasil"}
                         name="nacionalidade"
                         {...register("nacionalidade")}
                         error={errors.nacionalidade?.message.length > 0}
