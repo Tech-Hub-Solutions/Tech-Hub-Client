@@ -5,10 +5,12 @@ import styles from "./flagsList.module.css";
 import styled from "@emotion/styled";
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
+import axiosInstance from "../../config/axiosInstance";
 
 
-const FlagsList = ({ areas }) => {
+const FlagsList = ({ areas, recarregarFlags }) => {
     const [openDropdowns, setOpenDropdowns] = useState([]);
+    const [snackbarSuccessOpen, setSnackbarSuccess] = React.useState({});
 
     const toggleDropdown = (area) => {
         if (openDropdowns.some(dropdown => dropdown === area)) {
@@ -50,6 +52,35 @@ const FlagsList = ({ areas }) => {
         width: 1,
     });
 
+    const importarFlag = (e) => {
+        const arquivo = e.target.files[0];
+
+        // se não for txt, abrir snackbar
+        if (arquivo.type !== 'text/plain') {
+            setSnackbarSuccess({ open: true, message: "O arquivo deve ser do tipo .txt!", severity: 'error' });
+            return;
+        }
+
+
+        const formData = new FormData();
+
+        formData.append('arquivo', arquivo);
+
+        axiosInstance.post('/admin/curriculo', arquivo, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then((response) => {
+                recarregarFlags();
+                setSnackbarSuccess({ open: true, message: "Currículo importado com sucesso!", severity: 'success' });
+            })
+            .catch((error) => {
+                setSnackbarSuccess({ open: true, message: "Erro ao importar currículo!", severity: 'error' });
+            });
+    }
+
+
     return (
         <div className={styles['admin_flags']}>
 
@@ -66,7 +97,7 @@ const FlagsList = ({ areas }) => {
                         <UploadFileIcon sx={muiStyle.iconButtonMenu} />
                     }>
                     <p style={muiStyle.buttonText}>Importar</p>
-                    <VisuallyHiddenInput type="file" onChange={(e) => enviarCurriculo(e)} accept=".txt" />
+                    <VisuallyHiddenInput type="file" onChange={(e) => importarFlag(e)} accept=".txt" />
                 </Button>
 
             </div>
@@ -111,7 +142,7 @@ const FlagsList = ({ areas }) => {
                                 {
 
                                     area?.tecnologias.map((tecnologia) => (
-                                        <div key={`tecnologias__row__${tecnologia}`} className={styles['admin_flags__areas__area__tecnologias']}>
+                                        <div key={`tecnologias__row__${tecnologia.nome}`} className={styles['admin_flags__areas__area__tecnologias']}>
                                             <p>{tecnologia.id}</p>
                                             <p>{tecnologia.nome}</p>
                                         </div>
