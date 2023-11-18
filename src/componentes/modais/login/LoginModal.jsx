@@ -124,11 +124,14 @@ function LoginModal({
 
           setIsLoading(!isLoading);
 
-          redirectToPerfil();
+          redirectToPerfil(res.data.funcao);
+          setTimeout(() => {
+            redirectToPerfil();
+          }, 2300);
         })
         .catch((error) => {
           console.error(error);
-
+a
           setSnackbarSuccess({
             open: true,
             isError: true,
@@ -158,9 +161,9 @@ function LoginModal({
     setTravaTelaOpen(true);
   };
 
-  const redirectToPerfil = () => {
+  const redirectToPerfil = (funcao) => {
     navigate({
-      pathname: "/perfil",
+      pathname: funcao == "ADMIN" ? "/admin" : "/perfil",
     });
   };
 

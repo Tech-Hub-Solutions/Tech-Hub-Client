@@ -30,12 +30,9 @@ const ConfiguracaoPerfilModal = ({
   setIsConfiguracaoModalOpen,
 }) => {
   const [snackbarSuccessOpen, setSnackbarSuccess] = React.useState({});
-  const [isLoading, setIsLoading] = React.useState(false);
   const [showSenha, setShowSenha] = React.useState(false);
   const [wasSubmitted, setWasSubmitted] = React.useState(false);
   const [usuario, setUsuario] = React.useState({});
-
-  const [valuePais, setValuePais] = React.useState();
 
   React.useState("");
 
@@ -45,7 +42,6 @@ const ConfiguracaoPerfilModal = ({
 
   React.useEffect(() => {
     const usuarioId = sessionStorage.getItem("usuarioId");
-    console.log("usuarioId", usuarioId);
 
     axiosInstance
       .get(`/usuarios/simple/${usuarioId}`)
@@ -153,18 +149,16 @@ const ConfiguracaoPerfilModal = ({
   const onSubmit = (data) => {
     if (!wasSubmitted) {
       setWasSubmitted(true);
-      setIsLoading(true);
 
       axiosInstance
         .put("/usuarios", {
           nome: data.nome,
           email: data.email,
           senha: data.senha,
-          pais: nacionalidades.find((pais) => pais.nome === data.nacionalidade)?.sigla,
+          pais: nacionalidades.find((pais) => pais.nome === data.nacionalidade)
+            ?.sigla,
         })
         .then((res) => {
-          setIsLoading(!isLoading);
-
           setSnackbarSuccess({
             open: true,
             isError: false,
@@ -191,7 +185,6 @@ const ConfiguracaoPerfilModal = ({
         })
         .finally(() => {
           setWasSubmitted(false);
-          setIsLoading(false);
         });
     }
   };
@@ -213,7 +206,6 @@ const ConfiguracaoPerfilModal = ({
 
     setValue("nacionalidade", nacionalidade);
   }, [usuario, isConfiguracaoModalOpen]);
-
 
   return (
     <>
@@ -285,7 +277,6 @@ const ConfiguracaoPerfilModal = ({
 
                 <Grid item>
                   <Autocomplete
-                    id="controllable-states-demo"
                     options={nacionalidades}
                     autoHighlight
                     getOptionLabel={(option) => option.nome}
@@ -304,7 +295,6 @@ const ConfiguracaoPerfilModal = ({
                         inputProps={{
                           ...params.inputProps,
                           autoComplete: "new-password", // disable autocomplete and autofill
-
                         }}
                       />
                     )}
@@ -314,11 +304,7 @@ const ConfiguracaoPerfilModal = ({
                         sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
                         {...props}
                       >
-                        <CountryInformation
-                          pais={
-                            option.sigla
-                          }
-                        />
+                        <CountryInformation pais={option.sigla} />
                       </Box>
                     )}
                   />
