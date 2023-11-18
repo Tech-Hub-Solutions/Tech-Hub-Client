@@ -6,7 +6,8 @@ import styled from "@emotion/styled";
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import axiosInstance from "../../config/axiosInstance";
-
+import adress from "../../config/backEndAdress";
+import SnackbarCustom from "../shared/snackbar/SnackbarCustom";
 
 const FlagsList = ({ areas, recarregarFlags }) => {
     const [openDropdowns, setOpenDropdowns] = useState([]);
@@ -66,17 +67,31 @@ const FlagsList = ({ areas, recarregarFlags }) => {
 
         formData.append('arquivo', arquivo);
 
-        axiosInstance.post('/admin/curriculo', arquivo, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
+        axiosInstance.post('flags/txt/importar', formData,
+            { headers: { 'Content-Type': 'multipart/form-data' } })
             .then((response) => {
                 recarregarFlags();
-                setSnackbarSuccess({ open: true, message: "Currículo importado com sucesso!", severity: 'success' });
+                setSnackbarSuccess({ open: true, message: "Flags importadas com sucesso!", severity: 'success' });
             })
             .catch((error) => {
-                setSnackbarSuccess({ open: true, message: "Erro ao importar currículo!", severity: 'error' });
+                setSnackbarSuccess({ open: true, message: "Erro ao importar flags!", severity: 'error' });
+            });
+    }
+
+    const exportar = () => {
+        axiosInstance.get('flags/txt/exportar', {
+            responseType: 'blob'
+        })
+            .then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'flags.txt');
+                document.body.appendChild(link);
+                link.click();
+            })
+            .catch((error) => {
+                console.log(error);
             });
     }
 
@@ -89,7 +104,7 @@ const FlagsList = ({ areas, recarregarFlags }) => {
                     sx={[muiStyle.buttonMenu, { color: '#FF9BFB' }]}
                     startIcon={<SaveAltIcon sx={[{ color: '#FF9BFB' }, muiStyle.iconButtonMenu]} />}
                 >
-                    <a style={muiStyle.buttonText} href={""} download>Exportar</a>
+                    <a style={muiStyle.buttonText} onClick={exportar}>Exportar</a>
                 </Button>
 
                 <Button component="label" sx={[muiStyle.buttonMenu, { color: "#FFA0A0" }]}
@@ -154,6 +169,17 @@ const FlagsList = ({ areas, recarregarFlags }) => {
                     ))
                 }
             </div>
+            <SnackbarCustom
+                snackbarOpen={snackbarSuccessOpen.open}
+                message={snackbarSuccessOpen.message}
+                severity={snackbarSuccessOpen.severity}
+                setSnackbarOpen={() => {
+                    setSnackbarSuccess((prevState) => ({
+                        ...prevState,
+                        open: false,
+                    }));
+                }}
+            ></SnackbarCustom>
         </div>
     )
 }

@@ -96,7 +96,7 @@ const Admin = () => {
     }
 
     const onSubmit = (data) => {
-        const url = buttonClicked == "salvar" ? "flags" : "flags/agendar";
+        const url = buttonClicked == "salvar" ? "flags" : "flags/agenda-adicionar";
 
         axiosInstance.post(url, {
             nome: data.nome,
@@ -104,7 +104,6 @@ const Admin = () => {
             categoria: data.area == "Soft-skills" ? "soft-skill" : "hard-skill"
         })
             .then(response => {
-
                 if (buttonClicked == "salvar") {
                     setQtdRefazer((prevState) => prevState + 1);
                 } else {
@@ -120,16 +119,28 @@ const Admin = () => {
                 recarregarFlags();
             })
             .catch(error => {
-                setSnackbarSuccess({
-                    open: true,
-                    message: buttonClicked == "salvar" ? "Erro ao cadastrar flag." : "Erro ao agendar flag.",
-                    severity: "error",
-                });
+                if (error.response.status == 409) {
+                    setSnackbarSuccess({
+                        open: true,
+                        message: buttonClicked == "salvar" ? "Flag já cadastrada." : "Flag já agendada.",
+                        severity: "error",
+                    });
+                    return;
+
+                } else {
+
+                    setSnackbarSuccess({
+                        open: true,
+                        message: buttonClicked == "salvar" ? "Erro ao cadastrar flag." : "Erro ao agendar flag.",
+                        severity: "error",
+                    });
+                }
+
             });
     }
 
     const refazerCadastro = () => {
-        axiosInstance.post("flags/refazer")
+        axiosInstance.delete("flags/agenda-desfazer-ultimo")
             .then(response => {
                 setQtdRefazer((prevState) => prevState - 1);
                 setSnackbarSuccess({
@@ -151,7 +162,7 @@ const Admin = () => {
     }
 
     const salvarAgendados = () => {
-        axiosInstance.post("flags/salvar-agendados")
+        axiosInstance.post("flags/agenda-executar")
             .then(response => {
                 setQtdSalvar((prevState) => prevState - 1);
                 setSnackbarSuccess({
@@ -227,6 +238,7 @@ const Admin = () => {
                                         onClick={() => setButtonClicked("agendar")}
                                         type="submit"
                                         style={{ ...styleMui.buttonForm, color: "#fff", backgroundColor: "#ffb55f" }}
+                                        disabled={qtdSalvar == 10}
                                     >
                                         Agendar para salvar
                                     </Button>
