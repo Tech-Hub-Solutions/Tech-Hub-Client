@@ -52,8 +52,9 @@
 
 .float-buttons {
     display: flex;
-    align-items: center;
-    gap: 1rem;
+    align-items: flex-end;
+    flex-direction: column;
+    gap: 0.5rem;
     position: fixed;
     bottom: 2rem;
     right: 2rem;

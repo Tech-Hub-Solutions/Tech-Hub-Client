@@ -25,6 +25,7 @@
     max-height: 45vh;
     overflow-y: auto;
     width: 100%;
+    box-sizing: content-box;
 }
 
 .admin_flags__areas__area {

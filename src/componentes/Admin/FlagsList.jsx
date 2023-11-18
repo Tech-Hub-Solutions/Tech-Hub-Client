@@ -9,7 +9,7 @@ import axiosInstance from "../../config/axiosInstance";
 import adress from "../../config/backEndAdress";
 import SnackbarCustom from "../shared/snackbar/SnackbarCustom";
 
-const FlagsList = ({ areas, recarregarFlags }) => {
+const FlagsList = ({ areas, carregarFlags }) => {
     const [openDropdowns, setOpenDropdowns] = useState([]);
     const [snackbarSuccessOpen, setSnackbarSuccess] = React.useState({});
 
@@ -65,12 +65,12 @@ const FlagsList = ({ areas, recarregarFlags }) => {
 
         const formData = new FormData();
 
-        formData.append('arquivo', arquivo);
+        formData.append('file', arquivo);
 
         axiosInstance.post('flags/txt/importar', formData,
             { headers: { 'Content-Type': 'multipart/form-data' } })
             .then((response) => {
-                recarregarFlags();
+                carregarFlags();
                 setSnackbarSuccess({ open: true, message: "Flags importadas com sucesso!", severity: 'success' });
             })
             .catch((error) => {

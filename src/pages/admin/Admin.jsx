@@ -3,7 +3,7 @@ import axiosInstance from "../../config/axiosInstance";
 import styles from "./admin.module.css";
 import FlagsList from "../../componentes/Admin/FlagsList";
 import * as yup from "yup";
-import { Autocomplete, Button, Divider, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, Divider, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Header from "../../componentes/shared/Header/Header";
@@ -11,14 +11,16 @@ import NotFound from "../NotFound/NotFound";
 import UndoIcon from '@mui/icons-material/Undo';
 import BeenhereIcon from '@mui/icons-material/Beenhere';
 import SnackbarCustom from "../../componentes/shared/snackbar/SnackbarCustom";
+import AutoDeleteIcon from '@mui/icons-material/AutoDelete';
+import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 
 const Admin = () => {
     const [areas, setAreas] = useState([]);
     const [isAdmin, setIsAdmin] = useState(false);
     const [buttonClicked, setButtonClicked] = useState("");
-    const [qtdRefazer, setQtdRefazer] = useState(0);
-    const [qtdSalvar, setQtdSalvar] = useState(0);
     const [snackbarSuccessOpen, setSnackbarSuccess] = React.useState({});
+    const [showLimparRefazer, setShowLimparRefazer] = useState(false);
+    const [showLimparAgendados, setShowLimparAgendados] = useState(false);
 
     const inpValidator = {
         campoObrigatorio: "Campo obrigatório."
@@ -62,37 +64,46 @@ const Admin = () => {
 
 
     const carregarFlags = () => {
-        axiosInstance.get(`flags`)
+        axiosInstance.get(`/flags`)
             .then(response => {
-                const flags = response.data;
-                const areasRequest = [...areas];
+                if (response.status == 200) {
+                    const flags = response.data;
+                    const areasRequest = [];
 
-                flags.forEach((flag) => {
+                    flags.forEach((flag) => {
 
-                    const area = areasRequest.find(area => area.nome == flag.area);
+                        let area = areasRequest.find(area => area.nome == flag.area);
 
-                    if (!area) {
-                        areasRequest.push({ nome: flag.area, tecnologias: [] });
-                    }
+                        if (!area) {
+                            areasRequest.push({ nome: flag.area, tecnologias: [] });
+                            area = areasRequest.find(area => area.nome == flag.area);
+                        }
 
-                    const tecnologia = area?.tecnologias.find(tecnologia => tecnologia.id == flag.id);
-                    if (!tecnologia) {
-                        area?.tecnologias.push({
-                            id: flag.id,
-                            nome: flag.nome
+                        const tecnologia = area?.tecnologias.find(tecnologia => tecnologia.id == flag.id);
+
+                        if (!tecnologia) {
+                            area?.tecnologias.push({
+                                id: flag.id,
+                                nome: flag.nome
+                            });
+                        }
+                    });
+
+
+                    setAreas(() => {
+                        areasRequest.sort((a, b) => {
+                            if (a.nome.toLowerCase() < b.nome.toLowerCase()) {
+                                return -1;
+                            } else {
+                                return 1;
+                            }
                         });
-                    }
-                });
 
+                        return areasRequest;
+                    });
 
-                setAreas(areasRequest);
+                }
             })
-    }
-
-    const recarregarFlags = () => {
-        setTimeout(() => {
-            carregarFlags();
-        }, 1000);
     }
 
     const onSubmit = (data) => {
@@ -104,19 +115,13 @@ const Admin = () => {
             categoria: data.area == "Soft-skills" ? "soft-skill" : "hard-skill"
         })
             .then(response => {
-                if (buttonClicked == "salvar") {
-                    setQtdRefazer((prevState) => prevState + 1);
-                } else {
-                    setQtdSalvar((prevState) => prevState + 1);
-                }
-
                 setSnackbarSuccess({
                     open: true,
                     message: buttonClicked == "salvar" ? "Flag cadastrada com sucesso." : "Flag agendada com sucesso.",
                     severity: "success",
                 });
 
-                recarregarFlags();
+                carregarFlags();
             })
             .catch(error => {
                 if (error.response.status == 409) {
@@ -127,7 +132,19 @@ const Admin = () => {
                     });
                     return;
 
-                } else {
+                } else if (error.response.status == 400) {
+                    setSnackbarSuccess({
+                        open: true,
+                        message: "Limite de agenda atingido.",
+                        severity: "error",
+                    });
+
+                    setShowLimparAgendados(true);
+
+
+                    return;
+                }
+                else {
 
                     setSnackbarSuccess({
                         open: true,
@@ -142,17 +159,26 @@ const Admin = () => {
     const refazerCadastro = () => {
         axiosInstance.delete("flags/agenda-desfazer-ultimo")
             .then(response => {
-                setQtdRefazer((prevState) => prevState - 1);
                 setSnackbarSuccess({
                     open: true,
                     message: "Último cadastro refeito com sucesso.",
                     severity: "success",
                 });
 
-                recarregarFlags();
+                setShowLimparRefazer(false);
+
+                carregarFlags();
 
             })
             .catch(error => {
+                if (error.response.status == 404) {
+                    setSnackbarSuccess({
+                        open: true,
+                        message: "Não há cadastro para refazer.",
+                        severity: "error",
+                    });
+                    return;
+                }
                 setSnackbarSuccess({
                     open: true,
                     message: "Erro ao refazer último cadastro.",
@@ -164,19 +190,67 @@ const Admin = () => {
     const salvarAgendados = () => {
         axiosInstance.post("flags/agenda-executar")
             .then(response => {
-                setQtdSalvar((prevState) => prevState - 1);
                 setSnackbarSuccess({
                     open: true,
                     message: "Flags agendadas salvas com sucesso.",
                     severity: "success",
                 });
 
-                recarregarFlags();
+                setShowLimparAgendados(false);
+                carregarFlags();
+            })
+            .catch(error => {
+                if (error.response.status == 404) {
+                    setSnackbarSuccess({
+                        open: true,
+                        message: "Não há flags agendadas para salvar.",
+                        severity: "error",
+                    });
+                    return;
+                }
+                setSnackbarSuccess({
+                    open: true,
+                    message: "Erro ao salvar flags agendadas.",
+                    severity: "error",
+                });
+            });
+    }
+
+    const limparRefazer = () => {
+        axiosInstance.delete("flags/limpar-refazer")
+            .then(response => {
+                setSnackbarSuccess({
+                    open: true,
+                    message: "Refazer limpo com sucesso.",
+                    severity: "success",
+                });
+
+                setShowLimparRefazer(false);
             })
             .catch(error => {
                 setSnackbarSuccess({
                     open: true,
-                    message: "Erro ao salvar flags agendadas.",
+                    message: "Erro ao limpar refazer.",
+                    severity: "error",
+                });
+            });
+    }
+
+    const limparAgendados = () => {
+        axiosInstance.delete("flags/agenda-limpar")
+            .then(response => {
+                setSnackbarSuccess({
+                    open: true,
+                    message: "Agendados limpos com sucesso.",
+                    severity: "success",
+                });
+
+                setShowLimparAgendados(false);
+            })
+            .catch(error => {
+                setSnackbarSuccess({
+                    open: true,
+                    message: "Erro ao limpar agendados.",
                     severity: "error",
                 });
             });
@@ -190,7 +264,7 @@ const Admin = () => {
                         <Header></Header>
                         <h1 className={styles['container__titulo']}>Gerenciar Flags</h1>
                         <div className={styles['content']}>
-                            <FlagsList areas={areas} recarregarFlags={recarregarFlags} />
+                            <FlagsList areas={areas} carregarFlags={carregarFlags} />
 
                             <Divider orientation="vertical" flexItem></Divider>
 
@@ -238,7 +312,6 @@ const Admin = () => {
                                         onClick={() => setButtonClicked("agendar")}
                                         type="submit"
                                         style={{ ...styleMui.buttonForm, color: "#fff", backgroundColor: "#ffb55f" }}
-                                        disabled={qtdSalvar == 10}
                                     >
                                         Agendar para salvar
                                     </Button>
@@ -248,8 +321,31 @@ const Admin = () => {
                             </div>
                         </div>
                         <div className={styles['float-buttons']}>
-                            {
-                                qtdRefazer > 0 &&
+                            <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 2 }}>
+                                {
+                                    showLimparRefazer &&
+                                    <Button
+                                        onClick={limparRefazer}
+                                        variant="contained"
+                                        startIcon={<DeleteSweepIcon />}
+                                        style={{ color: "#000", backgroundColor: "#CDEAF9" }}
+                                    >
+                                        Limpar "Refazer"
+                                    </Button>
+                                }
+                                {
+                                    showLimparAgendados &&
+                                    <Button
+                                        onClick={limparAgendados}
+                                        variant="contained"
+                                        startIcon={< AutoDeleteIcon />}
+                                        style={{ color: "#000", backgroundColor: "#CDEAF9" }}
+                                    >
+                                        Limpar Agendados
+                                    </Button>
+                                }
+                            </Box>
+                            <Box sx={{ display: 'flex', alignItems: 'center', columnGap: 2 }}>
                                 <Button
                                     onClick={refazerCadastro}
                                     variant="contained"
@@ -258,18 +354,16 @@ const Admin = () => {
                                 >
                                     Refazer útilmo cadastro
                                 </Button>
-                            }
-                            {
-                                qtdSalvar > 0 &&
                                 <Button
                                     onClick={salvarAgendados}
                                     variant="contained"
                                     startIcon={<BeenhereIcon />}
                                     style={{ color: "#000", backgroundColor: "#B5FF9B" }}
                                 >
-                                    {qtdSalvar > 1 ? `Salvar últimos ${qtdSalvar} agendados` : `Salvar útilmo agendado`}
+                                    Salvar agendados
                                 </Button>
-                            }
+                            </Box>
+
                         </div>
                         <SnackbarCustom
                             snackbarOpen={snackbarSuccessOpen.open}
