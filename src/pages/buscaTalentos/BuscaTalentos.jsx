@@ -181,7 +181,6 @@ function BuscaTalentos() {
         if (response.status == 200) {
           setUsuarios(response.data.content);
           setTodosUsuarios(response.data.totalElements);
-          setPage(0);
         } else {
           setUsuarios([]);
           setTodosUsuarios(0);
