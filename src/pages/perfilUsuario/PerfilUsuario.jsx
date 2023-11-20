@@ -214,7 +214,6 @@ const PerfilUsuario = (props) => {
                                                             })
                                                         }
                                                     </div>
-                                                    {/* <BoxSoftSkills /> */}
                                                     <Divider variant="middle" style={{ margin: '16px 0' }} />
                                                     <h1 className={styles['titulo']}>Hard Skill</h1>
                                                     <div className={styles['boxSkills']}>
@@ -226,7 +225,6 @@ const PerfilUsuario = (props) => {
                                                             })
                                                         }
                                                     </div>
-                                                    {/* <BoxHardSkills /> */}
                                                 </div>
                                             </div>
                                             :
