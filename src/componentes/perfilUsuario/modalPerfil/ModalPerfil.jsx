@@ -99,6 +99,7 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
         success: "Dados atualizados com sucesso!",
         error: "Erro ao realizar atualização de dados. Tente novamente.",
         maximoSkills: "Máximo de 10 skills.",
+        link: "Insira um link válido."
     };
 
     const schema = yup.object().shape({
@@ -123,6 +124,24 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
                 return value;
             })
             .max(10, snackbarMessages.maximoSkills),
+        linkLinkedin: yup.string()
+            .url(snackbarMessages.link)
+            .test('is-word-present', snackbarMessages.link, (value) => {
+                // Substitua 'sua-palavra' pela palavra que você deseja procurar no link
+                const palavraProcuradaLinkedin = 'linkedin.com';
+
+                // Verifica se a palavra está presente no link
+                return value.includes(palavraProcuradaLinkedin);
+            }),
+        linkGithub: yup.string()
+            .url(snackbarMessages.link)
+            .test('is-word-present', snackbarMessages.link, (value) => {
+                // Substitua 'sua-palavra' pela palavra que você deseja procurar no link
+                const palavraProcuradaGithub = 'github.com';
+
+                // Verifica se a palavra está presente no link
+                return value.includes(palavraProcuradaGithub);
+            }),
     });
 
 
@@ -158,6 +177,7 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
                     experiencia: data.experiencia,
                     descricao: data.descricao,
                     precoMedio: data.precoMedio,
+                    nomeGithub: data.nomeGithub,
                     linkGithub: data.linkGithub,
                     linkLinkedin: data.linkLinkedin,
                     flagsId: flagsId,
@@ -229,6 +249,7 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
                     setValue("experiencia", usuario?.experiencia);
                     setValue("sobreMim", usuario?.sobreMim);
                     setValue("precoMedio", usuario?.precoMedio);
+                    setValue("nomeGithub", usuario?.nomeGithub)
                     setValue("linkGithub", usuario?.linkGithub);
                     setValue("linkLinkedin", usuario?.linkLinkedin);
                     setValue("softSkills", usuario?.softSkills);
@@ -368,7 +389,7 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
                                 <LinkedInIcon style={{ color: "#0076B2", fontSize: "40px", marginTop: "15px" }}></LinkedInIcon>
                                 <TextField
                                     name="linkedin"
-                                    label="Linkedin"
+                                    label="Link Linkedin"
                                     variant="outlined"
                                     color="primary"
                                     type="text"
@@ -380,29 +401,51 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
                                     defaultValue={""}
                                     placeholder="https://www.linkedin.com/in/usuario"
                                     {...register("linkLinkedin")}
+                                    error={errors.linkLinkedin?.message.length > 0}
+                                    helperText={errors.linkLinkedin?.message}
                                 />
                             </Grid>
                             <Grid item className={styles['contatos']}>
-                                <GitHubIcon style={{ color: "var(--color-cinza)", fontSize: "40px", marginTop: "15px" }}></GitHubIcon>
+                                <GitHubIcon style={{ color: "var(--color-cinza)", fontSize: "40px", marginTop: "45px" }}></GitHubIcon>
                                 <TextField
                                     name="github"
-                                    label="GitHub"
+                                    label="Link GitHub"
                                     variant="outlined"
                                     color="primary"
                                     type="text"
                                     sx={{
                                         marginBottom: "32px",
                                         minWidth: "552px",
-                                        marginTop: "6px",
+                                        marginTop: "38px",
 
                                     }}
                                     defaultValue={""}
                                     placeholder="https://www.github.com/usuario"
                                     {...register("linkGithub")}
+                                    error={errors.linkGithub?.message.length > 0}
+                                    helperText={errors.linkGithub?.message}
+                                />
+                            </Grid>
+                            <Grid item className={styles['contatos']}>
+                                <GitHubIcon style={{ color: "var(--color-cinza)", fontSize: "40px", marginTop: "75px" }}></GitHubIcon>
+                                <TextField
+                                    name="nomeGithub"
+                                    label="Nome de usuario GitHub"
+                                    variant="outlined"
+                                    color="primary"
+                                    type="text"
+                                    sx={{
+                                        marginBottom: "32px",
+                                        minWidth: "552px",
+                                        marginTop: "70px",
+                                    }}
+                                    defaultValue={""}
+                                    placeholder="usuario"
+                                    {...register("nomeGithub")}
                                 />
                             </Grid>
                             <Grid item sx={{
-                                marginTop: "32px",
+                                marginTop: "100px",
                                 padding: "0 40px",
                             }}>
                                 <Autocomplete
@@ -455,7 +498,7 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
                                             />
                                         ))
                                     }
-                                    
+
                                 />
                             </Grid>
                             {funcaoUsuario === "FREELANCER" &&
