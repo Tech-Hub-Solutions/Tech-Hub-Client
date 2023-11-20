@@ -37,8 +37,6 @@ const PerfilUsuario = (props) => {
     const isOwnProfile = !usuarioParamId || (usuarioParamId == usuarioLogadoId)
     const [idRequisicao, setIdRequisicao] = React.useState(0);
 
-
-
     React.useEffect(() => {
 
         setIdRequisicao(isOwnProfile ? usuarioLogadoId : usuarioParamId);
