@@ -276,38 +276,45 @@ const ConfiguracaoPerfilModal = ({
                 </Grid>
 
                 <Grid item>
-                  <Autocomplete
-                    options={nacionalidades}
-                    autoHighlight
-                    getOptionLabel={(option) => option.nome}
-                    sx={{
-                      marginBottom: "32px",
-                      minWidth: "590px",
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        name="nacionalidade"
-                        {...register("nacionalidade")}
-                        error={errors.nacionalidade?.message.length > 0}
-                        helperText={errors.nacionalidade?.message}
-                        {...params}
-                        label="Selecione um país"
-                        inputProps={{
-                          ...params.inputProps,
-                          autoComplete: "new-password", // disable autocomplete and autofill
-                        }}
-                      />
-                    )}
-                    renderOption={(props, option) => (
-                      <Box
-                        component="li"
-                        sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                        {...props}
-                      >
-                        <CountryInformation pais={option.sigla} />
-                      </Box>
-                    )}
-                  />
+                  {
+
+                    usuario?.pais &&
+                    < Autocomplete
+                      options={nacionalidades}
+                      autoHighlight
+                      getOptionLabel={(option) => option.nome}
+                      isOptionEqualToValue={(option, value) => option.sigla === value.sigla}
+                      defaultValue={nacionalidades.find(pais => pais.sigla === usuario.pais)}
+                      sx={{
+                        marginBottom: "32px",
+                        minWidth: "590px",
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          name="nacionalidade"
+                          {...register("nacionalidade")}
+                          error={errors.nacionalidade?.message.length > 0}
+                          helperText={errors.nacionalidade?.message}
+                          {...params}
+                          label="Selecione um país"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: "new-password", // disable autocomplete and autofill
+                          }}
+                        />
+                      )}
+                      renderOption={(props, option) => (
+                        <Box
+                          component="li"
+                          sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                          {...props}
+                        >
+                          <CountryInformation pais={option.sigla} />
+                        </Box>
+                      )}
+                    />
+                  }
+
                 </Grid>
 
                 <Grid item>
