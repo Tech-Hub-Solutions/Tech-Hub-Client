@@ -58,14 +58,14 @@ const BannerDescUsuario = (props) => {
         const isPerfilFreelancer = usuario.isPerfilFreelancer;
 
         const curriculoBaixarButton = (
-            <BlueBackgroundButton className={styles['botaoCondicional']} valueDisabled={!usuario?.curriculo}>
-                <a href={usuario?.curriculo} download>
+            <BlueBackgroundButton className={styles['botaoCondicional']} valueDisabled={!usuario?.urlCurriculo}>
+                <a href={usuario?.urlCurriculo} style={{color:usuario?.urlCurriculo ? "var(--color-branco)" : "var(--color-cinza)"}} target="_blank">
                     Currículo
                 </a>
             </BlueBackgroundButton>
         )
         const curriculoUploadButton = (
-            <AlterarCurriculo curriculo={usuario?.curriculo} />
+            <AlterarCurriculo curriculo={usuario?.urlCurriculo} />
         );
         const editarPerfilButton = (
             <BlueBackgroundButton onClick={handleClickOpen} className={styles['botaoCondicional']}>Editar Perfil</BlueBackgroundButton>

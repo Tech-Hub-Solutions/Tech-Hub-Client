@@ -107,14 +107,6 @@ const AlterarCurriculo = (props) => {
         const arquivo = e.target.files[0];
 
         // se não for txt, abrir snackbar
-        if (arquivo.type !== 'text/plain') {
-            setSeverity('error');
-            setMessage('Formato de arquivo inválido');
-            setSnackbarOpen(true);
-            return;
-        }
-
-
         const formData = new FormData();
 
         formData.append('tipoArquivo', 'CURRICULO');
@@ -186,7 +178,9 @@ const AlterarCurriculo = (props) => {
                                                 startIcon={<SaveAltIcon sx={[{ color: '#FF9BFB' }, muiStyle.iconButtonMenu]} />}
                                                 disabled={!props.curriculo}
                                             >
-                                                <a style={muiStyle.buttonText} href={props.curriculo} download>Baixar currículo</a>
+                                                <a style={muiStyle.buttonText} href={props.curriculo} >
+                                                    Baixar currículo
+                                                </a>
                                             </Button>
                                         </MenuItem>
                                     }
@@ -197,7 +191,7 @@ const AlterarCurriculo = (props) => {
                                                 <UploadFileIcon sx={muiStyle.iconButtonMenu} />
                                             }>
                                             <p style={muiStyle.buttonText}>Subir novo currículo</p>
-                                            <VisuallyHiddenInput type="file" onChange={(e) => enviarCurriculo(e)} accept=".txt" />
+                                            <VisuallyHiddenInput type="file" onChange={(e) => enviarCurriculo(e)} />
                                         </Button>
                                     </MenuItem>
 
