@@ -125,23 +125,13 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
             })
             .max(10, snackbarMessages.maximoSkills),
         linkLinkedin: yup.string()
-            .url(snackbarMessages.link)
-            .test('is-word-present', snackbarMessages.link, (value) => {
-                // Substitua 'sua-palavra' pela palavra que você deseja procurar no link
-                const palavraProcuradaLinkedin = 'linkedin.com';
-
-                // Verifica se a palavra está presente no link
-                return value.includes(palavraProcuradaLinkedin);
-            }),
+            .notRequired()
+            .test('contemPalavraExample', snackbarMessages.link,
+                value => !value || value.includes('https://www.linkedin.com/in/') || value.includes('https://linkedin.com/in/')),
         linkGithub: yup.string()
-            .url(snackbarMessages.link)
-            .test('is-word-present', snackbarMessages.link, (value) => {
-                // Substitua 'sua-palavra' pela palavra que você deseja procurar no link
-                const palavraProcuradaGithub = 'github.com';
-
-                // Verifica se a palavra está presente no link
-                return value.includes(palavraProcuradaGithub);
-            }),
+            .notRequired()
+            .test('contemPalavraExample', snackbarMessages.link,
+                value => !value || value.includes('https://github.com/')),
     });
 
 
