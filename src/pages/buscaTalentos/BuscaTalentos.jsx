@@ -11,7 +11,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { Divider, IconButton, InputBase, TablePagination } from "@mui/material";
 import Slider from "@mui/material/Slider";
-import SelectOrdernar from "../../componentes/shared/SelectOrdernar";
 import axiosInstance from "../../config/axiosInstance";
 import CardPerfil from "../../componentes/shared/cardPerfil/CardPerfil";
 import CardPerfilSkeleton from "../../componentes/shared/cardPerfil/CardPerfilSkeleton";
@@ -19,7 +18,6 @@ import SearchIcon from "@mui/icons-material/Search";
 
 function BuscaTalentos() {
   const [valueStacks, setValueStacks] = React.useState();
-  const [valueOrdenar, setValueOrdenar] = React.useState("");
   const [value1, setValue1] = React.useState([0, 5000]);
   const [usuarios, setUsuarios] = React.useState([]);
   const [todosUsuarios, setTodosUsuarios] = React.useState(0);
@@ -51,7 +49,7 @@ function BuscaTalentos() {
 
   React.useEffect(() => {
     handleSearch();
-  }, [rowsPerPage, page, valueOrdenar]);
+  }, [rowsPerPage, page]);
 
   function getAllUsers() {
     setIsLoading(true);
@@ -323,20 +321,13 @@ function BuscaTalentos() {
               </IconButton>
 
               <InputBase
-                sx={{ ml: 1, flex: 1, width: 260 }}
+                sx={{ ml: 1, flex: 1, width: 300 }}
                 placeholder="Pesquisar por nome de talento"
                 inputProps={{ "aria-label": "Pesquisar por nome de talento" }}
                 value={searchText}
                 onChange={(e) => (
                   setSearchText(e.target.value)
                 )}
-              />
-            </div>
-
-            <div className={styles["autocomplete__ordenar"]}>
-              <SelectOrdernar
-                valueOrdenar={valueOrdenar}
-                setValueOrdenar={setValueOrdenar}
               />
             </div>
           </div>
