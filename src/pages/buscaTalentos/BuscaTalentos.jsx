@@ -23,7 +23,9 @@ function BuscaTalentos() {
   const [todosUsuarios, setTodosUsuarios] = React.useState(0);
   const [optionsStacks, setOptionsStacks] = React.useState([]);
   const [tecnologias, setTecnologias] = React.useState([]);
-  const [tecnologiasSelecionadas, setTecnologiasSelecionadas] = React.useState([]);
+  const [tecnologiasSelecionadas, setTecnologiasSelecionadas] = React.useState(
+    []
+  );
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [precoMedioMin, setPrecoMedioMin] = React.useState(0);
@@ -42,7 +44,6 @@ function BuscaTalentos() {
 
   React.useEffect(() => {
     getAllUsers();
-
 
     getAllTechnologies();
   }, []);
@@ -117,7 +118,11 @@ function BuscaTalentos() {
 
           const uniqueAreas = Array.from(uniqueAreasSet);
 
-          setOptionsStacks(uniqueAreas);
+          setOptionsStacks(
+            uniqueAreas.map(
+              (stack) => stack.charAt(0).toUpperCase() + stack.slice(1)
+            )
+          );
           setTecnologias(tecnologiasPorArea);
         }
       })
@@ -125,7 +130,6 @@ function BuscaTalentos() {
         console.error(error);
       });
   }
-
 
   const onChangeValue = (value, type) => {
     if (type === "min") {
@@ -154,7 +158,7 @@ function BuscaTalentos() {
       } else {
         return [...prevState, tecnologiaID];
       }
-    })
+    });
   };
 
   function valueText(value) {
@@ -164,14 +168,14 @@ function BuscaTalentos() {
   const handleSearch = () => {
     setIsLoading(true);
 
+    const valueStacksLowerCase = valueStacks?.toLowerCase();
+
     axiosInstance
       .post(`usuarios/filtro?page=${page}&size=${rowsPerPage}`, {
         nome: searchText || null,
-        area: valueStacks || null,
+        area: valueStacksLowerCase || null,
         tecnologiasIds:
-          tecnologiasSelecionadas.length <= 0
-            ? null
-            : tecnologiasSelecionadas,
+          tecnologiasSelecionadas.length <= 0 ? null : tecnologiasSelecionadas,
         precoMax: value1[1],
         precoMin: value1[0],
       })
@@ -182,7 +186,6 @@ function BuscaTalentos() {
         } else {
           setUsuarios([]);
           setTodosUsuarios(0);
-
         }
       })
       .catch((error) => {
@@ -216,10 +219,9 @@ function BuscaTalentos() {
             <Autocomplete
               value={valueStacks}
               onChange={(event, newValueStacks) => {
-                setValueStacks(newValueStacks);
+                setValueStacks(newValueStacks?.toLowerCase());
                 setTecnologiasSelecionadas([]);
               }}
-
               id="controllable-states-demo"
               options={optionsStacks}
               sx={{ width: 252 }}
@@ -324,28 +326,23 @@ function BuscaTalentos() {
                 placeholder="Pesquisar por nome de talento"
                 inputProps={{ "aria-label": "Pesquisar por nome de talento" }}
                 value={searchText}
-                onChange={(e) => (
-                  setSearchText(e.target.value)
-                )}
+                onChange={(e) => setSearchText(e.target.value)}
               />
             </div>
           </div>
 
           <div className={styles["container__usuarios"]}>
-            {
-              isLoading ?
-                Array.from(Array(6).keys()).map((index) => (
+            {isLoading
+              ? Array.from(Array(6).keys()).map((index) => (
                   <CardPerfilSkeleton key={index} />
                 ))
-                :
-                usuarios.map((usuario) => {
+              : usuarios.map((usuario) => {
                   return (
                     <div className={styles["card_usuario"]} key={usuario.id}>
                       <CardPerfil key={usuario.id} usuario={usuario} />
                     </div>
                   );
-                })
-            }
+                })}
           </div>
 
           <div className={styles["container__paginator"]}>
