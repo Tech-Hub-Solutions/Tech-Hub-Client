@@ -1,0 +1,97 @@
+.content__banner {
+    border-radius: 12px 12px 0 0;
+    height: 180px;
+    background-color: var(--color-azul);
+    background-size: cover;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content__banner-loading {
+    border-radius: 12px 12px 0 0;
+    height: 180px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+.content__banner .banner__imagemUsuario {
+    width: 150px;
+    position: absolute;
+    bottom: -100px;
+    left: 50px;
+}
+
+.banner__alterarImagem {
+    position: absolute;
+    bottom: 0rem;
+    right: 0rem;
+}
+
+
+.content__descUsuario {
+    display: flex;
+    justify-content: space-between;
+}
+
+.content__infoUsuario {
+    width: 58%;
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    margin-left: 220px;
+    margin-top: 12px;
+}
+
+.content__infoUsuario h1 {
+    font-family: Montserrat;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.content__infoUsuario .infoUsuario__nome {
+    display: flex;
+    gap: 16px;
+}
+
+.content__infoUsuario .infoUsuario__icones {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+}
+
+.infoUsuario__desc p {
+    text-align: left;
+    margin-top: 8px;
+    color: var(--color-azul);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+
+.content__descUsuario .descUsuario__button {
+    margin-top: 12px;
+    margin-right: 18px;
+
+}
+
+.descUsuario__button .icons {
+    margin-right: 16px;
+    vertical-align: middle;
+    color: #505050;
+}
+
+.precoUsuario h4{
+    margin-top: 8px;
+    font-size: 24px;
+    color: var(--color-cinza);
+    font-weight: 600;
+}

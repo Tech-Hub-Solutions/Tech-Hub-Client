@@ -1,0 +1,224 @@
+.perfil__usuario {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.content {
+    width: 100%;
+    max-width: 1280px;
+    height: 100%;
+    border: 1px solid #B4B4B4;
+    border-radius: 16px 16px 0 0;
+    margin-top: 90px;
+    padding-bottom: 50px;
+}
+
+.content__sectionSkills {
+    margin-top: 96px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: left;
+    gap: 32px;
+}
+
+.sectionSkills__experiencia {
+    border-radius: 8px;
+    border: 1px solid #B4B4B4;
+    display: flex;
+    flex-direction: column;
+    padding: 32px 16px;
+    width: 50%;
+}
+
+.content__sectionSkillsEmpresa {
+    margin-top: 96px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+}
+
+.sectionSkillsEmpresa__experiencia {
+    display: flex;
+}
+
+.sectionSkills__sobreNos {
+    border-radius: 8px 0px 0px 0px;
+    border: 1px solid #B4B4B4;
+    padding: 32px 16px;
+    width: 50%;
+}
+
+.sectionSkills__quemProcuramos {
+    border-radius: 0px 8px 0px 0px;
+    border-top: 1px solid #B4B4B4;
+    border-right: 1px solid #B4B4B4;
+    border-bottom: 1px solid #B4B4B4;
+    padding: 32px 16px;
+    width: 50%;
+}
+
+.sectionSkills__softSkills {
+    border-radius: 0px 0px 8px 8px;
+    border-right: 1px solid #B4B4B4;
+    border-bottom: 1px solid #B4B4B4;
+    border-left: 1px solid #B4B4B4;
+    padding: 32px 16px;
+    width: 100%;
+}
+
+.content__sectionProjetos {
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-top: 56px;
+    overflow: hidden;
+}
+
+.content__sectionProjetos h1 {
+    color: var(--color-cinza);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-bottom: 20px;
+}
+
+.content__listaProjetos {
+    width: 100%;
+}
+
+.content__sectionComentariosAvaliacoes {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    margin-top: 72px;
+    padding: 0 20px;
+}
+
+.content__sectionComentariosAvaliacoes h1 {
+    color: var(--color-cinza);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: left;
+    margin-bottom: 36px;
+}
+
+.content__sectionComentariosAvaliacoes .sectionComentariosAvaliacoes__comentarios {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+}
+
+.sectionComentariosAvaliacoes__avaliacoes {
+    width: 40%;
+    padding-right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.avaliacoesUsuario {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+}
+
+.avaliacoesUsuario .avaliacoesUsuario__titulo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.avaliacoesUsuario__titulo h2 {
+    color: #B4B4B4;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.sectionComentariosAvaliacoes__adicionais {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.adicionais__informacoes {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+    margin-bottom: 16px;
+    gap: 8px;
+}
+
+.adicionais__informacoes h4 {
+    color: var(--color-cinza);
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-align: left;
+}
+
+.adicionais__informacoes p {
+    text-align: left;
+    color: #B4B4B4;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.boxSkills {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.titulo {
+    color: var(--color-cinza);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: left;
+    margin-bottom: 8px;
+}
+
+.boxSkills {
+    display: flex;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.titulo {
+    color: var(--color-cinza);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: left;
+    margin-bottom: 8px;
+}
