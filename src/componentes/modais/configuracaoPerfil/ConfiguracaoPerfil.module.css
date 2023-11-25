@@ -1,0 +1,23 @@
+.form__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: fit-content;
+}
+
+.form__control {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: "55px";
+}
+
+.container__button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 52px;
+}

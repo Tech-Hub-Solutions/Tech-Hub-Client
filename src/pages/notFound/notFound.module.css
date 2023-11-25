@@ -1,0 +1,19 @@
+.content__not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.content__not-found h1 {
+    color: var(--color-azul);
+    font-size: 9rem;
+    font-weight: 900;
+}
+
+.content__not-found p {
+    color: var(--color-textos);
+    font-size: 2rem;
+    font-weight: 500;
+}

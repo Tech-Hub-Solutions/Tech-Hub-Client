@@ -1,0 +1,26 @@
+.section__diagrama {
+    width: 100%;
+    background-color: #E7F7FF;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.section__diagrama .content__diagrama {
+    max-width: 1320px;
+    padding: 32px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.section__diagrama .content__diagrama h1 {
+    color: var(--color-azul);
+    text-align: center;
+    font-family: Plus Jakarta Sans;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-bottom: 28px;
+}
+

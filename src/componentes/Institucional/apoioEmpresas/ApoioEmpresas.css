@@ -1,0 +1,29 @@
+.section__empresas {
+    background-color: #F6F6F6;
+    height: 120px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.section__empresas .empresas__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1320px;
+    padding: 0 20px;
+    width: 100%;
+    gap: 32px;
+}
+
+.section__empresas img {
+    height: 68px;
+    width: auto;
+}
+
+.section__empresas h3 {
+    color: #9C9C9C;
+    font-size: 20px;
+    font-weight: 600;
+}

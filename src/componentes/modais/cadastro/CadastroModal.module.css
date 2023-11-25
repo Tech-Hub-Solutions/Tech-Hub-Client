@@ -1,0 +1,45 @@
+.form__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 60px 24px 60px;
+  width: fit-content;
+  height: fit-content;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.border {
+  border-bottom: 3px solid black;
+  background: #0f9dea70;
+  width: 100%;
+}
+
+.content {
+  padding: 0 10px 0 10px;
+}
+
+.possui-conta {
+  margin-top: 32px;
+  color: #959595;
+  font-size: 14px;
+}
+
+.link-login {
+  text-decoration: underline;
+  color: #757575;
+  cursor: pointer;
+
+  &:hover {
+    color: #333;
+  }
+
+  &:active {
+    transition: color 0.15s ease-in-out;
+    color: #0f9eea;
+  }
+}
