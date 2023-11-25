@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../../pages/perfilUsuario/PerfilUsuario.module.css"
+import styles from "../../../pages/perfilUsuario/perfilUsuario.module.css"
 import { Box } from "@mui/system";
 import BarraEstrelas from "./BarraEstrelas/BarraEstrelas";
 import { Rating } from "@mui/material";
