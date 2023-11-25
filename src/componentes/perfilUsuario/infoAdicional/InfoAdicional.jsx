@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../../pages/perfilUsuario/PerfilUsuario.module.css"
+import styles from "../../../pages/perfilUsuario/perfilUsuario.module.css"
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import axiosInstance from "../../../config/axiosInstance";
