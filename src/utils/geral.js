@@ -14,13 +14,13 @@ export const formatarBytes = (bytes, decimal) => {
 export const resizeImage = (file, callBack) => {
     Resizer.imageFileResizer(
         file,
-        800, // Largura máxima desejada
-        800, // Altura máxima desejada
-        'JPEG', // Formato da imagem de saída (pode ser 'JPEG', 'PNG', 'WEBP', etc.)
-        70, // Qualidade da imagem (0-100)
-        0, // Rotação da imagem (em graus, 0 = sem rotação)
-        callBack, // Função de retorno de chamada
-        'blob' // Tipo de saída, 'blob' retorna um objeto Blob
+        800,
+        800,
+        'JPEG',
+        70,
+        0,
+        callBack,
+        'blob'
     );
 }
 

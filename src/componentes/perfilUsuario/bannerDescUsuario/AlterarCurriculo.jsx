@@ -71,8 +71,6 @@ const AlterarCurriculo = (props) => {
         width: 1,
     });
 
-
-    // return focus to the button when we transitioned from !open -> open
     const prevOpen = React.useRef(open);
     React.useEffect(() => {
         if (prevOpen.current === true && open === false) {
@@ -106,7 +104,6 @@ const AlterarCurriculo = (props) => {
     const enviarCurriculo = (e) => {
         const arquivo = e.target.files[0];
 
-        // se não for txt, abrir snackbar
         const formData = new FormData();
 
         formData.append('tipoArquivo', 'CURRICULO');

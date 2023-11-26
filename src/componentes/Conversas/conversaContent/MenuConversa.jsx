@@ -10,7 +10,6 @@ const MenuArquivo = (props) => {
     const baixarConversaRef = React.useRef(null);
 
 
-    // return focus to the button when we transitioned from !open -> open
     const prevOpen = React.useRef(open);
     React.useEffect(() => {
         if (prevOpen.current === true && open === false) {
@@ -48,7 +47,6 @@ const MenuArquivo = (props) => {
             responseType: 'blob'
         })
             .then((res) => {
-                // Prepare for download
                 const file = new Blob([res.data]);
                 const fileURL = URL.createObjectURL(file);
 
@@ -66,12 +64,10 @@ const MenuArquivo = (props) => {
                 console.log(e);
             })
     }
-    // ...
-
 
     return (
         <div>
-            <Button ref={anchorRef} onClick={handleToggle}  
+            <Button ref={anchorRef} onClick={handleToggle}
             style={{
                 padding: '0px',
                 minWidth: '0px',

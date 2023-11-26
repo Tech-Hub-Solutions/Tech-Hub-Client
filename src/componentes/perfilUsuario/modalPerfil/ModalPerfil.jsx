@@ -106,8 +106,6 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
         softSkills: yup
             .array()
             .transform((value, originalValue) => {
-                // original value é o valor que vem do input
-                // value é o valor que o yup usa para fazer as validações
                 if (originalValue === "") {
                     return [];
                 }
@@ -284,8 +282,6 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
                                         marginBottom: "16px",
                                     }}
                                     defaultValue={""}
-                                    // error={errors.nome?.message.length > 0}
-                                    // helperText={errors.nome?.message}
                                     placeholder={funcaoUsuario === "EMPRESA" ? "Empresa de tecnologia" :
                                         "Desenvolvedor Full-Stack | Angular | React | Node.js"}
                                     {...register("descricao")}
@@ -311,8 +307,6 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
                                         marginBottom: "16px",
                                     }}
                                     defaultValue={""}
-                                    // error={errors.nome?.message.length > 0}
-                                    // helperText={errors.nome?.message}
                                     placeholder={funcaoUsuario === "EMPRESA" ? "Empresa de tecnologia consolidada no mercado..." :
                                         "Na minha jornada, liderei projetos desafiadores..."}
                                     {...register("experiencia")}
@@ -338,8 +332,6 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
                                         marginBottom: "16px",
                                     }}
                                     defaultValue={""}
-                                    // error={errors.nome?.message.length > 0}
-                                    // helperText={errors.nome?.message}
                                     placeholder={funcaoUsuario === "EMPRESA" ? "Procuramos pessoas que..." :
                                         "Sou um entusiasta da tecnologia dedicado..."}
                                     {...register("sobreMim")}
@@ -362,8 +354,6 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
                                             marginBottom: "16px",
                                         }}
                                         defaultValue={""}
-                                        // error={errors.nome?.message.length > 0}
-                                        // helperText={errors.nome?.message}
                                         placeholder="R$ 0.00"
                                         {...register("precoMedio")}
                                     />
@@ -466,8 +456,6 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
                                             ...props.style,
                                             backgroundColor: "#F5F5F5",
                                             color: "#000",
-                                            // cinza mais escuro: #E5E5E5
-                                            // mais que o de cima: #F5F5F5
                                             border: "1px solid #ffff"
                                         }}>
                                             {option.nome}
@@ -519,14 +507,11 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
                                                     helperText={errors.hardSkills?.message}
                                                 />
                                             )}
-                                            // adicionar regrar de cor na hardSkill
                                             renderOption={(props, option) => (
                                                 <li {...props} style={{
                                                     ...props.style,
                                                     backgroundColor: "#F5F5F5",
                                                     color: "#000",
-                                                    // cinza mais escuro: #E5E5E5
-                                                    // mais que o de cima: #F5F5F5
                                                     border: "1px solid #ffff"
                                                 }}>
                                                     {option.nome}
