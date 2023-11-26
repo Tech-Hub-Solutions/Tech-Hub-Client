@@ -27,7 +27,7 @@ export const resizeImage = (file, callBack) => {
 export const verificarCorflag = (flag) => {
     let background;
 
-    switch (flag.area) {
+    switch ((flag.area).toLowerCase()) {
 
         case 'front-end':
             background = "var(--color-frontend)"
@@ -50,13 +50,13 @@ export const verificarCorflag = (flag) => {
         case 'devops':
             background = "var(--color-devops)";
             break;
-        case 'I.A.':
+        case 'inteligência artificial':
             background = "var(--color-ia)";
             break;
-        case 'Segurança':
+        case 'segurança':
             background = "var(--color-seguranca)";
             break;
-        case 'Soft-skills':
+        case 'soft-skills':
             background = "var(--color-softSkills)";
             break;
 
