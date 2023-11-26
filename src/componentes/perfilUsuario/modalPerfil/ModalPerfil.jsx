@@ -453,7 +453,8 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
                                     renderInput={(params) => (
                                         <TextField sx={{ width: 600 }}
                                             {...params}
-                                            label="Soft Skills (máximo 10)"
+                                            label={funcaoUsuario === "EMPRESA" ? "Valores da empresa (máximo 10)" :
+                                            "Soft Skills (máximo 10)"}
                                             placeholder="Profissionalismo..."
                                             error={errors.softSkills?.message.length > 0}
                                             helperText={errors.softSkills?.message}
