@@ -27,6 +27,7 @@ const LanguageLogo = ({ language, height }) => {
         Lua: "lua",
         Haskell: "haskell",
         Groovy: "groovy",
+
         // Frameworks & Libraries
         React: "react-original",
         Vue: "vuejs",
@@ -42,6 +43,7 @@ const LanguageLogo = ({ language, height }) => {
         ".NET": "dot-net",
         Meteor: "meteor",
         Rails: "rails",
+
         // Tools & Databases
         Docker: "docker",
         Kubernetes: "kubernetes",
@@ -60,9 +62,6 @@ const LanguageLogo = ({ language, height }) => {
 
 
     const iconName = deviconClassNames[language];
-
-    // If iconName is not found, fallback to display the language name
-
 
     return (
         <div style={{margin: "auto"}}>

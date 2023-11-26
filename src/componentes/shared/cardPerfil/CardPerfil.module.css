@@ -16,11 +16,12 @@
   font-weight: 500;
   line-height: 19.6px;
   display: -webkit-box;
-  -webkit-line-clamp: 4; /* Number of lines to show */
+  -webkit-line-clamp: 2; /* Number of lines to show */
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   overflow: hidden;
   text-align: start;
+  height: 40px;
 }
 
 .container__infos__usuario {

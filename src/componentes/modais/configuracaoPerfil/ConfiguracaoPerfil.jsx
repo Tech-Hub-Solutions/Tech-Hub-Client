@@ -299,7 +299,7 @@ const ConfiguracaoPerfilModal = ({
                           label="Selecione um país"
                           inputProps={{
                             ...params.inputProps,
-                            autoComplete: "new-password", // disable autocomplete and autofill
+                            autoComplete: "new-password",
                           }}
                         />
                       )}

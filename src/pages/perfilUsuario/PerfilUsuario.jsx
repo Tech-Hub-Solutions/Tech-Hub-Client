@@ -54,9 +54,9 @@ const PerfilUsuario = (props) => {
 
                     let softSkillsUsuario = [];
                     let hardSkillsUsuario = [];
-            
+
                     const usuarioFlags = usuarioPerfil.flags;
-            
+
                     for (let i = 0; i < usuarioFlags.length; i++) {
                         if (usuarioFlags[i].categoria === "soft-skill") {
                             softSkillsUsuario.push(usuarioFlags[i]);
@@ -88,7 +88,6 @@ const PerfilUsuario = (props) => {
                 if (response.status == 200) {
                     const usuarioAvaliacao = response.data;
 
-                    // use reduce() method to find the sum
                     let sum = usuarioAvaliacao.reduce((accumulator, currentValue) => {
                         return accumulator + currentValue.quantidade
                     }, 0);
@@ -131,13 +130,11 @@ const PerfilUsuario = (props) => {
     React.useEffect(() => {
 
         const newSkills = usuario?.flags?.map((flag) => {
-            // map varre a lista e transforma o json antigo em um novo
-
             const background = verificarCorflag(flag);
 
             return {
-                ...flag, // Pega todos os atributos do json que já existem.
-                background // adiciona novo atributo com base na variável background
+                ...flag,
+                background
             }
         })
 

@@ -207,7 +207,7 @@ function BuscaTalentos() {
       <div className={styles["container__all"]}>
         <Stack
           className={styles["stack__left"]}
-          sx={{ marginRight: "18px", marginLeft: "98px" }}
+          sx={{ marginRight: "18px", marginLeft: "98px", height: "100%" }}
         >
           <div className={styles["container__left"]}>
             <h1 className={styles["container__left__h1"]}>Procurar Talentos</h1>

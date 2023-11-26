@@ -62,7 +62,6 @@ const CardPerfil = (props) => {
   const navigateToPerfil = () => {
     navigate({
       pathname: "/perfil",
-      // passar parametro de url 1 para pegar com useParam
       search: `?id=${usuario.id}`,
     });
   };
@@ -73,14 +72,14 @@ const CardPerfil = (props) => {
         sx={{
           width: "100%",
           height: "100%",
-          maxHeight: "24rem",
+          maxHeight: "21rem",
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-start",
           alignItems: "flex-start",
           padding: "0px",
-          textTransform: "none", 
-      
+          textTransform: "none",
+
         }}>
           <CardMedia sx={{ height: 187, width:'100%' }} title="Foto de perfil de freelancer">
             <Avatar
