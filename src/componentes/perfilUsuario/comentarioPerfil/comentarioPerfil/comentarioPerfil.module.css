@@ -1,50 +1,52 @@
 .divider {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .comentario {
-    display: flex;
+  display: flex;
 }
 
 .comentario__fotoPerfil {
-    margin-right: 24px;
+  margin-right: 24px;
 }
 
 .comentario__content {
-    display: flex;
-    align-items: start;
-    flex-direction: column;
+  display: flex;
+  align-items: start;
+  flex-direction: column;
 }
 
 .comentario__content h1 {
-    color: var(--color-cinza);
-    font-family: Montserrat;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-    margin-bottom: 8px;
-    cursor: pointer;
-    transition: 0.2s;
+  color: var(--color-cinza);
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .comentario__content h1:hover {
-    color: var(--color-azul);
+  color: var(--color-azul);
 }
 
-
 .comentario__content h4 {
-    color: var(--color-cinza);
-    font-family: Montserrat;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
+  color: var(--color-cinza);
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 
 .infoUsuario__nacionalidade {
-    display: flex;
-    margin-bottom: 16px;
+  display: flex;
+  margin-bottom: 16px;
 }
 
+.comentario__text {
+  text-align: justify;
+}
