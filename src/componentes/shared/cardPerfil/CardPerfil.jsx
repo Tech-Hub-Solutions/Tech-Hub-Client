@@ -78,8 +78,8 @@ const CardPerfil = (props) => {
           justifyContent: "flex-start",
           alignItems: "flex-start",
           padding: "0px",
-          textTransform: "none", 
-      
+          textTransform: "none",
+
         }}>
           <CardMedia sx={{ height: 187, width:'100%' }} title="Foto de perfil de freelancer">
             <Avatar

@@ -56,7 +56,6 @@ const FlagsList = ({ areas, carregarFlags }) => {
     const importarFlag = (e) => {
         const arquivo = e.target.files[0];
 
-        // se não for txt, abrir snackbar
         if (arquivo.type !== 'text/plain') {
             setSnackbarSuccess({ open: true, message: "O arquivo deve ser do tipo .txt!", severity: 'error' });
             return;
@@ -145,7 +144,7 @@ const FlagsList = ({ areas, carregarFlags }) => {
                                 </Button>
                             </div>
 
-                            <div className={`${styles['admin_flags__areas__area__dropdown']} 
+                            <div className={`${styles['admin_flags__areas__area__dropdown']}
                             ${openDropdowns.some(dropdown => dropdown === area.nome)
                                     ? styles['opened-dropdown'] : styles['closed-dropdown']
                                 }`}

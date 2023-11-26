@@ -36,7 +36,6 @@ const BlueBackgroundButton = ({
 };
 
 BlueBackgroundButton.propTypes = {
-  // onClick: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
   style: PropTypes.object,
   type: PropTypes.string,

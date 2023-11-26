@@ -77,7 +77,7 @@ const ConversaMensagem = (props) => {
             </div>
             :
             <div className={
-                `${styles['conversa-content__mensagem']} 
+                `${styles['conversa-content__mensagem']}
                 ${mensagem.urlArquivo ? styles['conversa-content__mensagem--arquivo'] : ""}
                         ${(mensagem.usuarioId == usuarioId ? styles['conversa-content__mensagem--propria'] : "")}`
             }
@@ -106,12 +106,11 @@ const ConversaMensagem = (props) => {
                                 padding: "0.8rem",
                                 backgroundColor: mensagem.usuarioId == usuarioId ? "#0b77b1" : "#d2d2d2",
                                 color: mensagem.usuarioId == usuarioId ? "#fff" : "#404040",
-                                // hover
                                 "&:hover": {
                                     backgroundColor: mensagem.usuarioId == usuarioId ? "#0d84c4" : "#bebebe",
                                 },
                             }}>
-                            <DownloadRoundedIcon 
+                            <DownloadRoundedIcon
                             fontSize="large"
                             />
                             <div className={styles['conversa-content__mensagem__info__arquivo__informacoes']}>

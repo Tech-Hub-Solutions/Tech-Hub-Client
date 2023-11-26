@@ -48,7 +48,6 @@ const ConversaContent = (props) => {
         axiosInstance.get(`/conversas/sala/${conversaSelecionada?.roomCode}`)
             .then((response) => {
                 if (response.data.length > 0) {
-                    // Adicionar mensagem de data, caso seja a primeira mensagem do dia
                     let mensagens = [];
                     let dataMensagemAnterior = null;
                     response.data.forEach((mensagem) => {

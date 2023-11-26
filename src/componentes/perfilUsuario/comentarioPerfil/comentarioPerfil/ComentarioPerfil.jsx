@@ -10,7 +10,6 @@ const ComentarioPerfil = ({ comentario }) => {
   const redirectToPerfil = () => {
     navigate({
       pathname: "/perfil",
-      // passar parametro de url 1 para pegar com useParam
       search: `?id=${comentario.idAvaliador}`,
     });
 

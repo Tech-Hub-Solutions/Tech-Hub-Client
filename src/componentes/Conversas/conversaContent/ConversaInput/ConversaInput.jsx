@@ -24,7 +24,6 @@ const ConversaInput = (props) => {
         input.style.height = 'auto';
         input.style.height = (input.scrollHeight) + 'px';
 
-        // Se for enter, mas não estiver pressionando shift, envia a mensagem
         if (event.keyCode === 13 && !event.shiftKey) {
             event.preventDefault();
 
@@ -105,7 +104,6 @@ const ConversaInput = (props) => {
         const endPos = input.selectionEnd;
         const messageText = texto;
 
-        // Insert the emoji at the cursor position
         const newMessageText =
             messageText.substring(0, startPos) +
             emojiObject.native +
@@ -113,7 +111,6 @@ const ConversaInput = (props) => {
 
         setTexto(newMessageText);
 
-        // Use setTimeout to focus after updating the message
         setTimeout(() => {
             input.focus();
             input.setSelectionRange(startPos + emojiObject.native.length, startPos + emojiObject.native.length);

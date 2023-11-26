@@ -24,8 +24,6 @@ const MenuArquivo = (props) => {
         width: 1,
     });
 
-
-    // return focus to the button when we transitioned from !open -> open
     const prevOpen = React.useRef(open);
     React.useEffect(() => {
         if (prevOpen.current === true && open === false) {
@@ -74,7 +72,6 @@ const MenuArquivo = (props) => {
                     reader.onloadend = () => {
                         arquivoDetail.url = reader.result;
                         arquivoDetail.file = new File([blob], arquivo.name, { type: arquivo.type });
-                        // Transformar para File
                         setArquivo(arquivoDetail);
                     };
                 });
