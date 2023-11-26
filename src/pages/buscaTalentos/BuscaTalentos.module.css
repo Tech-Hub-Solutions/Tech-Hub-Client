@@ -7,7 +7,7 @@
   margin-top: 95px;
   display: flex;
   flex-direction: row;
-  height: 700px;
+  height: 85vh;
 }
 
 .container__left {
@@ -24,6 +24,7 @@
   font-weight: 600;
   line-height: normal;
   margin-bottom: 32px;
+  margin-top: 12px;
 }
 
 .container__left__h2 {
@@ -37,6 +38,22 @@
 
 .checkbox__tecnologias {
   margin-top: 24px;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.checkbox__tecnologias::-webkit-scrollbar {
+  width: 8px;
+}
+
+.checkbox__tecnologias::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.checkbox__tecnologias::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background: #888;
 }
 
 .stack__right {

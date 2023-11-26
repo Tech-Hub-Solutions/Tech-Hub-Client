@@ -71,7 +71,7 @@ const CardPerfil = (props) => {
         <Button onClick={navigateToPerfil} className={styles["navigate__perfil"]}
         sx={{
           width: "100%",
-          height: "90%",
+          height: "100%",
           maxHeight: "21rem",
           display: "flex",
           flexDirection: "column",
