@@ -245,7 +245,7 @@ const PerfilUsuario = (props) => {
                                     {
                                         usuario.isPerfilFreelancer &&
                                         <div className={styles['content__sectionProjetos']}>
-                                            <Projetos nomeGitHub={usuario.nomeGitHub} />
+                                            <Projetos nomeGitHub={usuario?.nomeGithub} />
                                         </div>
                                     }
                                     <div className={styles['content__sectionComentariosAvaliacoes']}>
