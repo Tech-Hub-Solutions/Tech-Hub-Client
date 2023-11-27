@@ -1,4 +1,4 @@
-const adress = import.meta.env.VITE_IP_ADDRESS;
+const adress = process.env.VITE_IP_ADDRESS;
 
  
 export default adress;
