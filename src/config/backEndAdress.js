@@ -1,7 +1,4 @@
-const ipBackEnd = {
-    localhost: "localhost",
-}
+const adress = import.meta.env.VITE_IP_ADDRESS;
 
-const adress = `http://${ipBackEnd.localhost}:8080`
 
 export default adress;
