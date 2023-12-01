@@ -1,0 +1,13 @@
+{
+    "rewrites":  [
+        {"source": "/(.*)", "destination": "/"},
+        {"source": "/conversas", "destination": "/conversas"},
+        {"source": "/teste", "destination": "/teste"},
+        {"source": "/perfil", "destination": "/perfil"},
+        {"source": "/busca-talentos", "destination": "/busca-talentos"},
+        {"source": "/favoritos", "destination": "/favoritos"},
+        {"source": "/admin", "destination": "/admin"},
+        {"source": "/404", "destination": "/404"},
+        {"source": "/:path*", "destination": "/404"}
+      ]
+}
