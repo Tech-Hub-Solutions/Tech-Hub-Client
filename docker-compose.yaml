@@ -1,0 +1,9 @@
+version: "4.0"
+
+services:
+  tech-hub-client:
+    build: .
+    ports:
+      - "4173:4173"
+    environment:
+      VITE_SERVICES_BASE_URL: http://localhost:8080
