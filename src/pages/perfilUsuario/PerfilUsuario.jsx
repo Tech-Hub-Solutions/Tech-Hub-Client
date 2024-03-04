@@ -139,6 +139,11 @@ const PerfilUsuario = (props) => {
         })
 
         setFlags(newSkills);
+
+        if (usuario.isPerfilFreelancer && !usuario.isOwnProfile) {
+            axiosInstance.post("/metricas-usuario/" + usuario.idUsuario);
+        }
+
     }, [usuario])
 
     React.useEffect(() => {
@@ -235,7 +240,7 @@ const PerfilUsuario = (props) => {
                                                     </div>
                                                 </div>
                                                 <div className={styles['sectionSkills__softSkills']}>
-                                                    <BoxSoftSkills skills={ flags?.filter(flag => flag.categoria === "soft-skill") } />
+                                                    <BoxSoftSkills skills={flags?.filter(flag => flag.categoria === "soft-skill")} />
                                                 </div>
                                             </div>
                                     }
@@ -251,7 +256,7 @@ const PerfilUsuario = (props) => {
                                             {
                                                 comentario.length == 0 &&
                                                 <p
-                                                style={{color: '#B4B4B4', marginTop: '24px',marginBottom: '24px',  fontWeight: '500'}}
+                                                    style={{ color: '#B4B4B4', marginTop: '24px', marginBottom: '24px', fontWeight: '500' }}
                                                 >Este usuário ainda não possui comentários.</p>
                                             }
                                             {
