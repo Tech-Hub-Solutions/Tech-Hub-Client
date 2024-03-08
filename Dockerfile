@@ -1,18 +1,21 @@
-FROM node:18-alpine AS builder
+# Build
+FROM node:18-alpine as build
 
 WORKDIR /app
+
+ENV PATH /app/node_modules/.bin:$PATH
 
 COPY package*.json ./
-RUN npm install --production
+RUN npm ci --silent
+COPY . ./
+RUN npm run build
 
-# Build the app in a separate stage to avoid unnecessary layers
-FROM node:18-alpine AS runner
+# Server
+FROM nginx:stable-alpine
 
-WORKDIR /app
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY ./docker/nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=builder /app/node_modules ./node_modules
-COPY . .
+EXPOSE 80
 
-EXPOSE 4173
-
-CMD [ "npm", "run", "start" ]
+CMD ["nginx", "-g", "daemon off;"]

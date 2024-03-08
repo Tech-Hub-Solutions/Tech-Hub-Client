@@ -8,7 +8,6 @@ import SockJS from "sockjs-client";
 import { over } from "stompjs";
 import chatDefaultImg from '../../assets/images/chat-default.png';
 import Header from '../../componentes/shared/header/Header';
-import adress from '../../config/backEndAdress';
 
 const Conversas = () => {
     const usuarioId = sessionStorage.getItem('usuarioId');
@@ -19,7 +18,7 @@ const Conversas = () => {
     const [conversaSelecionada, setConversaSelecionada] = useState(null);
 
     useEffect(() => {
-        const sock = new SockJS(adress + "/websocket");
+        const sock = new SockJS(`${import.meta.env.VITE_SERVICES_BASE_URL}` + "/websocket");
         const stomp = over(sock);
         stomp.debug = () => { };
 

@@ -4,6 +4,6 @@ services:
   tech-hub-client:
     build: .
     ports:
-      - "4173:4173"
+      - "80:80"
     environment:
-      VITE_SERVICES_BASE_URL: http://localhost:8080
+      VITE_SERVICES_BASE_URL: /api
