@@ -15,7 +15,7 @@ import axiosInstance from "../../config/axiosInstance";
 import WidgetSoftSkill from "../../componentes/perfilUsuario/skillsUsuario/widgetSoftSkill/WidgetSoftSkill";
 import WidgetHardSkills from "../../componentes/perfilUsuario/skillsUsuario/widgetHardSkills/WidgetHardSkills";
 import { useLocation, useNavigate } from 'react-router-dom'
-import NotFound from "../notFound/NotFound";
+import NotFound from "../errors/NotFound";
 import PerfilSkeleton from "../../componentes/perfilUsuario/PerfilSkeleton/PerfilSkeleton";
 import InfoAdicional from "../../componentes/perfilUsuario/infoAdicional/InfoAdicional";
 import { verificarCorflag } from "../../utils/geral";
@@ -73,9 +73,7 @@ const PerfilUsuario = (props) => {
                 }
             })
             .catch((error) => {
-                if (error.response.status == 404) {
-                    setIsNotFound(true);
-                }
+                setIsNotFound(true);
             })
             .finally(() => {
                 setIsLoading(false);

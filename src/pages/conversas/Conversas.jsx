@@ -8,6 +8,8 @@ import SockJS from "sockjs-client";
 import { over } from "stompjs";
 import chatDefaultImg from '../../assets/images/chat-default.png';
 import Header from '../../componentes/shared/header/Header';
+import ListaDeConversaSkeleton from '../../componentes/Conversas/listaDeConversa/ListaDeConversaSkeleton';
+import ConversaContentSkeleton from '../../componentes/Conversas/conversaContent/ConversaContentSkeleton';
 
 const Conversas = () => {
     const usuarioId = sessionStorage.getItem('usuarioId');
@@ -16,6 +18,7 @@ const Conversas = () => {
 
     const [conversas, setConversas] = useState([]);
     const [conversaSelecionada, setConversaSelecionada] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const sock = new SockJS(`${import.meta.env.VITE_SERVICES_BASE_URL}` + "/websocket");
@@ -77,33 +80,43 @@ const Conversas = () => {
                         window.history.replaceState({}, document.title)
                     }
                 }
-            })
+            }).finally(() => {
+                setIsLoading(false);
+            });
     }
 
     return (
         <div className={styles['content']}>
             <Header />
-            <div className={styles['conversas']}>
-                <ListaDeConversas
-                    conversas={conversas}
-                    setConversaSelecionada={setConversaSelecionada}
-                    conversaSelecionada={conversaSelecionada}
-                />
-                {
-                    conversaSelecionada ?
-                        <ConversaContent
-                            conversaSelecionada={conversaSelecionada}
-                            setConversaSelecionada={setConversaSelecionada}
-                            stompClient={stompClient}
-                        />
-                        :
-                        <div className={styles['conversa-default']}>
-                            <img src={chatDefaultImg} alt="Chat default" />
-                            <p>Selecione uma <span>conversa</span> para começar!</p>
-                        </div>
-                }
+            {
+                isLoading ?
+                    <div className={styles['conversas']}>
+                        <ListaDeConversaSkeleton />
+                        <ConversaContentSkeleton />
+                    </div>
 
-            </div>
+                    :
+                    <div className={styles['conversas']}>
+                        <ListaDeConversas
+                            conversas={conversas}
+                            setConversaSelecionada={setConversaSelecionada}
+                            conversaSelecionada={conversaSelecionada}
+                        />
+                        {conversaSelecionada ?
+                            <ConversaContent
+                                conversaSelecionada={conversaSelecionada}
+                                setConversaSelecionada={setConversaSelecionada}
+                                stompClient={stompClient}
+                            />
+                            :
+                            <div className={styles['conversa-default']}>
+                                <img src={chatDefaultImg} alt="Chat default" />
+                                <p>Selecione uma <span>conversa</span> para começar!</p>
+                            </div>}
+                    </div>
+
+            }
+
         </div>
     )
 }
