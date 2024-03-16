@@ -220,7 +220,6 @@ const ConversaInput = (props) => {
                 <MenuArquivo setArquivo={setArquivo} />
 
                 <LoadingButton type="submit" loading={isLoading} color="primary" size="large" disabled={isLoading || isLoadingMessages} >
-                    {isLoadingMessages ? "S" : "N"}
                     {(!isLoading) &&
                         <div>
                             <img src={Send} />
