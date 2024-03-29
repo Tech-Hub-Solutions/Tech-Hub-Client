@@ -138,7 +138,6 @@ const Beneficios = () => {
       <CadastroModal
         isCadastroOpen={isCadastroOpen}
         setCadastroIsOpen={setCadastroIsOpen}
-        setIsLoginModalOpen={setIsLoginModalOpen}
         user={user}
       />
     </>

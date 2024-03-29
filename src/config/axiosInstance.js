@@ -35,9 +35,6 @@ axiosInstance.interceptors.response.use((response) => response,
         if (error.code === 'ECONNABORTED') {
             window.location.href = "/error/500/Erro de conexão com o servidor";
         }
-        if (error.response.status === 500) {
-            window.location.href = "/error/500/Erro interno do servidor";
-        }
         if (error.response.status === 403) {
             window.location.href = "/error/403/Acesso negado";
         }

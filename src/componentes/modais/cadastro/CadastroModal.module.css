@@ -43,3 +43,14 @@
     color: #0f9eea;
   }
 }
+
+.switch__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.switch__container p {
+  font-size: 14px;
+  color: #757575;
+}
