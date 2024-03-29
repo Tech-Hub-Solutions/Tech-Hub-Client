@@ -163,6 +163,8 @@ function LoginModal({
       return;
     }
 
+    const usuario = res;
+
     if (usuario.token) {
       sessionStorage.setItem("usuarioId", usuario.id);
       sessionStorage.setItem("nome", usuario.nome);
@@ -171,7 +173,7 @@ function LoginModal({
       sessionStorage.setItem("pais", usuario.pais);
       sessionStorage.setItem("urlFotoPerfil", usuario.urlFotoPerfil);
       navigate({
-        pathname: funcao == "ADMIN" ? "/admin" : "/perfil",
+        pathname: usuario.funcao == "ADMIN" ? "/admin" : "/perfil",
       });
       return;
     } else {

@@ -28,7 +28,7 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use((response) => response,
     (error) => {
         const location = window.location.pathname;
-        if (error.request.status == 401 && location !== "/") {
+        if (error.request.status == 401 && location !== "/" && !error.request.responseURL.includes("usuarios/verify")) {
             window.location.href = "/";
             sessionStorage.clear();
         }

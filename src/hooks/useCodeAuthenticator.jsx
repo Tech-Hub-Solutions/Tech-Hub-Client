@@ -3,106 +3,110 @@ import axiosInstance from "../config/axiosInstance";
 
 const useCodeAuthenticator = () => {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
 
-    const redirectToPerfil = (usuario) => {
-        if (usuario.token) {
-            sessionStorage.setItem("usuarioId", usuario.id);
-            sessionStorage.setItem("nome", usuario.nome);
-            sessionStorage.setItem("token", usuario.token);
-            sessionStorage.setItem("funcao", usuario.funcao);
-            sessionStorage.setItem("pais", usuario.pais);
-            sessionStorage.setItem("urlFotoPerfil", usuario.urlFotoPerfil);
-            navigate({
-                pathname: usuario.funcao == "ADMIN" ? "/admin" : "/perfil",
-            });
-            return;
-        } else {
-            throw new Error("Erro ao realizar cadastro.");
-        }
-    };
+  const redirectToPerfil = (usuario) => {
+    if (usuario.token) {
+      sessionStorage.setItem("usuarioId", usuario.id);
+      sessionStorage.setItem("nome", usuario.nome);
+      sessionStorage.setItem("token", usuario.token);
+      sessionStorage.setItem("funcao", usuario.funcao);
+      sessionStorage.setItem("pais", usuario.pais);
+      sessionStorage.setItem("urlFotoPerfil", usuario.urlFotoPerfil);
+      navigate({
+        pathname: usuario.funcao == "ADMIN" ? "/admin" : "/perfil",
+      });
+      return;
+    }
+  };
 
-    const authenticate = (code, user, setSnackbarSuccess, setIsLoading) => {
-        if (!code || code.length < 6) {
-            setSnackbarSuccess({
-                open: true,
-                isError: true,
-                severity: "error",
-                message: "Código inválido.",
-            });
-            return;
-        }
+  const authenticate = (code, user, setSnackbarSuccess, setIsLoading, setIsQrCodeModalOpen) => {
+    if (!code || code.length < 6) {
+      setSnackbarSuccess({
+        open: true,
+        isError: true,
+        severity: "error",
+        message: "Código inválido.",
+      });
+      return;
+    }
 
-        setIsLoading(true);
+    setIsLoading(true);
 
-        axiosInstance
-            .post("/usuarios/verify", {
-                email: user.email,
-                senha: user.senha,
-                code: code,
-            })
-            .then((res) => {
-                setSnackbarSuccess({
-                    open: true,
-                    isError: false,
-                    severity: "success",
-                    message: "Código verificado com sucesso."
-                });
+    axiosInstance
+      .post("/usuarios/verify", {
+        email: user.email,
+        senha: user.senha,
+        code: code,
+      })
+      .then((res) => {
+        setSnackbarSuccess({
+          open: true,
+          isError: false,
+          severity: "success",
+          message: "Código verificado com sucesso."
+        });
 
-                setTimeout(() => {
-                    redirectToPerfil(res.data);
-                }, 2300);
-            })
-            .catch((error) => {
-                console.error(error);
-                setSnackbarSuccess({
-                    open: true,
-                    isError: true,
-                    severity: "error",
-                    message: "Código inválido.",
-                });
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-    };
+        setTimeout(() => {
+          setIsQrCodeModalOpen(false)
+          redirectToPerfil(res.data);
 
-    const cancelar = (user, setSnackbarSuccess, setIsLoadingCancelar) => {
-        setIsLoadingCancelar(true);
-    
-        axiosInstance
-          .post("/usuarios/login", {
-            email: user.email,
-            senha: user.senha,
-          })
-          .then((res) => {
-            setSnackbarSuccess({
-              open: true,
-              isError: false,
-              severity: "success",
-              message: "Redirecionando..."
-            });
-    
-            setTimeout(() => {
-              redirectToPerfil(res.data);
-            }, 2300);
-          })
-          .catch((error) => {
-            console.error(error);
-            setSnackbarSuccess({
-              open: true,
-              isError: true,
-              severity: "error",
-              message: "Houve um erro ao cancelar a autenticação de 2 fatores.",
-            });
-          })
-          .finally(() => {
-            setIsLoadingCancelar(false);
-          });
-      };
+        }, 2300);
+      })
+      .catch((error) => {
+        console.error(error);
+        setSnackbarSuccess({
+          open: true,
+          isError: true,
+          severity: "error",
+          message: "Código inválido.",
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
-    return { authenticate, cancelar };
+  const cancelar = (user, setSnackbarSuccess, setIsLoadingCancelar, setIsQrCodeModalOpen) => {
+    setIsLoadingCancelar(true);
+
+    axiosInstance
+      .post("/usuarios/login", {
+        email: user.email,
+        senha: user.senha,
+      })
+      .then((res) => {
+        setSnackbarSuccess({
+          open: true,
+          isError: false,
+          severity: "success",
+          message: "Redirecionando..."
+        });
+
+        setTimeout(() => {
+          if (setIsQrCodeModalOpen) {
+            setIsQrCodeModalOpen(false)
+          } else {
+            redirectToPerfil(res.data);
+          }
+        }, 2300);
+      })
+      .catch((error) => {
+        console.error(error);
+        setSnackbarSuccess({
+          open: true,
+          isError: true,
+          severity: "error",
+          message: "Houve um erro ao cancelar a autenticação de 2 fatores.",
+        });
+      })
+      .finally(() => {
+        setIsLoadingCancelar(false);
+      });
+  };
+
+  return { authenticate, cancelar, redirectToPerfil }
 }
 
 export default useCodeAuthenticator;

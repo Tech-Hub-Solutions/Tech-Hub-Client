@@ -18,7 +18,7 @@ function QrCodeModal({
   user,
   isQrCodeModalOpen,
   setIsQrCodeModalOpen,
-}) {
+}) {  
   const [snackbarSuccessOpen, setSnackbarSuccess] = React.useState({});
   const [code, setCode] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
@@ -81,7 +81,7 @@ function QrCodeModal({
   useEffect(() => {
     if (debouncedCode.length === 6) {
       setIsLoading(true);
-      authenticate(debouncedCode, user, setSnackbarSuccess, setIsLoading)
+      authenticate(debouncedCode, user, setSnackbarSuccess, setIsLoading, setIsQrCodeModalOpen);
     };
   }, [debouncedCode]);
 
@@ -153,7 +153,7 @@ function QrCodeModal({
             <div className={styles["button__container"]}>
               <LoadingButton
                 loading={isLoadingCancelar}
-                onClick={() => cancelar(user, setSnackbarSuccess, setIsLoadingCancelar)}
+                onClick={() => cancelar(user, setSnackbarSuccess, setIsLoadingCancelar, setIsQrCodeModalOpen)}
                 sx={{
                   backgroundColor: "trasnparent",
                   color: "#727272",
@@ -174,7 +174,7 @@ function QrCodeModal({
                   },
                   padding: "7px 24px",
                 }}
-                onClick={() => authenticate(code, user, setSnackbarSuccess, setIsLoading)}
+                onClick={() => authenticate(code, user, setSnackbarSuccess, setIsLoading, setIsQrCodeModalOpen)}
               >Continuar</LoadingButton>
             </div>
 
