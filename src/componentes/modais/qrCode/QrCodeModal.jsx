@@ -2,17 +2,16 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import styles from "./QrCodeModal.module.css";
+import styles from "../cadastro/CadastroModal.module.css";
 import ImgCellPhone from "../../../assets/images/Cellphone.png";
 
-import React from "react";
+import React, { useEffect } from "react";
 
-import axiosInstance from "../../../config/axiosInstance.js";
 import SnackbarCustom from "../../shared/snackbar/SnackbarCustom.jsx";
-import { useNavigate } from "react-router-dom";
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "../../shared/ui/input-otp";
-import { Button } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import useCodeAuthenticator from "@/src/hooks/useCodeAuthenticator";
+import useDebounce from "@/src/hooks/useDebounce";
 
 
 function QrCodeModal({
@@ -77,104 +76,14 @@ function QrCodeModal({
     },
   };
 
-  const navigate = useNavigate();
-
-
-  const redirectToPerfil = (usuario) => {
-    if (usuario.token) {
-      sessionStorage.setItem("usuarioId", usuario.id);
-      sessionStorage.setItem("nome", usuario.nome);
-      sessionStorage.setItem("token", usuario.token);
-      sessionStorage.setItem("funcao", usuario.funcao);
-      sessionStorage.setItem("pais", usuario.pais);
-      sessionStorage.setItem("urlFotoPerfil", usuario.urlFotoPerfil);
-      navigate({
-        pathname: usuario.funcao == "ADMIN" ? "/admin" : "/perfil",
-      });
-      return;
-    } else {
-      throw new Error("Erro ao realizar cadastro.");
-    }
-  };
-
-  const onSubmit = () => {
-    if (!code || code.length < 6) {
-      setSnackbarSuccess({
-        open: true,
-        isError: true,
-        severity: "error",
-        message: "Código inválido.",
-      });
-      return;
-    }
-
-    setIsLoading(true);
-
-    axiosInstance
-      .post("/usuarios/verify", {
-        email: user.email,
-        senha: user.senha,
-        code: code,
-      })
-      .then((res) => {
-        setSnackbarSuccess({
-          open: true,
-          isError: false,
-          severity: "success",
-          message: "Código verificado com sucesso."
-        });
-
-        setTimeout(() => {
-          redirectToPerfil(res.data);
-        }, 2300);
-      })
-      .catch((error) => {
-        console.error(error);
-        setSnackbarSuccess({
-          open: true,
-          isError: true,
-          severity: "error",
-          message: "Código inválido.",
-        });
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
-
-  const cancelar = () => {
-    setIsLoadingCancelar(true);
-
-    axiosInstance
-      .post("/usuarios/login", {
-        email: user.email,
-        senha: user.senha,
-      })
-      .then((res) => {
-        setSnackbarSuccess({
-          open: true,
-          isError: false,
-          severity: "success",
-          message: "Redirecionando..."
-        });
-
-        setTimeout(() => {
-          redirectToPerfil(res.data);
-        }, 2300);
-      })
-      .catch((error) => {
-        console.error(error);
-        setSnackbarSuccess({
-          open: true,
-          isError: true,
-          severity: "error",
-          message: "Houve um erro ao cancelar a autenticação de 2 fatores.",
-        });
-      })
-      .finally(() => {
-        setIsLoadingCancelar(false);
-      });
-  };
+  const { authenticate, cancelar } = useCodeAuthenticator()
+  const debouncedCode = useDebounce(code, 600);
+  useEffect(() => {
+    if (debouncedCode.length === 6) {
+      setIsLoading(true);
+      authenticate(debouncedCode, user, setSnackbarSuccess, setIsLoading)
+    };
+  }, [debouncedCode]);
 
   const handleClose = () => {
     setIsQrCodeModalOpen(false);
@@ -244,7 +153,7 @@ function QrCodeModal({
             <div className={styles["button__container"]}>
               <LoadingButton
                 loading={isLoadingCancelar}
-                onClick={() => cancelar()}
+                onClick={() => cancelar(user, setSnackbarSuccess, setIsLoadingCancelar)}
                 sx={{
                   backgroundColor: "trasnparent",
                   color: "#727272",
@@ -265,7 +174,7 @@ function QrCodeModal({
                   },
                   padding: "7px 24px",
                 }}
-                onClick={() => onSubmit()}
+                onClick={() => authenticate(code, user, setSnackbarSuccess, setIsLoading)}
               >Continuar</LoadingButton>
             </div>
 

@@ -26,6 +26,8 @@ function LoginModal({
   isLoginModalOpen,
   setIsLoginModalOpen,
   setTravaTelaOpen,
+  setIsAutenticacaoModalOpen,
+  setUser
 }) {
   const [snackbarSuccessOpen, setSnackbarSuccess] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
@@ -106,13 +108,6 @@ function LoginModal({
         })
         .then((res) => {
 
-          sessionStorage.setItem("usuarioId", res.data.id);
-          sessionStorage.setItem("nome", res.data.nome);
-          sessionStorage.setItem("token", res.data.token);
-          sessionStorage.setItem("funcao", res.data.funcao);
-          sessionStorage.setItem("pais", res.data.pais);
-          sessionStorage.setItem("urlFotoPerfil", res.data.urlFotoPerfil);
-
           setSnackbarSuccess({
             open: true,
             isError: false,
@@ -120,10 +115,12 @@ function LoginModal({
             message: snackbarMessages.success,
           });
 
-          setIsLoading(!isLoading);
+          const usuario = res.data;
+
+          setUser(usuario);
 
           setTimeout(() => {
-            redirectToPerfil(res.data.funcao);
+            redirectToPerfil(res.data, data)
           }, 2300);
         })
         .catch((error) => {
@@ -158,10 +155,28 @@ function LoginModal({
     setTravaTelaOpen(true);
   };
 
-  const redirectToPerfil = (funcao) => {
-    navigate({
-      pathname: funcao == "ADMIN" ? "/admin" : "/perfil",
-    });
+  const redirectToPerfil = (res, data) => {
+    if (res.isUsing2FA) {
+      setUser({ ...res.data, email: data.email, senha: data.senha });
+      setIsAutenticacaoModalOpen(true);
+      setIsLoginModalOpen(false);
+      return;
+    }
+
+    if (usuario.token) {
+      sessionStorage.setItem("usuarioId", usuario.id);
+      sessionStorage.setItem("nome", usuario.nome);
+      sessionStorage.setItem("token", usuario.token);
+      sessionStorage.setItem("funcao", usuario.funcao);
+      sessionStorage.setItem("pais", usuario.pais);
+      sessionStorage.setItem("urlFotoPerfil", usuario.urlFotoPerfil);
+      navigate({
+        pathname: funcao == "ADMIN" ? "/admin" : "/perfil",
+      });
+      return;
+    } else {
+      throw new Error("Erro ao realizar cadastro.");
+    }
   };
 
   const {
