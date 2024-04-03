@@ -7,7 +7,7 @@ import CadastroEmpresaImage from "../../../assets/images/CadastroEmpresa.svg";
 import CadastroFreelancerImage from "../../../assets/images/CadastroFreelancer.svg";
 
 import React from "react";
-import { TextField } from "@mui/material";
+import { Box, Switch, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
@@ -22,12 +22,15 @@ import InputMask from "react-input-mask";
 import axiosInstance from "../../../config/axiosInstance";
 import SnackbarCustom from "../../shared/snackbar/SnackbarCustom.jsx";
 import CustomLoadingButton from "../../shared/customLoadingButton/CustomLoadingButton.jsx";
+import { useNavigate } from "react-router-dom";
+import SwitchButton from "../../shared/SwitchButton.jsx";
 
 function CadastroModal({
   user,
+  setUser,
   isCadastroOpen,
   setCadastroIsOpen,
-  setIsLoginModalOpen,
+  setIsQrCodeModalOpen 
 }) {
   const [snackbarSuccessOpen, setSnackbarSuccess] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
@@ -94,6 +97,14 @@ function CadastroModal({
       paddingBottom: "32px",
     },
     input: {
+      "& label": {
+        fontSize: "16px",
+        lineHeight: "normal",
+      },
+      "& input": {
+        padding: "12px",
+        borderRadius: "8px",
+      },
       "& input[type=number]": {
         MozAppearance: "textfield",
       },
@@ -106,6 +117,15 @@ function CadastroModal({
         margin: 0,
       },
     },
+  };
+
+  const navigate = useNavigate();
+
+
+  const redirectToPerfil = (funcao) => {
+    navigate({
+      pathname: funcao == "ADMIN" ? "/admin" : "/perfil",
+    });
   };
 
   const onSubmit = (data) => {
@@ -125,10 +145,9 @@ function CadastroModal({
           numeroCadastroPessoa: numeroDocumento,
           pais: null,
           funcao: user,
+          isUsing2FA: data.isUsing2FA,
         })
         .then((res) => {
-          setIsLoading(!isLoading);
-
           setSnackbarSuccess({
             open: true,
             isError: false,
@@ -136,9 +155,24 @@ function CadastroModal({
             message: snackbarMessages.success,
           });
 
+
           setTimeout(() => {
-            setIsLoginModalOpen(true);
-            setCadastroIsOpen(false);
+            if (res.data.isUsing2FA) {
+              setUser({ ...res.data, email: data.email, senha: data.senha });
+              setCadastroIsOpen(false);
+              setIsQrCodeModalOpen(true);
+              return;
+            }
+
+            sessionStorage.setItem("usuarioId", res.data.id);
+            sessionStorage.setItem("nome", res.data.nome);
+            sessionStorage.setItem("token", res.data.token);
+            sessionStorage.setItem("funcao", res.data.funcao);
+            sessionStorage.setItem("pais", res.data.pais);
+            sessionStorage.setItem("urlFotoPerfil", res.data.urlFotoPerfil);
+            console.log(res.data);
+
+            redirectToPerfil(res.data.funcao);
           }, 2300);
         })
         .catch((error) => {
@@ -209,7 +243,7 @@ function CadastroModal({
         <div className={styles["form__container"]}>
           <DialogTitle sx={stylesCSS.dialogTitle}>{"Cadastro"}</DialogTitle>
           <DialogContent sx={stylesCSS.dialogContent}>
-            <Grid container rowSpacing={1} sx={{ marginTop: "15px" }}>
+            <Grid container rowSpacing={1} sx={{ marginTop: "6px" }}>
               <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
                 <Grid item>
                   <TextField
@@ -218,7 +252,7 @@ function CadastroModal({
                     variant="outlined"
                     color="primary"
                     type="text"
-                    sx={{ mb: 2 }}
+                    sx={{ mb: 2, ...stylesCSS.input }}
                     error={errors.nome?.message.length > 0}
                     helperText={errors.nome?.message}
                     fullWidth
@@ -260,7 +294,7 @@ function CadastroModal({
                     variant="outlined"
                     color="primary"
                     type="email"
-                    sx={{ mb: 2 }}
+                    sx={{ mb: 2, ...stylesCSS.input }}
                     error={errors.email?.message.length > 0}
                     helperText={errors.email?.message}
                     fullWidth
@@ -278,7 +312,7 @@ function CadastroModal({
                     type={showSenha ? "text" : "password"}
                     error={errors.senha?.message.length > 0}
                     helperText={errors.senha?.message}
-                    sx={{ mb: 2 }}
+                    sx={{ mb: 2, ...stylesCSS.input }}
                     fullWidth
                     placeholder="Mínimo 8 caracteres"
                     {...register("senha")}
@@ -296,6 +330,13 @@ function CadastroModal({
                       ),
                     }}
                   />
+                </Grid>
+
+                <Grid item>
+                  <div className={styles["switch__container"]}>
+                    <SwitchButton {...register("isUsing2FA")} />
+                    <p>Ativar autenticação de dois fatores</p>
+                  </div>
                 </Grid>
 
                 <CustomLoadingButton

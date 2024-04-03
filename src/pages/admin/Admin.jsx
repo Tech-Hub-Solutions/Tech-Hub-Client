@@ -7,7 +7,7 @@ import { Autocomplete, Box, Button, Divider, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Header from "../../componentes/shared/header/Header";
-import NotFound from "../notFound/NotFound";
+import NotFound from "../errors/NotFound";
 import UndoIcon from '@mui/icons-material/Undo';
 import BeenhereIcon from '@mui/icons-material/Beenhere';
 import SnackbarCustom from "../../componentes/shared/snackbar/SnackbarCustom";

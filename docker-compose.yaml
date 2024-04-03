@@ -1,0 +1,11 @@
+version: "2"
+
+services:
+  nginx-react:
+    container_name: techhub-nginx-react
+    image: murilosbarbosa/tech-hub-client:main
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt

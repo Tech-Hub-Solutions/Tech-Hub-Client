@@ -35,6 +35,11 @@
     transition: height 1s ease;
 }
 
+.conversa-content__enviar-mensagem textarea:disabled {
+    background-color: #f0f0f0;
+}
+
+
 .conversa-content__enviar-mensagem__botao {
     border: none;
     color: #fff;
