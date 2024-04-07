@@ -49,7 +49,8 @@ const useCodeAuthenticator = () => {
         });
 
         setTimeout(() => {
-          setIsQrCodeModalOpen(false)
+          if (setIsQrCodeModalOpen)
+            setIsQrCodeModalOpen(false)
           redirectToPerfil(res.data);
 
         }, 2300);
