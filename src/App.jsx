@@ -8,8 +8,14 @@ import Favoritos from "./pages/favoritos/Favoritos";
 import NotFound from "./pages/errors/NotFound";
 import GenericError from "./pages/errors/GenericError";
 import Admin from "./pages/admin/Admin";
+import React from "react";
+import useAxiosConfig from "./hooks/useAxiosErrorInterceptor";
+import SnackbarCustom from "./componentes/shared/snackbar/SnackbarCustom";
 
 function App() {
+
+  const { snackbarErrorOpen } = useAxiosConfig();
+
   return (
     <>
       <Router>
@@ -25,6 +31,12 @@ function App() {
           <Route path="error/:code/:message" element={<GenericError />} />
         </Routes>
       </Router>
+
+      <SnackbarCustom
+        snackbarOpen={snackbarErrorOpen.open}
+        message={snackbarErrorOpen.message}
+        severity={snackbarErrorOpen.severity}
+      ></SnackbarCustom>
     </>
   );
 }
