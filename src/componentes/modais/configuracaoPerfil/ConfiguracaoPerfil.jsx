@@ -20,19 +20,24 @@ import * as yup from "yup";
 import styled from "@emotion/styled";
 import { Button } from "@mui/base";
 import axiosInstance from "../../../config/axiosInstance";
-import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
-import { useNavigate } from "react-router-dom";
 import nacionalidades from "../../shared/CountryInformation/perfil-usuario.json";
 import CountryInformation from "../../shared/CountryInformation/CountryInformation";
+import SwitchButton from "../../shared/SwitchButton";
+import QrCodeModal from "../qrCode/QrCodeModal";
+import useCodeAuthenticator from "@/src/hooks/useCodeAuthenticator";
+import { LoadingButton } from "@mui/lab";
 
 const ConfiguracaoPerfilModal = ({
   isConfiguracaoModalOpen,
   setIsConfiguracaoModalOpen,
 }) => {
   const [snackbarSuccessOpen, setSnackbarSuccess] = React.useState({});
+  const [isQrCodeModalOpen, setIsQrCodeModalOpen] = React.useState(false);
   const [showSenha, setShowSenha] = React.useState(false);
-  const [wasSubmitted, setWasSubmitted] = React.useState(false);
+  const [isUsing2FA, setIsUsing2FA] = React.useState(false);
   const [usuario, setUsuario] = React.useState({});
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [user, setUser] = React.useState({});
 
   React.useState("");
 
@@ -51,7 +56,7 @@ const ConfiguracaoPerfilModal = ({
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [isConfiguracaoModalOpen]);
 
   const stylesCSS = {
     dialogContainer: {
@@ -82,7 +87,6 @@ const ConfiguracaoPerfilModal = ({
       lineHeight: "normal",
       paddingBottom: "32px",
       marginTop: "62px",
-      marginBottom: "40px",
     },
     gridContainer: {
       display: "flex",
@@ -115,7 +119,7 @@ const ConfiguracaoPerfilModal = ({
   };
 
   const snackbarMessages = {
-    success: "Dados atualizados com sucesso! Entre novamente para continuar.",
+    success: "Dados atualizados com sucesso!",
     error: "Erro ao realizar atualização de dados. Tente novamente.",
   };
 
@@ -144,49 +148,51 @@ const ConfiguracaoPerfilModal = ({
 
   const funcaoUsuario = sessionStorage.getItem("funcao");
 
-  const navigate = useNavigate();
+  const { redirectToPerfil } = useCodeAuthenticator();
 
   const onSubmit = (data) => {
-    if (!wasSubmitted) {
-      setWasSubmitted(true);
+    setIsLoading(true);
 
-      axiosInstance
-        .put("/usuarios", {
-          nome: data.nome,
-          email: data.email,
-          senha: data.senha,
-          pais: nacionalidades.find((pais) => pais.nome === data.nacionalidade)
-            ?.sigla,
-        })
-        .then((res) => {
-          setSnackbarSuccess({
-            open: true,
-            isError: false,
-            severity: "success",
-            message: snackbarMessages.success,
-          });
-
-          setTimeout(() => {
-            setIsConfiguracaoModalOpen(false);
-
-            sessionStorage.clear();
-
-            navigate("/");
-          }, 2300);
-        })
-        .catch((error) => {
-          console.error(error);
-          setSnackbarSuccess({
-            open: true,
-            isError: true,
-            severity: "error",
-            message: snackbarMessages.error,
-          });
-        })
-        .finally(() => {
-          setWasSubmitted(false);
+    axiosInstance
+      .put("/usuarios", {
+        nome: data.nome,
+        email: data.email,
+        senha: data.senha,
+        pais: nacionalidades.find((pais) => pais.nome === data.nacionalidade)?.sigla,
+        isUsing2FA: isUsing2FA,
+      })
+      .then((res) => {
+        setSnackbarSuccess({
+          open: true,
+          isError: false,
+          severity: "success",
+          message: snackbarMessages.success,
         });
-    }
+        
+        setUser(({ ...res.data, email: data.email, senha: data.senha }));
+
+
+        setTimeout(() => {
+          setIsConfiguracaoModalOpen(false);
+          if (isUsing2FA && !usuario.isUsing2FA) {
+            setIsQrCodeModalOpen(true);
+          } else {
+            redirectToPerfil(res.data);
+          }
+        }, 2300);
+      })
+      .catch((error) => {
+        console.error(error);
+        setSnackbarSuccess({
+          open: true,
+          isError: true,
+          severity: "error",
+          message: snackbarMessages.error,
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const handleClickShowSenha = () => setShowSenha((show) => !show);
@@ -205,7 +211,8 @@ const ConfiguracaoPerfilModal = ({
     )?.nome;
 
     setValue("nacionalidade", nacionalidade);
-  }, [usuario, isConfiguracaoModalOpen]);
+    setIsUsing2FA(usuario.isUsing2FA);
+  }, [usuario]);
 
   return (
     <>
@@ -242,7 +249,7 @@ const ConfiguracaoPerfilModal = ({
                     color="primary"
                     type="text"
                     sx={{
-                      marginBottom: "32px",
+                      marginBottom: "18px",
                       minWidth: "590px",
                       marginTop: "6px",
                     }}
@@ -262,7 +269,7 @@ const ConfiguracaoPerfilModal = ({
                     color="primary"
                     type="email"
                     sx={{
-                      marginBottom: "32px",
+                      marginBottom: "18px",
                       minWidth: "590px",
                       marginTop: "6px",
                     }}
@@ -286,7 +293,7 @@ const ConfiguracaoPerfilModal = ({
                       isOptionEqualToValue={(option, value) => option.sigla === value.sigla}
                       defaultValue={nacionalidades.find(pais => pais.sigla === usuario.pais)}
                       sx={{
-                        marginBottom: "32px",
+                        marginBottom: "18px",
                         minWidth: "590px",
                       }}
                       renderInput={(params) => (
@@ -327,7 +334,7 @@ const ConfiguracaoPerfilModal = ({
                     error={errors.senha?.message.length > 0}
                     helperText={errors.senha?.message}
                     sx={{
-                      marginBottom: "32px",
+                      marginBottom: "18px",
                       minWidth: "590px",
                       marginTop: "6px",
                     }}
@@ -350,6 +357,18 @@ const ConfiguracaoPerfilModal = ({
                   />
                 </Grid>
 
+
+                <Grid item sx={{
+                  marginBottom: "18px",
+                  minWidth: "590px",
+                  marginTop: "6px",
+                }}>
+                  <div className={styles["switch__container"]}>
+                    <SwitchButton checked={isUsing2FA} onChange={() => setIsUsing2FA(!isUsing2FA)} />
+                    <p>Ativar autenticação de dois fatores</p>
+                  </div>
+                </Grid>
+
                 <div className={styles["container__button"]}>
                   <ButtonExplorarTalentos
                     onClick={() =>
@@ -359,12 +378,29 @@ const ConfiguracaoPerfilModal = ({
                     Cancelar
                   </ButtonExplorarTalentos>
 
-                  <BlueBackgroundButton
+                  <LoadingButton
+                    loading={isLoading}
                     type="submit"
+                    sx={{
+                      fontFamily: "Montserrat, sans-serif",
+                      textTransform: "none",
+                      fontStyle: "normal",
+                      fontSize: "16px",
+                      padding: "10px 16px",
+                      borderRadius: "6px",
+                      fontWeight: "600",
+                      backgroundColor: "#0F9EEA",
+                      color: "#fdfdfd",
+                      lineHeight: "1.3",
+                      '&:hover': {
+                        backgroundColor: "#0F9EEA",
+                      }
+                    }}
+
                     style={{ width: "180px", height: "47.2px" }}
                   >
                     Salvar
-                  </BlueBackgroundButton>
+                  </LoadingButton>
                 </div>
               </form>
             </Grid>
@@ -383,6 +419,11 @@ const ConfiguracaoPerfilModal = ({
           }}
         ></SnackbarCustom>
       </Dialog>
+      <QrCodeModal
+        isQrCodeModalOpen={isQrCodeModalOpen}
+        setIsQrCodeModalOpen={setIsQrCodeModalOpen}
+        user={user}
+      />
     </>
   );
 };

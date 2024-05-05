@@ -1,11 +1,10 @@
 import { useRef, useEffect, useState } from "react";
 import styles from "./conversaMensagem.module.css";
 import moment from "moment-timezone";
-import DownloadImg from '../../../../assets/images/icons/download.svg';
-import axiosInstance from "../../../../config/axiosInstance";
 import { formatarBytes } from '../../../../utils/geral';
 import { Button } from "@mui/material";
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
+import axios from "axios";
 
 const ConversaMensagem = (props) => {
     const mensagem = props.mensagem;
@@ -27,7 +26,7 @@ const ConversaMensagem = (props) => {
     }, []);
 
     const carregarImagem = () => {
-        axiosInstance.get(`/arquivos${mensagem.urlArquivo}`, {
+        axios.get(`${mensagem.urlArquivo}`, {
             responseType: 'blob'
         })
             .then((response) => {
@@ -44,7 +43,7 @@ const ConversaMensagem = (props) => {
     }
 
     const carregarDocumento = () => {
-        axiosInstance.get(`/arquivos${mensagem.urlArquivo}`,
+        axios.get(`${mensagem.urlArquivo}`,
             {
                 responseType: 'blob'
             })
@@ -111,7 +110,7 @@ const ConversaMensagem = (props) => {
                                 },
                             }}>
                             <DownloadRoundedIcon
-                            fontSize="large"
+                                fontSize="large"
                             />
                             <div className={styles['conversa-content__mensagem__info__arquivo__informacoes']}>
                                 <div className={styles['conversa-content__mensagem__info__arquivo__informacoes__nome']}>

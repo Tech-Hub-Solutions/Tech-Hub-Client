@@ -21,3 +21,11 @@
   gap: 24px;
   margin-bottom: 52px;
 }
+
+
+.switch__container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}

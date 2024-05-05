@@ -1,10 +1,8 @@
 import axios from "axios";
-import adress from "./backEndAdress";
-
 
 const axiosInstance = axios.create({
-    baseURL: adress,
-    timeout: 3000,
+    baseURL: `${import.meta.env.VITE_SERVICES_BASE_URL}`,
+    timeout: 25000,
     headers: {
         "Content-Type": "application/json",
     },
@@ -19,7 +17,13 @@ axiosInstance.interceptors.request.use((config) => {
         config.headers['authorization'] = `Bearer ${tokenUsuario}`;
     }
 
+    if (!tokenUsuario && location !== "/") {
+        window.location.href = "/";
+        sessionStorage.clear();
+    }
+
     return config;
 });
+
 
 export default axiosInstance;

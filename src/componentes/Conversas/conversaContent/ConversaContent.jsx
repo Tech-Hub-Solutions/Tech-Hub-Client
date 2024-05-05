@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styles from './conversaContent.module.css'
 import axiosInstance from '../../../config/axiosInstance';
-import { Avatar } from '@mui/material'
+import { Avatar, Box, Skeleton } from '@mui/material'
 import ConversaInput from './ConversaInput/ConversaInput';
 import moment from 'moment-timezone';
 import ConversaMensagem from './conversaMensagem/ConversaMensagem';
@@ -17,8 +17,10 @@ const ConversaContent = (props) => {
     const inputRef = useRef("");
     const contentMessagesRef = useRef("");
 
-    useEffect(() => {
+    const [isLoading, setIsLoading] = useState(true);
 
+    useEffect(() => {
+        setIsLoading(true);
         if (conversaSelecionada.roomCode != null) {
             carregarMensagens();
 
@@ -30,6 +32,8 @@ const ConversaContent = (props) => {
 
                 stompConversa.current = conversa;
             }
+        } else {
+            setIsLoading(false);
         }
 
         inputRef.current.focus();
@@ -70,6 +74,9 @@ const ConversaContent = (props) => {
             }).catch((error) => {
                 console.log(error);
             })
+            .finally(() => {
+                setIsLoading(false);
+            });
     }
 
     useEffect(() => {
@@ -94,25 +101,35 @@ const ConversaContent = (props) => {
                 </div>
                 <div className={styles['conversa-content__mensagens']}
                     style={{
-                        opacity: mensagens.length > 0 ? 1 : 0,
+                        opacity: mensagens.length > 0 ? 1 : 0.5,
                         scrollBehavior: mensagens.length > 0 ? "smooth" : "none",
                         transition: "0.5s"
                     }}
                     ref={contentMessagesRef}>
-                    {mensagens.map((mensagem, index) => {
-                        return (
-                            <ConversaMensagem
-                                mensagem={mensagem} key={`Mensagem${index}`}
-                                usuarioId={usuarioId}
-                                contentMessagesRef={contentMessagesRef}
-                                setConversaSelecionada={setConversaSelecionada}
-                            />
-                        )
-                    })}
+                    {
+                        isLoading ?
+                            <Box width="100%" sx={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                                {Array(7).fill().map((_, index) => (
+                                    <Skeleton variant="rectangular" width="25%" height={40} key={`mensagem-${index}`}
+                                        sx={{ alignSelf: index % 2 == 0 ? 'flex-start' : 'flex-end' }}
+                                    />
+                                ))}
+                            </Box> :
+                            mensagens.map((mensagem, index) => {
+                                return (
+                                    <ConversaMensagem
+                                        mensagem={mensagem} key={`Mensagem${index}`}
+                                        usuarioId={usuarioId}
+                                        contentMessagesRef={contentMessagesRef}
+                                        setConversaSelecionada={setConversaSelecionada}
+                                    />
+                                )
+                            })}
                 </div>
                 <ConversaInput
                     conversaSelecionada={conversaSelecionada}
                     setConversaSelecionada={setConversaSelecionada}
+                    isLoadingMessages={isLoading}
                     inputRef={inputRef}
                 />
 

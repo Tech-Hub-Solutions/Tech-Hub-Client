@@ -6,7 +6,6 @@ import styled from "@emotion/styled";
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import axiosInstance from "../../config/axiosInstance";
-import adress from "../../config/backEndAdress";
 import SnackbarCustom from "../shared/snackbar/SnackbarCustom";
 
 const FlagsList = ({ areas, carregarFlags }) => {

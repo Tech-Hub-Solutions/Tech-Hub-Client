@@ -43,7 +43,7 @@ const MenuArquivo = (props) => {
 
     const baixarConversaCsv = () => {
 
-        axiosInstance.get(`/arquivos/conversa/${props.roomCode}/gerar-csv`, {
+        axiosInstance.get(`/conversas/gerar-csv/${props.roomCode}`, {
             responseType: 'blob'
         })
             .then((res) => {

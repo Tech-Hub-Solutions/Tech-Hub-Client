@@ -1,6 +1,6 @@
 import Picker from "@emoji-mart/react";
 import i18n from '@emoji-mart/data/i18n/pt.json'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../../config/axiosInstance";
 import styles from './conversaInput.module.css'
 import Send from '../../../../assets/images/icons/Send.svg'
@@ -10,14 +10,21 @@ import MenuArquivo from "./MenuArquivo";
 import { Button } from "@mui/material";
 import DocumentImg from '../../../../assets/images/icons/documento.png';
 import { formatarBytes } from '../../../../utils/geral';
+import { LoadingButton } from "@mui/lab";
 
 const ConversaInput = (props) => {
     const [texto, setTexto] = useState('');
     const [showPicker, setShowPicker] = useState(false);
     const [arquivo, setArquivo] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
+    const { conversaSelecionada, setConversaSelecionada, inputRef, isLoadingMessages } = props;
 
-    const { conversaSelecionada, setConversaSelecionada, inputRef } = props;
+    useEffect(() => {
+        if (!isLoadingMessages && !isLoading) {
+            inputRef.current.focus();
+        }
 
+    }, [isLoadingMessages, isLoading])
 
     const verificarTexto = (event) => {
         const input = event.target;
@@ -33,6 +40,7 @@ const ConversaInput = (props) => {
     }
 
     const iniciarConversa = async () => {
+        setIsLoading(true);
         return axiosInstance.post(`/conversas/iniciar/${conversaSelecionada?.idPrimeiraConversa}`)
             .then((response) => {
                 if (response.status == 200) {
@@ -50,6 +58,9 @@ const ConversaInput = (props) => {
                 }
             }).catch((error) => {
                 console.log(error);
+            })
+            .finally(() => {
+                setIsLoading(false);
             })
     }
 
@@ -71,6 +82,8 @@ const ConversaInput = (props) => {
     }
 
     const postarMensagem = (roomCode) => {
+        setIsLoading(true);
+
         let sala;
         if (roomCode) {
             sala = roomCode;
@@ -94,6 +107,9 @@ const ConversaInput = (props) => {
             }).catch((error) => {
                 console.log(error);
             })
+            .finally(() => {
+                setIsLoading(false);
+            });
 
     }
 
@@ -153,6 +169,7 @@ const ConversaInput = (props) => {
                     onKeyDown={verificarTexto}
                     placeholder="Digite sua mensagem..."
                     rows="1"
+                    disabled={isLoading || isLoadingMessages}
                 />
 
                 <div className={styles['conversa-content__enviar-mensagem__arquivo']}
@@ -202,9 +219,13 @@ const ConversaInput = (props) => {
 
                 <MenuArquivo setArquivo={setArquivo} />
 
-                <Button type="submit"  >
-                    <div><img src={Send} /></div>
-                </Button>
+                <LoadingButton type="submit" loading={isLoading} color="primary" size="large" disabled={isLoading || isLoadingMessages} >
+                    {(!isLoading) &&
+                        <div>
+                            <img src={Send} />
+                        </div>
+                    }
+                </LoadingButton>
             </form >
         </>
     )

@@ -25,6 +25,7 @@ function TravaTelaCadastro({
       justifyContent: "center",
       alignItems: "center",
       maxWidth: "fit-content",
+      maxHeight: "fit-content",
       borderRadius: "16px",
       overflow: "hidden",
       padding: "76px 60px",
@@ -35,7 +36,6 @@ function TravaTelaCadastro({
       alignItems: "center",
       overflow: "hidden",
       gap: "56px",
-      padding: 0,
     },
     cardContainer: {
       border: "1px solid #333",
