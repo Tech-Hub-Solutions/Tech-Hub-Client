@@ -142,7 +142,7 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
         resolver: yupResolver(schema),
     });
 
-    const funcaoUsuario = sessionStorage.getItem("funcao");
+    const funcaoUsuario = localStorage.getItem("funcao");
 
     const onSubmit = (data) => {
         if (!wasSubmitted) {

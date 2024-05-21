@@ -166,12 +166,12 @@ function LoginModal({
     const usuario = res;
 
     if (usuario.token) {
-      sessionStorage.setItem("usuarioId", usuario.id);
-      sessionStorage.setItem("nome", usuario.nome);
-      sessionStorage.setItem("token", usuario.token);
-      sessionStorage.setItem("funcao", usuario.funcao);
-      sessionStorage.setItem("pais", usuario.pais);
-      sessionStorage.setItem("urlFotoPerfil", usuario.urlFotoPerfil);
+      localStorage.setItem("usuarioId", usuario.id);
+      localStorage.setItem("nome", usuario.nome);
+      localStorage.setItem("token", usuario.token);
+      localStorage.setItem("funcao", usuario.funcao);
+      localStorage.setItem("pais", usuario.pais);
+      localStorage.setItem("urlFotoPerfil", usuario.urlFotoPerfil);
       navigate({
         pathname: usuario.funcao == "ADMIN" ? "/admin" : "/perfil/" + usuario.id,
       });

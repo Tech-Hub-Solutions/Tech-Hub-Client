@@ -18,7 +18,7 @@ const Header = () => {
     const [funcao, setFuncao] = React.useState("");
 
     React.useEffect(() => {
-        const token = sessionStorage.getItem('funcao');
+        const token = localStorage.getItem('funcao');
         setFuncao(token);
     }, []);
 

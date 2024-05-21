@@ -46,7 +46,7 @@ const ConfiguracaoPerfilModal = ({
   };
 
   React.useEffect(() => {
-    const usuarioId = sessionStorage.getItem("usuarioId");
+    const usuarioId = localStorage.getItem("usuarioId");
 
     axiosInstance
       .get(`/usuarios/simple/${usuarioId}`)
@@ -146,7 +146,7 @@ const ConfiguracaoPerfilModal = ({
     resolver: yupResolver(schema),
   });
 
-  const funcaoUsuario = sessionStorage.getItem("funcao");
+  const funcaoUsuario = localStorage.getItem("funcao");
 
   const { redirectToPerfil } = useCodeAuthenticator();
 

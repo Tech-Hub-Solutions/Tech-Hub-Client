@@ -10,7 +10,7 @@ import MenuConversa from './MenuConversa';
 const ConversaContent = (props) => {
 
     const { conversaSelecionada, setConversaSelecionada, stompClient } = props;
-    const usuarioId = sessionStorage.getItem('usuarioId');
+    const usuarioId = localStorage.getItem('usuarioId');
     const stompConversa = useRef(null);
 
     const [mensagens, setMensagens] = useState([]);

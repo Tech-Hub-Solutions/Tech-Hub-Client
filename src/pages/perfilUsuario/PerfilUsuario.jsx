@@ -30,7 +30,7 @@ const PerfilUsuario = (props) => {
     const [totalAvaliacoes, setTotalAvaliacoes] = React.useState([]);
     const [mediaEstrelas, setMediaEstrelas] = React.useState(0);
 
-    const usuarioLogadoId = sessionStorage.getItem('usuarioId');
+    const usuarioLogadoId = localStorage.getItem('usuarioId');
     const { id: usuarioParamId } = useParams();
     const isOwnProfile = !usuarioParamId || (usuarioParamId == usuarioLogadoId)
     const [idRequisicao, setIdRequisicao] = React.useState(0);

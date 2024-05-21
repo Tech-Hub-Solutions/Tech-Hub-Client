@@ -54,7 +54,7 @@ const Admin = () => {
 
 
     React.useEffect(() => {
-        const admin = sessionStorage.getItem("funcao") == "ADMIN";
+        const admin = localStorage.getItem("funcao") == "ADMIN";
         setIsAdmin(admin);
 
         if (!admin) return;

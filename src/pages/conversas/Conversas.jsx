@@ -12,7 +12,7 @@ import ListaDeConversaSkeleton from '../../componentes/Conversas/listaDeConversa
 import ConversaContentSkeleton from '../../componentes/Conversas/conversaContent/ConversaContentSkeleton';
 
 const Conversas = () => {
-    const usuarioId = sessionStorage.getItem('usuarioId');
+    const usuarioId = localStorage.getItem('usuarioId');
     const location = useLocation();
     const [stompClient, setStompClient] = useState(null);
 

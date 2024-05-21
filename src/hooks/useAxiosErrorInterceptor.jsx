@@ -11,7 +11,7 @@ const useAxiosConfig = () => {
 
                 if (error.request.status == 401 && location !== "/" && !error.request.responseURL.includes("usuarios/verify")) {
                     window.location.href = "/";
-                    sessionStorage.clear();
+                    localStorage.clear();
                 }
 
                 if (error.request.status == 404) {

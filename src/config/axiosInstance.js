@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 
 
 axiosInstance.interceptors.request.use((config) => {
-    const tokenUsuario = sessionStorage.getItem('token');
+    const tokenUsuario = localStorage.getItem('token');
     const location = window.location.pathname;
 
     if (tokenUsuario && location !== "/") {
@@ -19,7 +19,7 @@ axiosInstance.interceptors.request.use((config) => {
 
     if (!tokenUsuario && location !== "/") {
         window.location.href = "/";
-        sessionStorage.clear();
+        localStorage.clear();
     }
 
     return config;

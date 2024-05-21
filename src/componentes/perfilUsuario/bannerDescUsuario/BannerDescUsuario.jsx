@@ -53,7 +53,7 @@ const BannerDescUsuario = (props) => {
 
 
     React.useEffect(() => {
-        const isFreelancer = sessionStorage.getItem('funcao') === 'FREELANCER';
+        const isFreelancer = localStorage.getItem('funcao') === 'FREELANCER';
         const isOwnProfile = usuario.isOwnProfile;
         const isPerfilFreelancer = usuario.isPerfilFreelancer;
 

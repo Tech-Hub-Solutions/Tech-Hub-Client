@@ -12,9 +12,9 @@ const CampoComentario = (props) => {
   const [qtdEstrelas, setQtdEstrelas] = React.useState(2);
   const [comentarioUsuario, setComentarioUsuario] = React.useState("");
   const [snackbarSuccess, setSnackbarSuccess] = React.useState({});
-  const pais = sessionStorage.getItem("pais");
-  const urlFotoPerfil = sessionStorage.getItem("urlFotoPerfil");
-  const nome = sessionStorage.getItem("nome");
+  const pais = localStorage.getItem("pais");
+  const urlFotoPerfil = localStorage.getItem("urlFotoPerfil");
+  const nome = localStorage.getItem("nome");
 
   const fazerComentario = () => {
     axiosInstance

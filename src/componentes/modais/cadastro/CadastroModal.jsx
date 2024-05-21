@@ -164,12 +164,12 @@ function CadastroModal({
               return;
             }
 
-            sessionStorage.setItem("usuarioId", res.data.id);
-            sessionStorage.setItem("nome", res.data.nome);
-            sessionStorage.setItem("token", res.data.token);
-            sessionStorage.setItem("funcao", res.data.funcao);
-            sessionStorage.setItem("pais", res.data.pais);
-            sessionStorage.setItem("urlFotoPerfil", res.data.urlFotoPerfil);
+            localStorage.setItem("usuarioId", res.data.id);
+            localStorage.setItem("nome", res.data.nome);
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("funcao", res.data.funcao);
+            localStorage.setItem("pais", res.data.pais);
+            localStorage.setItem("urlFotoPerfil", res.data.urlFotoPerfil);
             console.log(res.data);
 
             redirectToPerfil(res.data.funcao, res.data.id);

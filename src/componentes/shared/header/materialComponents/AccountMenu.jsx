@@ -37,15 +37,15 @@ export default function AccountMenu(props) {
   };
 
   const redirectToPerfil = () => {
-    navigate(`/perfil/${sessionStorage.getItem("usuarioId")}`);
+    navigate(`/perfil/${localStorage.getItem("usuarioId")}`);
 
-    if (location.pathname == "/perfil/" + sessionStorage.getItem("usuarioId")) {
+    if (location.pathname == "/perfil/" + localStorage.getItem("usuarioId")) {
       navigate(0);
     }
   };
 
-  const nome = sessionStorage.getItem('nome') || "";
-  const urlFotoPerfil = sessionStorage.getItem('urlFotoPerfil') || "";
+  const nome = localStorage.getItem('nome') || "";
+  const urlFotoPerfil = localStorage.getItem('urlFotoPerfil') || "";
 
   return (
     <>
@@ -107,7 +107,7 @@ export default function AccountMenu(props) {
 
         <MenuItem
           onClick={() => {
-            sessionStorage.clear();
+            localStorage.clear();
             navigate("/");
           }}
         >
