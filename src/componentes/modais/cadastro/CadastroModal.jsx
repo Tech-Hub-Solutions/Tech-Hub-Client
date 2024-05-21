@@ -122,9 +122,9 @@ function CadastroModal({
   const navigate = useNavigate();
 
 
-  const redirectToPerfil = (funcao) => {
+  const redirectToPerfil = (funcao, id) => {
     navigate({
-      pathname: funcao == "ADMIN" ? "/admin" : "/perfil",
+      pathname: funcao == "ADMIN" ? "/admin" : `/perfil/${id}`,
     });
   };
 
@@ -172,7 +172,7 @@ function CadastroModal({
             sessionStorage.setItem("urlFotoPerfil", res.data.urlFotoPerfil);
             console.log(res.data);
 
-            redirectToPerfil(res.data.funcao);
+            redirectToPerfil(res.data.funcao, res.data.id);
           }, 2300);
         })
         .catch((error) => {

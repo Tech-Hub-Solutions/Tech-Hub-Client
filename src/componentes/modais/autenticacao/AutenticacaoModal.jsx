@@ -1,15 +1,12 @@
 import React, { useEffect } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 
 import styles from "../cadastro/CadastroModal.module.css";
 
 import imageLogin from "../../../assets/images/LoginModal.svg";
 import imageCadeado from "../../../assets/images/cadeado.svg";
-import axiosInstance from "../../../config/axiosInstance";
 import SnackbarCustom from "../../shared/snackbar/SnackbarCustom.jsx";
-import { useNavigate } from "react-router";
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "../../shared/ui/input-otp";
 import useCodeAuthenticator from "@/src/hooks/useCodeAuthenticator";
 import { LoadingButton } from "@mui/lab";

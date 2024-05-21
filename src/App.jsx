@@ -23,7 +23,7 @@ function App() {
           <Route path="/" element={<Institucional />} />
           <Route path="/conversas" element={<Conversas />} />
           <Route path="/teste" element={<Teste />} />
-          <Route path="/perfil" element={<PerfilUsuario />} />
+          <Route path="/perfil/:id" element={<PerfilUsuario />} />
           <Route path="/busca-talentos" element={<BuscaTalentos />} />
           <Route path="/favoritos" element={<Favoritos />} />
           <Route path="/admin" element={<Admin />} />

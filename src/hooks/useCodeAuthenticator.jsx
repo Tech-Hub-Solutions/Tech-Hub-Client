@@ -15,7 +15,7 @@ const useCodeAuthenticator = () => {
       sessionStorage.setItem("pais", usuario.pais);
       sessionStorage.setItem("urlFotoPerfil", usuario.urlFotoPerfil);
       navigate({
-        pathname: usuario.funcao == "ADMIN" ? "/admin" : "/perfil",
+        pathname: usuario.funcao == "ADMIN" ? "/admin" : `/perfil/${usuario.id}`,
       });
       return;
     }

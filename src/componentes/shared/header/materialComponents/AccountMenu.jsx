@@ -37,9 +37,9 @@ export default function AccountMenu(props) {
   };
 
   const redirectToPerfil = () => {
-    navigate("/perfil");
+    navigate(`/perfil/${sessionStorage.getItem("usuarioId")}`);
 
-    if (location.pathname == "/perfil" && location.search.includes("id")) {
+    if (location.pathname == "/perfil/" + sessionStorage.getItem("usuarioId")) {
       navigate(0);
     }
   };
