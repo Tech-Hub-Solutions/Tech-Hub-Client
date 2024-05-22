@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCurrentUser } from "../utils/localStoreManager";
 
 const axiosInstance = axios.create({
     baseURL: `${import.meta.env.VITE_SERVICES_BASE_URL}`,
@@ -10,7 +11,7 @@ const axiosInstance = axios.create({
 
 
 axiosInstance.interceptors.request.use((config) => {
-    const tokenUsuario = sessionStorage.getItem('token');
+    const tokenUsuario = getCurrentUser()?.token;
     const location = window.location.pathname;
 
     if (tokenUsuario && location !== "/") {
@@ -18,8 +19,9 @@ axiosInstance.interceptors.request.use((config) => {
     }
 
     if (!tokenUsuario && location !== "/") {
+        sessionStorage.NEXT_URL = location;
         window.location.href = "/";
-        sessionStorage.clear();
+        localStorage.clear();
     }
 
     return config;

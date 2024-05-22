@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { Stack } from "@mui/material";
 
-import styles from "./PrimeiraSecao.css";
+import styles from "./PrimeiraSecao.module.css";
 import RhWoman from "../../../assets/images/RhWoman.png";
 import BlueBackgroundButton from "../../shared/BlueButton/BlueBackgroundButton";
 import { useState } from "react";
@@ -46,9 +46,9 @@ function PrimeiraSecao() {
   };
 
   return (
-    <div className="first__section">
-      <div className="container__section">
-        <div className="container__left-part">
+    <div className={styles["first__section"]}>
+      <div className={styles["container__section"]}>
+        <div className={styles["container__left-part"]}>
           <h1>
             Dificuldade em <br />
             encontrar <span>talentos</span>?
@@ -74,7 +74,7 @@ function PrimeiraSecao() {
           </StackButtons>
         </div>
 
-        <div className="container__right-part">
+        <div className={styles["container__right-part"]}>
           <img src={RhWoman} alt="" />
         </div>
 

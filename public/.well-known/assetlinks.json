@@ -1,0 +1,14 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.example.techhub",
+            "sha256_cert_fingerprints": [
+                "DE:6D:F4:16:58:5D:92:F8:FB:0B:E2:46:78:25:8A:7F:9D:0B:86:7D:D5:F5:09:64:84:EA:70:74:D2:29:69:6E"
+            ]
+        }
+    }
+]

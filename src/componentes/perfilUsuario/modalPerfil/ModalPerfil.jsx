@@ -23,6 +23,7 @@ import SnackbarCustom from "../../shared/snackbar/SnackbarCustom";
 import styles from "./modalPerfil.module.css";
 import React from 'react';
 import { verificarCorflag } from "../../../utils/geral";
+import { getCurrentUser } from "@/src/utils/localStoreManager";
 
 
 const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarPerfil }) => {
@@ -142,7 +143,7 @@ const ModalPerfil = ({ usuario, isModalEdicaoOpen, setModalEdicaoOpen, carregarP
         resolver: yupResolver(schema),
     });
 
-    const funcaoUsuario = sessionStorage.getItem("funcao");
+    const funcaoUsuario = getCurrentUser().funcao;
 
     const onSubmit = (data) => {
         if (!wasSubmitted) {

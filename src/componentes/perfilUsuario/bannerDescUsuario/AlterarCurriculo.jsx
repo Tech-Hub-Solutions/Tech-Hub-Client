@@ -1,7 +1,6 @@
 import React from "react";
 import { Button, ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper } from "@mui/material";
 import styled from "@emotion/styled";
-import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../config/axiosInstance.js";
 import SnackbarCustom from "../../shared/snackbar/SnackbarCustom.jsx";
 import UploadFileIcon from '@mui/icons-material/UploadFile';
@@ -12,7 +11,6 @@ import { LoadingButton } from "@mui/lab";
 const AlterarCurriculo = (props) => {
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
-    const navigate = useNavigate();
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
     const [severity, setSeverity] = React.useState('success');
     const [message, setMessage] = React.useState('');

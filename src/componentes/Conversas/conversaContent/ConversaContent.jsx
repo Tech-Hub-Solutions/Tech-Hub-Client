@@ -6,11 +6,12 @@ import ConversaInput from './ConversaInput/ConversaInput';
 import moment from 'moment-timezone';
 import ConversaMensagem from './conversaMensagem/ConversaMensagem';
 import MenuConversa from './MenuConversa';
+import { getCurrentUser } from '@/src/utils/localStoreManager';
 
 const ConversaContent = (props) => {
 
     const { conversaSelecionada, setConversaSelecionada, stompClient } = props;
-    const usuarioId = sessionStorage.getItem('usuarioId');
+    const usuarioId = getCurrentUser()?.id;
     const stompConversa = useRef(null);
 
     const [mensagens, setMensagens] = useState([]);

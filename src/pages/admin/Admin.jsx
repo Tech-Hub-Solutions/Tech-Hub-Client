@@ -13,6 +13,7 @@ import BeenhereIcon from '@mui/icons-material/Beenhere';
 import SnackbarCustom from "../../componentes/shared/snackbar/SnackbarCustom";
 import AutoDeleteIcon from '@mui/icons-material/AutoDelete';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
+import { getCurrentUser } from "@/src/utils/localStoreManager";
 
 const Admin = () => {
     const [areas, setAreas] = useState([]);
@@ -54,7 +55,7 @@ const Admin = () => {
 
 
     React.useEffect(() => {
-        const admin = sessionStorage.getItem("funcao") == "ADMIN";
+        const admin = getCurrentUser()?.funcao == "ADMIN";
         setIsAdmin(admin);
 
         if (!admin) return;

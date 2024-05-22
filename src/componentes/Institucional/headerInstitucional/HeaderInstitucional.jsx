@@ -12,7 +12,7 @@ import AutenticacaoModal from "../../modais/autenticacao/AutenticacaoModal";
 const HeaderInstitucional = () => {
   const [isCadastroOpen, setCadastroIsOpen] = React.useState(false);
   const [isTravaTelaOpen, setTravaTelaOpen] = React.useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = React.useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = React.useState(sessionStorage.NEXT_URL ? true : false);
   const [isQrCodeModalOpen, setIsQrCodeModalOpen] = React.useState(false);
   const [isAutenticacaoModalOpen, setIsAutenticacaoModalOpen] = React.useState(false);
   const [user, setUser] = React.useState({});

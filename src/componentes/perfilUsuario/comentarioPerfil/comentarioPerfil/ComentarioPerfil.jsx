@@ -2,17 +2,13 @@ import React from "react";
 import styles from "./comentarioPerfil.module.css";
 import { Avatar, Box, Divider, Rating } from "@mui/material";
 import CountryInformation from "../../../shared/CountryInformation/CountryInformation";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ComentarioPerfil = ({ comentario }) => {
   const navigate = useNavigate();
 
   const redirectToPerfil = () => {
-    navigate({
-      pathname: "/perfil",
-      search: `?id=${comentario.idAvaliador}`,
-    });
-
+    navigate(`/perfil/${comentario.idAvaliador}`);
     navigate(0);
   };
 

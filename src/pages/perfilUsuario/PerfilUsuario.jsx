@@ -14,15 +14,15 @@ import Projetos from "../../componentes/perfilUsuario/projetosUsuario/Projetos";
 import axiosInstance from "../../config/axiosInstance";
 import WidgetSoftSkill from "../../componentes/perfilUsuario/skillsUsuario/widgetSoftSkill/WidgetSoftSkill";
 import WidgetHardSkills from "../../componentes/perfilUsuario/skillsUsuario/widgetHardSkills/WidgetHardSkills";
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import NotFound from "../errors/NotFound";
 import PerfilSkeleton from "../../componentes/perfilUsuario/PerfilSkeleton/PerfilSkeleton";
 import InfoAdicional from "../../componentes/perfilUsuario/infoAdicional/InfoAdicional";
 import { verificarCorflag } from "../../utils/geral";
+import { getCurrentUser } from "@/src/utils/localStoreManager";
 
 const PerfilUsuario = (props) => {
 
-    const location = useLocation();
     const [isLoading, setIsLoading] = React.useState(true);
     const [isNotFound, setIsNotFound] = React.useState(false);
 
@@ -31,9 +31,8 @@ const PerfilUsuario = (props) => {
     const [totalAvaliacoes, setTotalAvaliacoes] = React.useState([]);
     const [mediaEstrelas, setMediaEstrelas] = React.useState(0);
 
-    const searchParams = new URLSearchParams(location.search);
-    const usuarioParamId = searchParams.get('id');
-    const usuarioLogadoId = sessionStorage.getItem('usuarioId');
+    const usuarioLogadoId = getCurrentUser()?.id;
+    const { id: usuarioParamId } = useParams();
     const isOwnProfile = !usuarioParamId || (usuarioParamId == usuarioLogadoId)
     const [idRequisicao, setIdRequisicao] = React.useState(0);
 

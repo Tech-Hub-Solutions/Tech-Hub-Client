@@ -10,9 +10,10 @@ import chatDefaultImg from '../../assets/images/chat-default.png';
 import Header from '../../componentes/shared/header/Header';
 import ListaDeConversaSkeleton from '../../componentes/Conversas/listaDeConversa/ListaDeConversaSkeleton';
 import ConversaContentSkeleton from '../../componentes/Conversas/conversaContent/ConversaContentSkeleton';
+import { getCurrentUser } from '@/src/utils/localStoreManager';
 
 const Conversas = () => {
-    const usuarioId = sessionStorage.getItem('usuarioId');
+    const usuarioId = getCurrentUser()?.id;
     const location = useLocation();
     const [stompClient, setStompClient] = useState(null);
 

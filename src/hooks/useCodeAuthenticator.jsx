@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../config/axiosInstance";
+import { updateCurrentUser } from "../utils/localStoreManager";
 
 const useCodeAuthenticator = () => {
 
@@ -8,14 +9,15 @@ const useCodeAuthenticator = () => {
 
   const redirectToPerfil = (usuario) => {
     if (usuario.token) {
-      sessionStorage.setItem("usuarioId", usuario.id);
-      sessionStorage.setItem("nome", usuario.nome);
-      sessionStorage.setItem("token", usuario.token);
-      sessionStorage.setItem("funcao", usuario.funcao);
-      sessionStorage.setItem("pais", usuario.pais);
-      sessionStorage.setItem("urlFotoPerfil", usuario.urlFotoPerfil);
+      updateCurrentUser(usuario);
+      const nextUrl = sessionStorage.NEXT_URL;
+      if (nextUrl) {
+        sessionStorage.removeItem("NEXT_URL");
+        navigate(nextUrl);
+        return;
+      }
       navigate({
-        pathname: usuario.funcao == "ADMIN" ? "/admin" : "/perfil",
+        pathname: usuario.funcao == "ADMIN" ? "/admin" : `/perfil/${usuario.id}`,
       });
       return;
     }
