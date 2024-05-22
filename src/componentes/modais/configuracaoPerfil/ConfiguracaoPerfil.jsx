@@ -26,6 +26,7 @@ import SwitchButton from "../../shared/SwitchButton";
 import QrCodeModal from "../qrCode/QrCodeModal";
 import useCodeAuthenticator from "@/src/hooks/useCodeAuthenticator";
 import { LoadingButton } from "@mui/lab";
+import { getCurrentUser } from "@/src/utils/localStoreManager";
 
 const ConfiguracaoPerfilModal = ({
   isConfiguracaoModalOpen,
@@ -38,6 +39,7 @@ const ConfiguracaoPerfilModal = ({
   const [usuario, setUsuario] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
   const [user, setUser] = React.useState({});
+  const currentUser = getCurrentUser();
 
   React.useState("");
 
@@ -46,10 +48,8 @@ const ConfiguracaoPerfilModal = ({
   };
 
   React.useEffect(() => {
-    const usuarioId = localStorage.getItem("usuarioId");
-
     axiosInstance
-      .get(`/usuarios/simple/${usuarioId}`)
+      .get(`/usuarios/simple/${currentUser?.id}`)
       .then((res) => {
         setUsuario(res.data);
       })
@@ -146,8 +146,6 @@ const ConfiguracaoPerfilModal = ({
     resolver: yupResolver(schema),
   });
 
-  const funcaoUsuario = localStorage.getItem("funcao");
-
   const { redirectToPerfil } = useCodeAuthenticator();
 
   const onSubmit = (data) => {
@@ -168,7 +166,7 @@ const ConfiguracaoPerfilModal = ({
           severity: "success",
           message: snackbarMessages.success,
         });
-        
+
         setUser(({ ...res.data, email: data.email, senha: data.senha }));
 
 
@@ -241,7 +239,7 @@ const ConfiguracaoPerfilModal = ({
                   <TextField
                     name="nome"
                     label={
-                      funcaoUsuario === "FREELANCER"
+                      currentUser?.funcaoUsuario === "FREELANCER"
                         ? "Nome completo"
                         : "Nome da empresa"
                     }

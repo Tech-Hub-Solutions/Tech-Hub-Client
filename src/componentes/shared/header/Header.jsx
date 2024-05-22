@@ -5,6 +5,7 @@ import AccountMenu from './materialComponents/AccountMenu';
 import { Link } from 'react-router-dom';
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import { getCurrentUser } from '@/src/utils/localStoreManager';
 
 const Header = () => {
 
@@ -18,8 +19,7 @@ const Header = () => {
     const [funcao, setFuncao] = React.useState("");
 
     React.useEffect(() => {
-        const token = localStorage.getItem('funcao');
-        setFuncao(token);
+        setFuncao(getCurrentUser().funcao);
     }, []);
 
     return (

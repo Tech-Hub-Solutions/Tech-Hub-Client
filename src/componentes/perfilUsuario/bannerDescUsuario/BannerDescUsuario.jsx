@@ -13,6 +13,7 @@ import CountryInformation from "../../shared/CountryInformation/CountryInformati
 import AlterarCurriculo from "./AlterarCurriculo";
 import ModalPerfil from "../modalPerfil/ModalPerfil";
 import axiosInstance from "../../../config/axiosInstance";
+import { getCurrentUser } from "@/src/utils/localStoreManager";
 
 
 const BannerDescUsuario = (props) => {
@@ -53,13 +54,13 @@ const BannerDescUsuario = (props) => {
 
 
     React.useEffect(() => {
-        const isFreelancer = localStorage.getItem('funcao') === 'FREELANCER';
+        const isFreelancer = getCurrentUser()?.funcao === 'FREELANCER';
         const isOwnProfile = usuario.isOwnProfile;
         const isPerfilFreelancer = usuario.isPerfilFreelancer;
 
         const curriculoBaixarButton = (
             <BlueBackgroundButton className={styles['botaoCondicional']} valueDisabled={!usuario?.urlCurriculo}>
-                <a href={usuario?.urlCurriculo} style={{color:usuario?.urlCurriculo ? "var(--color-branco)" : "var(--color-cinza)"}} target="_blank">
+                <a href={usuario?.urlCurriculo} style={{ color: usuario?.urlCurriculo ? "var(--color-branco)" : "var(--color-cinza)" }} target="_blank">
                     Currículo
                 </a>
             </BlueBackgroundButton>

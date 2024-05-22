@@ -1,20 +1,18 @@
 import React from "react";
 import styles from "./campoComentario.module.css";
 
-import ReactCountryFlag from "react-country-flag";
 import { Avatar, Box, Rating, TextField } from "@mui/material";
 import BlueBackgroundButton from "../../../shared/BlueButton/BlueBackgroundButton";
 import axiosInstance from "../../../../config/axiosInstance";
 import SnackbarCustom from "../../../shared/snackbar/SnackbarCustom";
 import CountryInformation from "../../../shared/CountryInformation/CountryInformation";
+import { getCurrentUser } from "@/src/utils/localStoreManager";
 
 const CampoComentario = (props) => {
   const [qtdEstrelas, setQtdEstrelas] = React.useState(2);
   const [comentarioUsuario, setComentarioUsuario] = React.useState("");
   const [snackbarSuccess, setSnackbarSuccess] = React.useState({});
-  const pais = localStorage.getItem("pais");
-  const urlFotoPerfil = localStorage.getItem("urlFotoPerfil");
-  const nome = localStorage.getItem("nome");
+  const { nome, pais, urlFotoPerfil } = getCurrentUser();
 
   const fazerComentario = () => {
     axiosInstance

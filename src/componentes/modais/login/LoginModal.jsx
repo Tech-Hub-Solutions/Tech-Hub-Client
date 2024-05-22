@@ -21,6 +21,7 @@ import axiosInstance from "../../../config/axiosInstance";
 import SnackbarCustom from "../../shared/snackbar/SnackbarCustom.jsx";
 import CustomLoadingButton from "../../shared/customLoadingButton/CustomLoadingButton";
 import { useNavigate } from "react-router";
+import { updateCurrentUser } from "@/src/utils/localStoreManager";
 
 function LoginModal({
   isLoginModalOpen,
@@ -166,12 +167,13 @@ function LoginModal({
     const usuario = res;
 
     if (usuario.token) {
-      localStorage.setItem("usuarioId", usuario.id);
-      localStorage.setItem("nome", usuario.nome);
-      localStorage.setItem("token", usuario.token);
-      localStorage.setItem("funcao", usuario.funcao);
-      localStorage.setItem("pais", usuario.pais);
-      localStorage.setItem("urlFotoPerfil", usuario.urlFotoPerfil);
+      updateCurrentUser(usuario);
+      const nextUrl = sessionStorage.NEXT_URL;
+      if (nextUrl) {
+        sessionStorage.removeItem("NEXT_URL");
+        navigate(nextUrl);
+        return;
+      }
       navigate({
         pathname: usuario.funcao == "ADMIN" ? "/admin" : "/perfil/" + usuario.id,
       });

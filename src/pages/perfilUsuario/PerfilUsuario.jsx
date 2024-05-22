@@ -19,6 +19,7 @@ import NotFound from "../errors/NotFound";
 import PerfilSkeleton from "../../componentes/perfilUsuario/PerfilSkeleton/PerfilSkeleton";
 import InfoAdicional from "../../componentes/perfilUsuario/infoAdicional/InfoAdicional";
 import { verificarCorflag } from "../../utils/geral";
+import { getCurrentUser } from "@/src/utils/localStoreManager";
 
 const PerfilUsuario = (props) => {
 
@@ -30,7 +31,7 @@ const PerfilUsuario = (props) => {
     const [totalAvaliacoes, setTotalAvaliacoes] = React.useState([]);
     const [mediaEstrelas, setMediaEstrelas] = React.useState(0);
 
-    const usuarioLogadoId = localStorage.getItem('usuarioId');
+    const usuarioLogadoId = getCurrentUser()?.id;
     const { id: usuarioParamId } = useParams();
     const isOwnProfile = !usuarioParamId || (usuarioParamId == usuarioLogadoId)
     const [idRequisicao, setIdRequisicao] = React.useState(0);

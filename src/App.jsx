@@ -14,8 +14,11 @@ import SnackbarCustom from "./componentes/shared/snackbar/SnackbarCustom";
 
 function App() {
 
-  const { snackbarErrorOpen } = useAxiosConfig();
-
+  const { snackbarErrorOpen, setSnackbarErrorOpen } = useAxiosConfig();
+  const setSnackBarOpen = (open) => {
+    setSnackbarErrorOpen({ open: open });
+  }
+  
   return (
     <>
       <Router>
@@ -33,9 +36,11 @@ function App() {
       </Router>
 
       <SnackbarCustom
+        setSnackbarOpen={setSnackBarOpen}
         snackbarOpen={snackbarErrorOpen.open}
         message={snackbarErrorOpen.message}
         severity={snackbarErrorOpen.severity}
+
       ></SnackbarCustom>
     </>
   );

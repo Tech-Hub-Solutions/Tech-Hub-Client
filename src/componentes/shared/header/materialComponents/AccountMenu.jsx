@@ -11,10 +11,12 @@ import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import { useLocation, useNavigate } from "react-router-dom";
 import ConfiguracaoPerfilModal from "../../../modais/configuracaoPerfil/ConfiguracaoPerfil";
+import { getCurrentUser } from "@/src/utils/localStoreManager";
 
 export default function AccountMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const user = getCurrentUser();
 
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
@@ -37,15 +39,12 @@ export default function AccountMenu(props) {
   };
 
   const redirectToPerfil = () => {
-    navigate(`/perfil/${localStorage.getItem("usuarioId")}`);
+    navigate(`/perfil/${user?.id}`);
 
-    if (location.pathname == "/perfil/" + localStorage.getItem("usuarioId")) {
+    if (location.pathname == "/perfil/" + user?.id) {
       navigate(0);
     }
   };
-
-  const nome = localStorage.getItem('nome') || "";
-  const urlFotoPerfil = localStorage.getItem('urlFotoPerfil') || "";
 
   return (
     <>
@@ -59,8 +58,8 @@ export default function AccountMenu(props) {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 40, height: 40 }} alt="Imagem de perfil" src={urlFotoPerfil}>
-              {nome[0]}
+            <Avatar sx={{ width: 40, height: 40 }} alt="Imagem de perfil" src={user?.urlFotoPerfil}>
+              {user?.nome[0]}
             </Avatar>
           </IconButton>
         </Tooltip>

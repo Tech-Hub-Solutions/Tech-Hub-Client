@@ -24,13 +24,14 @@ import SnackbarCustom from "../../shared/snackbar/SnackbarCustom.jsx";
 import CustomLoadingButton from "../../shared/customLoadingButton/CustomLoadingButton.jsx";
 import { useNavigate } from "react-router-dom";
 import SwitchButton from "../../shared/SwitchButton.jsx";
+import { updateCurrentUser } from "@/src/utils/localStoreManager";
 
 function CadastroModal({
   user,
   setUser,
   isCadastroOpen,
   setCadastroIsOpen,
-  setIsQrCodeModalOpen 
+  setIsQrCodeModalOpen
 }) {
   const [snackbarSuccessOpen, setSnackbarSuccess] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
@@ -123,6 +124,12 @@ function CadastroModal({
 
 
   const redirectToPerfil = (funcao, id) => {
+    const nextUrl = sessionStorage.NEXT_URL;
+    if (nextUrl) {
+      sessionStorage.removeItem("NEXT_URL");
+      navigate(nextUrl);
+      return;
+    }
     navigate({
       pathname: funcao == "ADMIN" ? "/admin" : `/perfil/${id}`,
     });
@@ -164,12 +171,7 @@ function CadastroModal({
               return;
             }
 
-            localStorage.setItem("usuarioId", res.data.id);
-            localStorage.setItem("nome", res.data.nome);
-            localStorage.setItem("token", res.data.token);
-            localStorage.setItem("funcao", res.data.funcao);
-            localStorage.setItem("pais", res.data.pais);
-            localStorage.setItem("urlFotoPerfil", res.data.urlFotoPerfil);
+            updateCurrentUser(res.data);
             console.log(res.data);
 
             redirectToPerfil(res.data.funcao, res.data.id);
