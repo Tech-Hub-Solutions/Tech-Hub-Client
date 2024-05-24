@@ -41,6 +41,8 @@ jobs:
   deploy:
     name: Update Application
     runs-on: ubuntu-latest
+    needs: 
+      - docker
 
     steps:
       - name: Updating docker with SSH
