@@ -60,28 +60,25 @@ const CardPerfil = (props) => {
   };
 
   const navigateToPerfil = () => {
-    navigate({
-      pathname: "/perfil",
-      search: `?id=${usuario.id}`,
-    });
+    navigate("/perfil/" + usuario.id);
   };
   return (
     <>
       <Card sx={{ width: 280, height: "100%" }}>
         <Button onClick={navigateToPerfil} className={styles["navigate__perfil"]}
-        sx={{
-          width: "100%",
-          height: "100%",
-          maxHeight: "21rem",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-start",
-          alignItems: "flex-start",
-          padding: "0px",
-          textTransform: "none",
+          sx={{
+            width: "100%",
+            height: "100%",
+            maxHeight: "21rem",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            alignItems: "flex-start",
+            padding: "0px",
+            textTransform: "none",
 
-        }}>
-          <CardMedia sx={{ height: 187, width:'100%' }} title="Foto de perfil de freelancer">
+          }}>
+          <CardMedia sx={{ height: 187, width: '100%' }} title="Foto de perfil de freelancer">
             <Avatar
               variant="square"
               sx={{ height: 187, width: "100%" }}

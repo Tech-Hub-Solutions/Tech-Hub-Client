@@ -8,8 +8,17 @@ import Favoritos from "./pages/favoritos/Favoritos";
 import NotFound from "./pages/errors/NotFound";
 import GenericError from "./pages/errors/GenericError";
 import Admin from "./pages/admin/Admin";
+import React from "react";
+import useAxiosConfig from "./hooks/useAxiosErrorInterceptor";
+import SnackbarCustom from "./componentes/shared/snackbar/SnackbarCustom";
 
 function App() {
+
+  const { snackbarErrorOpen, setSnackbarErrorOpen } = useAxiosConfig();
+  const setSnackBarOpen = (open) => {
+    setSnackbarErrorOpen({ open: open });
+  }
+  
   return (
     <>
       <Router>
@@ -17,7 +26,7 @@ function App() {
           <Route path="/" element={<Institucional />} />
           <Route path="/conversas" element={<Conversas />} />
           <Route path="/teste" element={<Teste />} />
-          <Route path="/perfil" element={<PerfilUsuario />} />
+          <Route path="/perfil/:id" element={<PerfilUsuario />} />
           <Route path="/busca-talentos" element={<BuscaTalentos />} />
           <Route path="/favoritos" element={<Favoritos />} />
           <Route path="/admin" element={<Admin />} />
@@ -25,6 +34,14 @@ function App() {
           <Route path="error/:code/:message" element={<GenericError />} />
         </Routes>
       </Router>
+
+      <SnackbarCustom
+        setSnackbarOpen={setSnackBarOpen}
+        snackbarOpen={snackbarErrorOpen.open}
+        message={snackbarErrorOpen.message}
+        severity={snackbarErrorOpen.severity}
+
+      ></SnackbarCustom>
     </>
   );
 }

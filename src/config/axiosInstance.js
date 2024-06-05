@@ -1,8 +1,9 @@
 import axios from "axios";
+import { getCurrentUser } from "../utils/localStoreManager";
 
 const axiosInstance = axios.create({
     baseURL: `${import.meta.env.VITE_SERVICES_BASE_URL}`,
-    timeout: 15000,
+    timeout: 25000,
     headers: {
         "Content-Type": "application/json",
     },
@@ -10,7 +11,7 @@ const axiosInstance = axios.create({
 
 
 axiosInstance.interceptors.request.use((config) => {
-    const tokenUsuario = sessionStorage.getItem('token');
+    const tokenUsuario = getCurrentUser()?.token;
     const location = window.location.pathname;
 
     if (tokenUsuario && location !== "/") {
@@ -18,27 +19,13 @@ axiosInstance.interceptors.request.use((config) => {
     }
 
     if (!tokenUsuario && location !== "/") {
+        sessionStorage.NEXT_URL = location;
         window.location.href = "/";
-        sessionStorage.clear();
+        localStorage.clear();
     }
 
     return config;
 });
 
-axiosInstance.interceptors.response.use((response) => response,
-    (error) => {
-        const location = window.location.pathname;
-        if (error.request.status == 401 && location !== "/" && !error.request.responseURL.includes("usuarios/verify")) {
-            window.location.href = "/";
-            sessionStorage.clear();
-        }
-        if (error.code === 'ECONNABORTED') {
-            window.location.href = "/error/500/Erro de conexão com o servidor";
-        }
-        if (error.response.status === 403) {
-            window.location.href = "/error/403/Acesso negado";
-        }
-        return Promise.reject(error);
-    });
 
 export default axiosInstance;
