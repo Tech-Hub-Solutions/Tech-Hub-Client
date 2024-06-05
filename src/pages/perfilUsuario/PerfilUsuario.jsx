@@ -247,10 +247,10 @@ const PerfilUsuario = (props) => {
                             .filter((flag) => flag.categoria === "hard-skill")
                             .map((flag) => {
                               return (
-                                <WidgetSoftSkill
+                                <WidgetHardSkills
                                   key={flag.nome}
-                                  softSkill={flag.nome}
-                                  background={flags.background}
+                                  hardSkill={flag.nome}
+                                  background={flag.background}
                                 />
                               );
                             })

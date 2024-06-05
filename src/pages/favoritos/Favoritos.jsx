@@ -9,7 +9,7 @@ import { Button } from "@mui/material";
 import CardPerfilSketon from "../../componentes/shared/cardPerfil/CardPerfilSkeleton";
 
 const Favoritos = () => {
-    const [valueOrdenar, setValueOrdenar] = React.useState("");
+    const [valueOrdenar, setValueOrdenar] = React.useState("avaliacao,desc");
     const [usuarios, setUsuarios] = React.useState([]);
     const totalUsuarios = useRef(0);
     const [usuariosSelecionados, setUsuariosSelecionados] = React.useState([]);
@@ -33,7 +33,7 @@ const Favoritos = () => {
 
         setIsLoading(true);
 
-        await axiosInstance.get(`usuarios/favoritos?page=${page.current}&size=10&ordem=${valueOrdenar}`)
+        await axiosInstance.get(`usuarios/favoritos?page=${page.current}&size=30&ordem=${valueOrdenar}`)
             .then((response) => {
                 if (response.status == 200) {
                     const responseUsuarios = response.data.content;
