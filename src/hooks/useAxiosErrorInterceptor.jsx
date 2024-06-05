@@ -15,7 +15,7 @@ const useAxiosConfig = () => {
                     window.location.href = "/";
                 }
 
-                if (error.request?.status == 404) {
+                if (error.request?.status == 404 && !response.request.responseURL.includes("/metricas-usuario")) {
                     setSnackbarErrorOpen({
                         open: true,
                         message: "Erro 404: Recurso não encontrado",

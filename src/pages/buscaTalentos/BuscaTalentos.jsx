@@ -15,77 +15,40 @@ import axiosInstance from "../../config/axiosInstance";
 import CardPerfil from "../../componentes/shared/cardPerfil/CardPerfil";
 import CardPerfilSkeleton from "../../componentes/shared/cardPerfil/CardPerfilSkeleton";
 import SearchIcon from "@mui/icons-material/Search";
+import SelectOrdernar from "@/src/componentes/shared/SelectOrdernar";
+import useDebounce from "@/src/hooks/useDebounce";
 
 function BuscaTalentos() {
   const [valueStacks, setValueStacks] = React.useState();
-  const [value1, setValue1] = React.useState([0, 5000]);
+  const [rangePreco, setRangePreco] = React.useState([0, 5000]);
   const [usuarios, setUsuarios] = React.useState([]);
+  const [valueOrdenar, setValueOrdenar] = React.useState("");
   const [todosUsuarios, setTodosUsuarios] = React.useState(0);
   const [optionsStacks, setOptionsStacks] = React.useState([]);
   const [tecnologias, setTecnologias] = React.useState([]);
-  const [tecnologiasSelecionadas, setTecnologiasSelecionadas] = React.useState(
-    []
-  );
-  const [page, setPage] = React.useState(0);
+  const [tecnologiasSelecionadas, setTecnologiasSelecionadas] = React.useState([]);
+
+  const page = React.useRef(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [precoMedioMin, setPrecoMedioMin] = React.useState(0);
-  const [precoMedioMax, setPrecoMedioMax] = React.useState(0);
-  const [searchText, setSearchText] = React.useState("");
+  const [searchText, setSearchText] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  const debounceSearch = useDebounce(searchText, 600);
 
   React.useEffect(() => {
-    getAllUsers();
-
     getAllTechnologies();
   }, []);
 
   React.useEffect(() => {
     handleSearch();
-  }, [rowsPerPage, page]);
+  }, [rowsPerPage]);
 
-  function getAllUsers() {
-    setIsLoading(true);
-    axiosInstance
-      .post(`usuarios/filtro?page=${page}&size=${rowsPerPage}`, {
-        nome: null,
-        area: null,
-        tecnologiasIds: [],
-        precoMax: null,
-        precoMin: null,
-      })
-      .then((response) => {
-        if (response.status == 200) {
-          setTodosUsuarios(response.data.totalElements);
-          setUsuarios(response.data.content);
-
-          const arrayPrecoMedio = response.data.content.map(
-            (usuario) => usuario.precoMedio
-          );
-
-          setPrecoMedioMin(Math.min(...arrayPrecoMedio));
-          setPrecoMedioMax(Math.max(...arrayPrecoMedio));
-          setValue1([
-            Math.min(...arrayPrecoMedio),
-            Math.max(...arrayPrecoMedio),
-          ]);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }
+  React.useEffect(() => {
+    if (valueOrdenar !== "" || debounceSearch !== null) {
+      page.current = 0;
+      handleSearch();
+    };
+  }, [valueOrdenar, debounceSearch]);
 
   function getAllTechnologies() {
     axiosInstance
@@ -131,53 +94,19 @@ function BuscaTalentos() {
       });
   }
 
-  const onChangeValue = (value, type) => {
-    if (type === "min") {
-      setValue1([value, value1[1]]);
-    } else {
-      setValue1([value1[0], value]);
-    }
-  };
-
-  const handleChange1 = (event, newValue, activeThumb) => {
-    if (!Array.isArray(newValue)) {
-      return;
-    }
-
-    if (activeThumb === 0) {
-      setValue1([Math.min(newValue[0], value1[1]), value1[1]]);
-    } else {
-      setValue1([value1[0], Math.max(newValue[1], value1[0])]);
-    }
-  };
-
-  const handleSetTecnologiasSelecionadas = (tecnologiaID) => {
-    setTecnologiasSelecionadas((prevState) => {
-      if (prevState.includes(tecnologiaID)) {
-        return prevState.filter((id) => id !== tecnologiaID);
-      } else {
-        return [...prevState, tecnologiaID];
-      }
-    });
-  };
-
-  function valueText(value) {
-    return `${value} reais`;
-  }
-
   const handleSearch = () => {
     setIsLoading(true);
 
     const valueStacksLowerCase = valueStacks?.toLowerCase();
 
     axiosInstance
-      .post(`usuarios/filtro?page=${page}&size=${rowsPerPage}`, {
+      .post(`usuarios/filtro?page=${page?.current}&size=${rowsPerPage}&ordem=${valueOrdenar}`, {
         nome: searchText || null,
         area: valueStacksLowerCase || null,
         tecnologiasIds:
           tecnologiasSelecionadas.length <= 0 ? null : tecnologiasSelecionadas,
-        precoMax: value1[1],
-        precoMin: value1[0],
+        precoMax: rangePreco[1],
+        precoMin: rangePreco[0],
       })
       .then((response) => {
         if (response.status == 200) {
@@ -196,9 +125,49 @@ function BuscaTalentos() {
       });
   };
 
-  React.useEffect(() => {
+  const handleChangePage = (event, newPage) => {
+    page.current = newPage;
     handleSearch();
-  }, [searchText]);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    page.current = 0;
+  };
+
+  const onChangeValue = (value, type) => {
+    if (type === "min") {
+      setRangePreco([value, rangePreco[1]]);
+    } else {
+      setRangePreco([rangePreco[0], value]);
+    }
+  };
+
+  const handleRangePreco = (event, newValue, activeThumb) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+
+    if (activeThumb === 0) {
+      setRangePreco([Math.min(newValue[0], rangePreco[1]), rangePreco[1]]);
+    } else {
+      setRangePreco([rangePreco[0], Math.max(newValue[1], rangePreco[0])]);
+    }
+  };
+
+  const handleSetTecnologiasSelecionadas = (tecnologiaID) => {
+    setTecnologiasSelecionadas((prevState) => {
+      if (prevState.includes(tecnologiaID)) {
+        return prevState.filter((id) => id !== tecnologiaID);
+      } else {
+        return [...prevState, tecnologiaID];
+      }
+    });
+  };
+
+  function valueText(value) {
+    return `${value} reais`;
+  }
 
   return (
     <>
@@ -261,7 +230,7 @@ function BuscaTalentos() {
                 type="number"
                 size="small"
                 sx={{ width: 120 }}
-                value={typeof value1 === "number" ? value1 : value1[0]}
+                value={typeof rangePreco === "number" ? rangePreco : rangePreco[0]}
                 onChange={(e) => onChangeValue(e.target.value, "min")}
               />
 
@@ -272,22 +241,22 @@ function BuscaTalentos() {
                 type="number"
                 size="small"
                 sx={{ width: 120 }}
-                value={typeof value1 === "number" ? value1 : value1[1]}
+                value={typeof rangePreco === "number" ? rangePreco : rangePreco[1]}
                 onChange={(e) => onChangeValue(e.target.value, "max")}
               />
             </div>
 
             <Slider
-              getAriaLabel={() => "Preço mínimo"}
-              value={value1}
-              onChange={handleChange1}
+              getAriaLabel={() => "Preço médio"}
+              value={rangePreco}
+              onChange={handleRangePreco}
               valueLabelDisplay="auto"
               getAriaValueText={valueText}
               disableSwap
               valueLabelFormat={(x) => `R$${x},00`}
               sx={{ color: "#0f9eea" }}
-              min={precoMedioMin}
-              max={precoMedioMax}
+              min={0}
+              max={10_000.00}
             />
           </div>
 
@@ -329,20 +298,26 @@ function BuscaTalentos() {
                 onChange={(e) => setSearchText(e.target.value)}
               />
             </div>
+
+            <SelectOrdernar
+              valueOrdenar={valueOrdenar}
+              setValueOrdenar={setValueOrdenar}
+            />
+
           </div>
 
           <div className={styles["container__usuarios"]}>
             {isLoading
               ? Array.from(Array(6).keys()).map((index) => (
-                  <CardPerfilSkeleton key={index} />
-                ))
+                <CardPerfilSkeleton key={index} />
+              ))
               : usuarios.map((usuario) => {
-                  return (
-                    <div className={styles["card_usuario"]} key={usuario.id}>
-                      <CardPerfil key={usuario.id} usuario={usuario} />
-                    </div>
-                  );
-                })}
+                return (
+                  <div className={styles["card_usuario"]} key={usuario.id}>
+                    <CardPerfil key={usuario.id} usuario={usuario} />
+                  </div>
+                );
+              })}
           </div>
 
           <div className={styles["container__paginator"]}>
@@ -350,7 +325,7 @@ function BuscaTalentos() {
               labelRowsPerPage={"Talentos por página:"}
               count={todosUsuarios}
               component="div"
-              page={page}
+              page={page.current}
               onPageChange={handleChangePage}
               rowsPerPage={rowsPerPage}
               onRowsPerPageChange={handleChangeRowsPerPage}
