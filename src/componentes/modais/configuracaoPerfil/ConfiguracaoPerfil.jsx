@@ -175,6 +175,9 @@ const ConfiguracaoPerfilModal = ({
           if (isUsing2FA && !usuario.isUsing2FA) {
             setIsQrCodeModalOpen(true);
           } else {
+            
+            updateCurrentUser(res.data);
+            console.log(res.data);
             redirectToPerfil(res.data);
           }
         }, 2300);
