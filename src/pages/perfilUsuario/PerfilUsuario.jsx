@@ -181,120 +181,195 @@ const PerfilUsuario = (props) => {
 
 
     return (
-        <>
-            {
-                isLoading ?
-                    <PerfilSkeleton />
-                    :
-                    isNotFound ?
-                        <NotFound />
-                        :
-                        <>
-                            <Header />
-                            <div className={styles['perfil__usuario']}>
-                                <div className={styles['content']}>
-                                    <BannerDescUsuario usuario={usuario} setUsuario={setUsuario} carregarPerfil={carregarPerfil} />
-                                    {
-                                        usuario.isPerfilFreelancer ?
-                                            <div className={styles['content__sectionSkills']}>
-                                                <div className={styles['sectionSkills__experiencia']}>
-                                                    <DescricaoUsuario titulo='Experiência' texto={usuario.experiencia} />
-                                                    <Divider variant="middle" style={{ margin: '16px 0' }} />
-                                                    <DescricaoUsuario titulo='Sobre mim' texto={usuario.sobreMim} />
-                                                </div>
-                                                <div className={styles['sectionSkills__experiencia']}>
-                                                    <h1 className={styles['titulo']}>Soft Skills</h1>
-                                                    <div className={styles['boxSkills']}>
-                                                        {
-                                                            flags?.filter(flags => flags.categoria === "soft-skill")?.map((flags) => {
-                                                                return (
-                                                                    <WidgetSoftSkill key={flags.nome} softSkill={flags.nome} />
-                                                                )
-                                                            })
-                                                        }
-                                                    </div>
-                                                    <Divider variant="middle" style={{ margin: '16px 0' }} />
-                                                    <h1 className={styles['titulo']}>Hard Skill</h1>
-                                                    <div className={styles['boxSkills']}>
-                                                        {
-                                                            flags?.filter(flags => flags.categoria === "hard-skill")?.map((flags) => {
-                                                                return (
-                                                                    <WidgetHardSkills key={flags.nome} hardSkill={flags.nome} background={flags.background} />
-                                                                )
-                                                            })
-                                                        }
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            :
-                                            <div className={styles['content__sectionSkillsEmpresa']}>
-                                                <div className={styles['sectionSkillsEmpresa__experiencia']}>
-                                                    <div className={styles['sectionSkills__sobreNos']}>
-                                                        <DescricaoUsuario titulo='Experiência' texto={usuario.experiencia} />
-                                                    </div>
-                                                    <div className={styles['sectionSkills__quemProcuramos']}>
-                                                        <DescricaoUsuario titulo='Quem procuramos' texto={usuario.sobreMim} />
-                                                    </div>
-                                                </div>
-                                                <div className={styles['sectionSkills__softSkills']}>
-                                                    <BoxSoftSkills skills={flags?.filter(flag => flag.categoria === "soft-skill")} />
-                                                </div>
-                                            </div>
-                                    }
-                                    {
-                                        usuario.isPerfilFreelancer &&
-                                        <div className={styles['content__sectionProjetos']}>
-                                            <Projetos nomeGitHub={usuario?.nomeGithub} />
-                                        </div>
-                                    }
-                                    <div className={styles['content__sectionComentariosAvaliacoes']}>
-                                        <div className={styles['sectionComentariosAvaliacoes__comentarios']}>
-                                            <h1>Comentários</h1>
-                                            {
-                                                comentario.length == 0 &&
-                                                <p
-                                                    style={{ color: '#B4B4B4', marginTop: '24px', marginBottom: '24px', fontWeight: '500' }}
-                                                >Este usuário ainda não possui comentários.</p>
-                                            }
-                                            {
-                                                comentario.map((comentario, index) => {
-                                                    return (
-                                                        <ComentarioPerfil
-                                                            key={`comentario${index}`}
-                                                            comentario={comentario}
-                                                        />
-                                                    )
-                                                })
-                                            }
-                                            {!comentariosFim && comentario.length >= 3 &&
-                                                <Button style={{ color: 'var(--color-cinza)', marginBottom: '32px', fontWeight: '500' }} onClick={verMais}>Ver mais</Button>
-                                            }
-                                            {!usuario.isOwnProfile &&
-                                                <CampoComentario
-                                                    idRequisicao={idRequisicao}
-                                                    carregarAvaliacaoGeral={carregarAvaliacaoGeral}
-                                                    trazerComentarios={trazerComentarios}
-                                                    setComentario={setComentario}
-                                                    nomeUsuario='Você'
-                                                />
-                                            }
-                                        </div>
-                                        <Divider orientation="vertical" flexItem style={{ margin: '0 36px' }}></Divider>
-                                        <div className={styles['sectionComentariosAvaliacoes__avaliacoes']}>
-                                            <AvaliacoesUsuario
-                                                avaliacao={avaliacao}
-                                                totalAvaliacoes={totalAvaliacoes}
-                                                mediaEstrelas={mediaEstrelas}
-                                            />
-                                            <Divider variant="middle" style={{ width: '100%', margin: '40px 0' }} />
-                                            <InfoAdicional usuario={usuario} setUsuario={setUsuario} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </>
-            }
-        </>
+      <>
+        {isLoading ? (
+          <PerfilSkeleton />
+        ) : isNotFound ? (
+          <NotFound />
+        ) : (
+          <>
+            <Header />
+            <div className={styles["perfil__usuario"]}>
+              <div className={styles["content"]}>
+                <BannerDescUsuario
+                  usuario={usuario}
+                  setUsuario={setUsuario}
+                  carregarPerfil={carregarPerfil}
+                />
+                {usuario.isPerfilFreelancer ? (
+                  <div className={styles["content__sectionSkills"]}>
+                    <div className={styles["sectionSkills__experiencia"]}>
+                      <DescricaoUsuario
+                        titulo="Experiência"
+                        texto={
+                          usuario.experiencia
+                            ? `${usuario.experiencia}`
+                            : "Não informado"
+                        }
+                      />
+                      <Divider variant="middle" style={{ margin: "16px 0" }} />
+                      <DescricaoUsuario
+                        titulo="Sobre mim"
+                        texto={
+                          usuario.sobreMim
+                            ? `${usuario.sobreMim}`
+                            : "Não informado"
+                        }
+                      />
+                    </div>
+                    <div className={styles["sectionSkills__experiencia"]}>
+                      <h1 className={styles["titulo"]}>Soft Skills</h1>
+                      <div className={styles["boxSkills"]}>
+                        {flags?.filter(
+                          (flag) => flag.categoria === "soft-skill"
+                        )?.length > 0 ? (
+                          flags
+                            .filter((flag) => flag.categoria === "soft-skill")
+                            .map((flag) => {
+                              return (
+                                <WidgetSoftSkill
+                                  key={flag.nome}
+                                  softSkill={flag.nome}
+                                />
+                              );
+                            })
+                        ) : (
+                          <p>Não informado</p>
+                        )}
+                      </div>
+                      <Divider variant="middle" style={{ margin: "16px 0" }} />
+                      <h1 className={styles["titulo"]}>Hard Skill</h1>
+                      <div className={styles["boxSkills"]}>
+                      {flags?.filter(
+                          (flag) => flag.categoria === "hard-skill"
+                        )?.length > 0 ? (
+                          flags
+                            .filter((flag) => flag.categoria === "hard-skill")
+                            .map((flag) => {
+                              return (
+                                <WidgetSoftSkill
+                                  key={flag.nome}
+                                  softSkill={flag.nome}
+                                  background={flags.background}
+                                />
+                              );
+                            })
+                        ) : (
+                          <p>Não informado</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className={styles["content__sectionSkillsEmpresa"]}>
+                    <div
+                      className={styles["sectionSkillsEmpresa__experiencia"]}
+                    >
+                      <div className={styles["sectionSkills__sobreNos"]}>
+                        <DescricaoUsuario
+                          titulo="Experiência"
+                          texto={usuario.experiencia}
+                        />
+                      </div>
+                      <div className={styles["sectionSkills__quemProcuramos"]}>
+                        <DescricaoUsuario
+                          titulo="Quem procuramos"
+                          texto={usuario.sobreMim}
+                        />
+                      </div>
+                    </div>
+                    <div className={styles["sectionSkills__softSkills"]}>
+                      <BoxSoftSkills
+                        skills={flags?.filter(
+                          (flag) => flag.categoria === "soft-skill"
+                        )}
+                      />
+                    </div>
+                  </div>
+                )}
+                {usuario.isPerfilFreelancer && (
+                  <div className={styles["content__sectionProjetos"]}>
+                    <Projetos nomeGitHub={usuario?.nomeGithub} />
+                  </div>
+                )}
+                <div
+                  className={styles["content__sectionComentariosAvaliacoes"]}
+                >
+                  <div
+                    className={
+                      styles["sectionComentariosAvaliacoes__comentarios"]
+                    }
+                  >
+                    <h1>Comentários</h1>
+                    {comentario.length == 0 && (
+                      <p
+                        style={{
+                          color: "#B4B4B4",
+                          marginTop: "24px",
+                          marginBottom: "24px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        Este usuário ainda não possui comentários.
+                      </p>
+                    )}
+                    {comentario.map((comentario, index) => {
+                      return (
+                        <ComentarioPerfil
+                          key={`comentario${index}`}
+                          comentario={comentario}
+                        />
+                      );
+                    })}
+                    {!comentariosFim && comentario.length >= 3 && (
+                      <Button
+                        style={{
+                          color: "var(--color-cinza)",
+                          marginBottom: "32px",
+                          fontWeight: "500",
+                        }}
+                        onClick={verMais}
+                      >
+                        Ver mais
+                      </Button>
+                    )}
+                    {!usuario.isOwnProfile && (
+                      <CampoComentario
+                        idRequisicao={idRequisicao}
+                        carregarAvaliacaoGeral={carregarAvaliacaoGeral}
+                        trazerComentarios={trazerComentarios}
+                        setComentario={setComentario}
+                        nomeUsuario="Você"
+                      />
+                    )}
+                  </div>
+                  <Divider
+                    orientation="vertical"
+                    flexItem
+                    style={{ margin: "0 36px" }}
+                  ></Divider>
+                  <div
+                    className={
+                      styles["sectionComentariosAvaliacoes__avaliacoes"]
+                    }
+                  >
+                    <AvaliacoesUsuario
+                      avaliacao={avaliacao}
+                      totalAvaliacoes={totalAvaliacoes}
+                      mediaEstrelas={mediaEstrelas}
+                    />
+                    <Divider
+                      variant="middle"
+                      style={{ width: "100%", margin: "40px 0" }}
+                    />
+                    <InfoAdicional usuario={usuario} setUsuario={setUsuario} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+      </>
     );
 }
 

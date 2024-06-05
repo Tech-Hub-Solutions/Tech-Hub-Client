@@ -13,7 +13,7 @@ const AvaliacoesUsuario = (props) => {
             <h1>Avaliações</h1>
             <div className={styles['avaliacoesUsuario']}>
                 <div className={styles['avaliacoesUsuario__titulo']}>
-                    <h2>{totalAvaliacoes} avaliações realizadas</h2>
+                    <h2>{totalAvaliacoes} Avaliações realizadas</h2>
                     <Box
                         sx={{
                             '& > legend': { mt: 2 },
