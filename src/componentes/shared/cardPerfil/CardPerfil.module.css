@@ -6,6 +6,11 @@
   font-weight: 600;
   line-height: normal;
   margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  max-width: 230px;
 }
 
 .container__infos__usuario__descricao {
@@ -16,7 +21,8 @@
   font-weight: 500;
   line-height: 19.6px;
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* Number of lines to show */
+  -webkit-line-clamp: 2;
+  /* Number of lines to show */
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -39,8 +45,17 @@
 .container__infos__usuario__price {
   color: #000;
   font-family: "Montserrat", sans-serif;
-  font-size: 24px;
   font-style: normal;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.container__infos__usuario__unknown__price {
+  color: #949494;
+  font-family: "Montserrat", sans-serif;
+  font-style: normal;
+  font-size: 16px;
   font-weight: 600;
   line-height: normal;
 }
