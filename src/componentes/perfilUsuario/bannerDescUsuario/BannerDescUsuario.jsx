@@ -209,7 +209,8 @@ const BannerDescUsuario = (props) => {
             {/* Limitar a Length da input para até 80 caracteres */}
             <p>{usuario?.descricao || ""}</p>
           </div>
-          <div className={styles["precoUsuario"]}>
+          <div className={`${usuario?.precoMedio ?
+              styles.precoUsuario : styles.unknown_precoUsuario}`}>
             {isPerfilFreelancer && (
               <h4>
                 {usuario?.precoMedio

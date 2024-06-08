@@ -95,3 +95,10 @@
     color: var(--color-cinza);
     font-weight: 600;
 }
+
+.unknown_precoUsuario h4{
+    margin-top: 8px;
+    font-size: 24px;
+    color: #949494;
+    font-weight: 600;
+}

@@ -85,79 +85,84 @@ const CardPerfil = (props) => {
               src={usuario?.urlFotoPerfil}
               title="Foto de perfil de freelancer"
             >
-              <p style={{ fontSize: "3rem" }}>{usuario?.nome[0]}</p>
-            </Avatar>
-          </CardMedia>
+              <p style={{fontSize: "3rem"}}>{usuario?.nome[0]}</p>
+          </Avatar>
+        </CardMedia>
 
-          <CardContent
+        <CardContent
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            height: "100%",
+            maxHeight: "100%",
+          }}
+        >
+          <span className={styles["name"]}>{usuario?.nome}</span>
+
+          <div className={styles["container__infos__usuario"]}>
+            <span className={styles["container__infos__usuario__descricao"]}>{usuario?.descricao}</span>
+
+            <Rating
+              className={styles["container__infos__usuario__rating"]}
+              value={usuario?.qtdEstrela}
+              readOnly
+            />
+
+            <span className={`${usuario?.precoMedio ?
+              styles.container__infos__usuario__price : styles.container__infos__usuario__unknown__price}`}>
+
+              {usuario?.precoMedio ? `R$ ${usuario?.precoMedio.toFixed(2)}` : "Preço não informado"}
+
+            </span>
+          </div>
+        </CardContent>
+      </Button>
+
+      {props?.isTelaFavoritos && (
+        <CardActions>
+          <Button
+            fullWidth
+            size="small"
+            onClick={handleSelecionar}
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              height: "100%",
-              maxHeight: "100%",
-            }}
-          >
-            <span className={styles["name"]}>{usuario?.nome}</span>
-
-            <div className={styles["container__infos__usuario"]}>
-              <span className={styles["container__infos__usuario__descricao"]}>{usuario?.descricao}</span>
-
-              <Rating
-                className={styles["container__infos__usuario__rating"]}
-                value={usuario?.qtdEstrela}
-                readOnly
-              />
-
-              <span className={styles["container__infos__usuario__price"]}>R$ {usuario?.precoMedio}</span>
-            </div>
-          </CardContent>
-        </Button>
-
-        {props?.isTelaFavoritos && (
-          <CardActions>
-            <Button
-              fullWidth
-              size="small"
-              onClick={handleSelecionar}
-              sx={{
+              backgroundColor: usuarioSelecionado
+                ? "var(--color-azul)"
+                : "var(--color-branco)",
+              border: "1px solid var(--color-azul)",
+              color: usuarioSelecionado
+                ? "var(--color-branco)"
+                : "var(--color-azul)",
+              "&:hover": {
                 backgroundColor: usuarioSelecionado
                   ? "var(--color-azul)"
                   : "var(--color-branco)",
-                border: "1px solid var(--color-azul)",
                 color: usuarioSelecionado
                   ? "var(--color-branco)"
                   : "var(--color-azul)",
-                "&:hover": {
-                  backgroundColor: usuarioSelecionado
-                    ? "var(--color-azul)"
-                    : "var(--color-branco)",
-                  color: usuarioSelecionado
-                    ? "var(--color-branco)"
-                    : "var(--color-azul)",
-                },
-              }}
-            >
-              {usuarioSelecionado ? "Selecionado" : "Selecionar"}
-            </Button>
+              },
+            }}
+          >
+            {usuarioSelecionado ? "Selecionado" : "Selecionar"}
+          </Button>
 
-            <Checkbox
-              checked={usuario.isFavorito}
-              onChange={handleFavoritar}
-              color="error"
-              style={{ marginRight: "6px" }}
-              icon={
-                <FavoriteBorder
-                  sx={{ fontSize: 32 }}
-                  style={{ color: "#505050" }}
-                />
-              }
-              checkedIcon={<Favorite sx={{ fontSize: 32 }} />}
-            />
-          </CardActions>
-        )}
-      </Card>
+          <Checkbox
+            checked={usuario.isFavorito}
+            onChange={handleFavoritar}
+            color="error"
+            style={{ marginRight: "6px" }}
+            icon={
+              <FavoriteBorder
+                sx={{ fontSize: 32 }}
+                style={{ color: "#505050" }}
+              />
+            }
+            checkedIcon={<Favorite sx={{ fontSize: 32 }} />}
+          />
+        </CardActions>
+      )}
+    </Card >
     </>
   );
 };
