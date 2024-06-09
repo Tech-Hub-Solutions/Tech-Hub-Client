@@ -10,30 +10,24 @@ const Projetos = ({ nomeGitHub }) => {
     const [repositorios, setRepositorios] = React.useState({ error: false, data: [] });
     const [loading, setLoading] = React.useState(false);
 
-    
+
     useEffect(() => {
         if (nomeGitHub == null || nomeGitHub == "") return;
 
         axios.get(`https://api.github.com/users/${nomeGitHub}/repos`)
             .then(response => {
                 if (response.status === 200) {
-                    const repoPromises = response.data.map((repo) => {
+
+                    const allRepos = response.data.map((repo) => {
                         const name = repo.name;
                         const description = repo.description;
                         const language = repo.language;
                         const url = repo.html_url;
-
-                        return axios.get(`https://api.github.com/repos/${nomeGitHub}/${name}/languages`)
-                            .then(languageResponse => {
-                                const languagens = Object.keys(languageResponse.data);
-                                return { name, description, language, languagens, url };
-                            });
+                        return { name, description, language, url };
                     });
 
-                    Promise.all(repoPromises)
-                        .then(allRepos => {
-                            setRepositorios({ error: false, data: allRepos });
-                        })
+                    setRepositorios({ error: false, data: allRepos });
+
                 } else {
                     setRepositorios({ error: response.status, data: [] });
                 }

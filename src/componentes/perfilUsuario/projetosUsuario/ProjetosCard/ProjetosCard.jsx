@@ -3,7 +3,7 @@ import React from "react";
 import LanguageLogo from "../LanguageLogo";
 import styles from './projetosCard.module.css'
 
-const ProjetosLoadingBox = ({ repositorio }) => {
+const ProjetosCard = ({ repositorio }) => {
     return (
         <Button
             onClick={() => window.open(repositorio.url, "_blank")}
@@ -30,17 +30,11 @@ const ProjetosLoadingBox = ({ repositorio }) => {
                 <span className={styles['card__sem-descricao']}> Sem descrição </span>
             }</p>
             <div className={styles['card__linguagens']}>
-                {
-                    repositorio.languagens?.map((languagen) => {
-                        return (
-                            <LanguageLogo language={languagen} height={"40px"} />
-                        )
-                    })
-                }
+                <LanguageLogo language={repositorio.language} height={"40px"} />
             </div>
         </Button>
     )
 
 }
 
-export default ProjetosLoadingBox;
+export default ProjetosCard;
